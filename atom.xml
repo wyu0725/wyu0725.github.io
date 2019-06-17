@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://wyu0725.github.io/</id>
     <title>王德福 Wonderful</title>
-    <updated>2019-06-14T05:25:34.249Z</updated>
+    <updated>2019-06-17T13:02:10.002Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://wyu0725.github.io/"/>
     <link rel="self" href="https://wyu0725.github.io//atom.xml"/>
@@ -10,6 +10,41 @@
     <logo>https://wyu0725.github.io//images/avatar.png</logo>
     <icon>https://wyu0725.github.io//favicon.ico</icon>
     <rights>All rights reserved 2019, 王德福 Wonderful</rights>
+    <entry>
+        <title type="html"><![CDATA[通过 VIO 实现 Si5345 的配置]]></title>
+        <id>https://wyu0725.github.io//post/Si5345_VIO_Config</id>
+        <link href="https://wyu0725.github.io//post/Si5345_VIO_Config">
+        </link>
+        <updated>2019-06-17T12:58:20.000Z</updated>
+        <summary type="html"><![CDATA[<blockquote>
+<p>用了这么多的开源代码，今天总算是页做出了自己的贡献，可以发一个自己的开源工程</p>
+<p>这个工程主要是通过 VIO 配置一款 PLL 芯片</p>
+</blockquote>
+]]></summary>
+        <content type="html"><![CDATA[<blockquote>
+<p>用了这么多的开源代码，今天总算是页做出了自己的贡献，可以发一个自己的开源工程</p>
+<p>这个工程主要是通过 VIO 配置一款 PLL 芯片</p>
+</blockquote>
+ <!-- more -->
+<h1 id="si5345">Si5345</h1>
+<p>因为工程需要，在板上设计了一个 PLL—— <a href="https://www.silabs.com/products/timing/clocks/high-performance-jitter-attenuators/device.si5345a">Si5345</a>，详细参数就不讨论了，这个芯片可以通过 I2C 或者 SPI 进行配置，在板子设计的时候就想着通过 Xilinx 的 VIO 来进行配置，所以没有放置其他的调试接口，事实证明这样是可行的，但是还是太年轻，因为 Si5345 官方提供了烧写器套件，只要按照官方的设计，就可以花 800 多块钱买一套烧写器，直接通过 USB 配置，推荐以后的新设计都使用官方的开发套件，可以节约不少时间。</p>
+<h1 id="xilinx-vio">Xilinx VIO</h1>
+<p>VIO 的全称是 Virtual IO，是通过在 FPGA 中生成一个虚拟的 接口 Core，这个 Core 可以设置输入输出，然后通过 JTAG 就可以和电脑进行通讯，从而实现对 FPGA 的控制。这样的优点就是节约了一个调试接口，省了空间和时间，同时接口的宽度和数量都比较灵活，易于调试，再结合 Debug Core 可以轻松的调试逻辑；当然缺点就是接口速度很慢很慢，基本上只能够实现电平控制，如果要脉冲控制的话就自己写上升沿或者下降沿检测电路。</p>
+<p>VIO 结合 tcl 语言可以实现自动化的数据发送和读取的工作</p>
+<h1 id="tcl">tcl</h1>
+<p>用了这么多年的 FPGA 真不该忽略 Xilinx 提供的 tcl 工具，可以实现很多测试的自动化，在 配置 tcl 的时候主要用到了四条 Vivado 定制的 tcl</p>
+<p>前两条是想 VIO 写数的脚本，注意数据的位宽一定要对，tcl 是比较简单的语法，不会对数据进行智能转换。</p>
+<pre><code class="language-tcl">set_property OUTPUT_VALUE $RegData_real [get_hw_probes si5345_reg_wr_value_from_vio_w]
+commit_hw_vio [get_hw_probes {si5345_reg_wr_value_from_vio_w}]
+</code></pre>
+<p>后两条是读取 VIO 的语法，一定要先刷新再读。</p>
+<pre><code class="language-tcl">refresh_hw_vio [get_hw_vios {hw_vio_1}]
+set is_busy [get_property INPUT_VALUE [get_hw_probes si5345_spi_busy_to_vio_w]]
+</code></pre>
+<h1 id="工程介绍">工程介绍</h1>
+<p>在 <a href="https://github.com/wyu0725/Si5345_VIO_Config">GitHub Si5345 VIO Config</a> 中已经介绍得明明白白，直接下载看使用说明即可。</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Vivado 调用 Vim 作为编辑器]]></title>
         <id>https://wyu0725.github.io//post/vivado_call-vim</id>
@@ -83,12 +118,12 @@
 <p><a name="bs6ac"></a></p>
 <h2 id="checklists">Checklists</h2>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4066357"> 使用 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/">模板<label class="task-list-item-label" for="task-item-4066357"> 使用 [模板](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2306634"> 检查 <a href="http://refassist.ieee.org/">引用<label class="task-list-item-label" for="task-item-2306634"> 检查 [引用](http://refassist.ieee.org/)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5774583"> 检查 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/">英语语言</a><label class="task-list-item-label" for="task-item-5774583"> 检查 [英语语言](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/) (很多杂志都有要求，但是封总不同意，所以尽量给老师检查吧)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3668906"> 检查 <a href="http://graphicsqc.ieee.org/">图片<label class="task-list-item-label" for="task-item-3668906"> 检查 [图片](http://graphicsqc.ieee.org/)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8536519"> 创建 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/">补充材料</a><label class="task-list-item-label" for="task-item-8536519"> 创建 [补充材料](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/)（大部分时候我们都没有补充材料）</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4004698"> 创建 <a href="http://www.orcid.org/">ORCID<label class="task-list-item-label" for="task-item-4004698"> 创建 [ORCID](http://www.orcid.org/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4023066"> 使用 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/">模板<label class="task-list-item-label" for="task-item-4023066"> 使用 [模板](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7019085"> 检查 <a href="http://refassist.ieee.org/">引用<label class="task-list-item-label" for="task-item-7019085"> 检查 [引用](http://refassist.ieee.org/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6350049"> 检查 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/">英语语言</a><label class="task-list-item-label" for="task-item-6350049"> 检查 [英语语言](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/) (很多杂志都有要求，但是封总不同意，所以尽量给老师检查吧)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1795328"> 检查 <a href="http://graphicsqc.ieee.org/">图片<label class="task-list-item-label" for="task-item-1795328"> 检查 [图片](http://graphicsqc.ieee.org/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1895397"> 创建 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/">补充材料</a><label class="task-list-item-label" for="task-item-1895397"> 创建 [补充材料](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/)（大部分时候我们都没有补充材料）</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8114317"> 创建 <a href="http://www.orcid.org/">ORCID<label class="task-list-item-label" for="task-item-8114317"> 创建 [ORCID](http://www.orcid.org/)</label></li>
 </ul>
 <p><a name="BRluH"></a></p>
 <h2 id="图片">图片</h2>
@@ -248,19 +283,19 @@ xxxx and not Fig. 3: xxxx
 <a name="0frh5"></a></p>
 <h2 id="首先是-ae-的问题">首先是 AE 的问题</h2>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7083285"><label class="task-list-item-label" for="task-item-7083285"> 在最终版去掉所有的 comments</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2161909"><label class="task-list-item-label" for="task-item-2161909"> Revision date 后面要换行</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4444786"><label class="task-list-item-label" for="task-item-4444786"> 在最终版去掉所有的 comments</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8032833"><label class="task-list-item-label" for="task-item-8032833"> Revision date 后面要换行</label></li>
 </ul>
 <p><a name="MaQOi"></a></p>
 <h2 id="se-的问题">SE 的问题</h2>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4335144"><label class="task-list-item-label" for="task-item-4335144"> 脚注只需要提交日期和最后一次修改的日期</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-154045"><label class="task-list-item-label" for="task-item-154045"> 这里要注意时区问题， TNS 用的美国时间，和我们差了 15 个小时，估计是美国西部时间，而且 4-10 月会进入夏令时，所以投稿最好在晚上或者早上，这样日期不会对不上。</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5897366"><label class="task-list-item-label" for="task-item-5897366"> 图片的题注是 8 号字体，左对齐</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5324054"><label class="task-list-item-label" for="task-item-5324054"> 脚注只需要提交日期和最后一次修改的日期</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4359506"><label class="task-list-item-label" for="task-item-4359506"> 这里要注意时区问题， TNS 用的美国时间，和我们差了 15 个小时，估计是美国西部时间，而且 4-10 月会进入夏令时，所以投稿最好在晚上或者早上，这样日期不会对不上。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7261051"><label class="task-list-item-label" for="task-item-7261051"> 图片的题注是 8 号字体，左对齐</label></li>
 </ul>
 <p>之所以有这个问题是因为用了 Subfig 这个包，需要设置 subfig 的 caption 为 false，即<br />**\usepackage[caption=false]{subfig}    **<br />其实这个问题会报 warning 的，但是 sublime 把它吃掉了，需要打开 log 文件才可以看到。<br />上次审稿的 Fig. x: 问题也是由这个引起的。</p>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8021801"><label class="task-list-item-label" for="task-item-8021801"> 看投稿网站</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1740019"><label class="task-list-item-label" for="task-item-1740019"> 看投稿网站</label></li>
 </ul>
 <p><a name="ZR238"></a></p>
 <h1 id="终稿">终稿</h1>
@@ -268,12 +303,12 @@ xxxx and not Fig. 3: xxxx
 <h2 id="提交-final-versionpdf">提交 FINAL VERSION.pdf</h2>
 <p>终于到了终稿阶段，需要提交两个文件：FINAL VERSIN.pdf 和源文件 (Word 或者 LaTeX)。<br />有以下的问题需要考虑</p>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2962989"><label class="task-list-item-label" for="task-item-2962989"> 是否要彩色打印，电子版彩色是免费的，但是纸质版的话彩色需要收费。收费标准是每 4 页 1045 刀，此外每幅彩图 62.5 刀。</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8945901"><label class="task-list-item-label" for="task-item-8945901"> 如果纸质版用黑白的话，一定要保证打印成黑白的图片可以区分。</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7833270"><label class="task-list-item-label" for="task-item-7833270"> 终稿不允许有任何的修改。这条不绝对</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8581532"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 <s>“去个头”</s><label class="task-list-item-label" for="task-item-8581532"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 ~~“去个头”~~ Go ahead</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3919551"><label class="task-list-item-label" for="task-item-3919551"> 在网页上提交需要的文件，然后确认信息，最后转移权力给 TNS</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7192561"><label class="task-list-item-label" for="task-item-7192561"> 有个师兄终稿的时候还加了作者，最后要求其他作者都签名同意增加一名作者，所以终稿也不是不可以做小修改的。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6056692"><label class="task-list-item-label" for="task-item-6056692"> 是否要彩色打印，电子版彩色是免费的，但是纸质版的话彩色需要收费。收费标准是每 4 页 1045 刀，此外每幅彩图 62.5 刀。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6582329"><label class="task-list-item-label" for="task-item-6582329"> 如果纸质版用黑白的话，一定要保证打印成黑白的图片可以区分。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4871884"><label class="task-list-item-label" for="task-item-4871884"> 终稿不允许有任何的修改。这条不绝对</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2551994"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 <s>“去个头”</s><label class="task-list-item-label" for="task-item-2551994"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 ~~“去个头”~~ Go ahead</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1326416"><label class="task-list-item-label" for="task-item-1326416"> 在网页上提交需要的文件，然后确认信息，最后转移权力给 TNS</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4773873"><label class="task-list-item-label" for="task-item-4773873"> 有个师兄终稿的时候还加了作者，最后要求其他作者都签名同意增加一名作者，所以终稿也不是不可以做小修改的。</label></li>
 </ul>
 <p><a name="KEYcA"></a></p>
 <h2 id="创建-ieee-账号">创建 IEEE 账号</h2>
