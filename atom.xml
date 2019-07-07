@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://wyu0725.github.io/</id>
     <title>王德福 Wonderful</title>
-    <updated>2019-06-17T13:02:10.002Z</updated>
+    <updated>2019-07-07T09:20:37.984Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://wyu0725.github.io/"/>
     <link rel="self" href="https://wyu0725.github.io//atom.xml"/>
@@ -10,6 +10,74 @@
     <logo>https://wyu0725.github.io//images/avatar.png</logo>
     <icon>https://wyu0725.github.io//favicon.ico</icon>
     <rights>All rights reserved 2019, 王德福 Wonderful</rights>
+    <entry>
+        <title type="html"><![CDATA[新开服务器基本设置指南]]></title>
+        <id>https://wyu0725.github.io//post/ubuntu_basic_settings</id>
+        <link href="https://wyu0725.github.io//post/ubuntu_basic_settings">
+        </link>
+        <updated>2019-07-07T09:13:48.000Z</updated>
+        <summary type="html"><![CDATA[<p>添加超级用户安装了新服务器第一件事情就是先添加一个管理员用户，而不是直接使用 root 进行登陆，如果 root 的密码泄露了是非常严重的。同时也不要直接使用 root 登陆，基本上的操作用 sudo 就可以完成，还要什么管理员。</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>添加超级用户安装了新服务器第一件事情就是先添加一个管理员用户，而不是直接使用 root 进行登陆，如果 root 的密码泄露了是非常严重的。同时也不要直接使用 root 登陆，基本上的操作用 sudo 就可以完成，还要什么管理员。</p>
+<!-- more --> 
+<h1 id="添加超级用户">添加超级用户</h1>
+<p>安装了新服务器第一件事情就是先添加一个管理员用户，而不是直接使用 root 进行登陆，如果 root 的密码泄露了是非常严重的。</p>
+<ol>
+<li>首先是添加一个用户 adduser username，设置好密码，一路回车加确认即可</li>
+<li>然后就是把用户添加到 sudo: usermod -aG sudo username</li>
+<li>大功告成了</li>
+<li>重新开个窗口测试一下</li>
+</ol>
+<p><a name="xPyWt"></a></p>
+<h1 id="设置-ssh-key-登陆-禁用密码登陆-禁止-root-登陆">设置 ssh key 登陆、禁用密码登陆、禁止 root 登陆</h1>
+<p>下面就该设置 ssh 登陆了，比密码登陆不知道高到哪里去了。</p>
+<ol>
+<li>首先是生成 pub_key 和 private_key，推荐使用 puttykengen 来生成</li>
+<li>产生好之后把 窗口中的公钥复制出来，放到服务器 ~/.ssh/authorized_keys文件中，注意一定要是一行，而不是多行，直接复制窗口中的公钥，而不是 save public key</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1562489471270-12cd50b2-ec83-4b90-9960-6d8911c820c2.png#align=left&amp;display=inline&amp;height=420&amp;originHeight=420&amp;originWidth=478&amp;size=0&amp;status=done&amp;width=478" alt=""></p>
+<ol>
+<li>然后按照下面的权限修改</li>
+<li>chmod 700 ~/.ssh</li>
+<li>chmod
+600 ~/.ssh/authorized_keys</li>
+<li>chown
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>U</mi><mi>S</mi><mi>E</mi><mi>R</mi><mo>:</mo></mrow><annotation encoding="application/x-tex">USER:</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span></span></span></span>USER ~/.ssh -R</li>
+<li>修改 /etc/ssh/sshd_config，把里面的 AuthorizedKeysFile %h/.ssh/authorized_keys 这行改成这样</li>
+<li>找到 PermitRootLogIn 设置成 no，这样才安全，包括自己在内没有人可以 root 登陆，平时干啥价格 sudo 就好了，实在不行 su 切换到 root</li>
+<li>找到 Port 改成自己喜欢的端口</li>
+<li>然后重启 ssh sudo service ssh restart</li>
+<li>测试下能不能登陆，不能登陆再谷歌或者查 log: tail -f /var/log/auth.log</li>
+<li>能够登陆的话就再次打开 sshd_config 文件，修改里面 PermitEmptyPasswords 为 no，即PermitEmptyPasswords no 这样就没有人能够通过密码登陆服务器了</li>
+<li>好好保管 private key，丢了神仙也救不了，只能够从服务器控制台登陆了</li>
+<li>出问题看<a href="https://askubuntu.com/questions/306798/trying-to-do-ssh-authentication-with-key-files-server-refused-our-key">这个问答</a></li>
+</ol>
+<p><a name="BiK4a"></a></p>
+<h1 id="设置-ufw">设置 ufw</h1>
+<p>下面的内容是参照 linux.cn 上的<a href="https://linux.cn/article-8087-1.html">一篇文章</a>设置的</p>
+<ol>
+<li>防火墙是个好东西，设置一下没有错，按道理来说 ubuntu 都是带了 ubuntu firewall 的，不确定的话 就安装一下 sudo apt install ufw，如果啥都没装那就是本省就装了的</li>
+<li>然后就可以添加端口了，按照这样添加 sudo ufw allow port</li>
+<li>禁止端口 sudo ufw deny port</li>
+<li>还可以按照协议来 enable 端口 sudo ufw
+allow 80/tcp sudo ufw allow http/tcp</li>
+<li>还可以允许或者禁止 ip: sudo ufw allow from xx.xx.xx.xx</li>
+<li>最后 enable 一下 sudo ufw enable</li>
+<li>也可以 disable: sudo ufw disable</li>
+<li>还可以查看状态: sudo ufw status</li>
+<li>上面所有的命令都要加 sudo，如果没有加也运行了说明你是用 root 登陆的，这违反了安全原则</li>
+<li>最后最重要的事情，<strong>ssh 的端口一定要 enable</strong>，不然就没有办法登陆了</li>
+</ol>
+<hr>
+<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR"></p>
+<blockquote>
+<p>本文采用 BY-NC 协议
+<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt="">
+署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
+</blockquote>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[通过 VIO 实现 Si5345 的配置]]></title>
         <id>https://wyu0725.github.io//post/Si5345_VIO_Config</id>
@@ -43,6 +111,14 @@ set is_busy [get_property INPUT_VALUE [get_hw_probes si5345_spi_busy_to_vio_w]]
 </code></pre>
 <h1 id="工程介绍">工程介绍</h1>
 <p>在 <a href="https://github.com/wyu0725/Si5345_VIO_Config">GitHub Si5345 VIO Config</a> 中已经介绍得明明白白，直接下载看使用说明即可。</p>
+<hr>
+<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR"></p>
+<blockquote>
+<p>本文采用 BY-NC 协议
+<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt="">
+署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
+</blockquote>
 ]]></content>
     </entry>
     <entry>
@@ -79,6 +155,14 @@ set is_busy [get_property INPUT_VALUE [get_hw_probes si5345_spi_busy_to_vio_w]]
 <p><a name="56l18"></a></p>
 <h2 id="方法二-未成功">方法二 未成功</h2>
 <p>在 Vavado 中内置了 Vim 的这个选项，但是前提是把 Vim 的路径添加到环境变量中，但是我添加了一直没有效果，不知道为什么，后面有时间了再找问题。</p>
+<hr>
+<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR"></p>
+<blockquote>
+<p>本文采用 BY-NC 协议
+<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt="">
+署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
+</blockquote>
 ]]></content>
     </entry>
     <entry>
@@ -118,12 +202,12 @@ set is_busy [get_property INPUT_VALUE [get_hw_probes si5345_spi_busy_to_vio_w]]
 <p><a name="bs6ac"></a></p>
 <h2 id="checklists">Checklists</h2>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4023066"> 使用 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/">模板<label class="task-list-item-label" for="task-item-4023066"> 使用 [模板](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7019085"> 检查 <a href="http://refassist.ieee.org/">引用<label class="task-list-item-label" for="task-item-7019085"> 检查 [引用](http://refassist.ieee.org/)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6350049"> 检查 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/">英语语言</a><label class="task-list-item-label" for="task-item-6350049"> 检查 [英语语言](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/) (很多杂志都有要求，但是封总不同意，所以尽量给老师检查吧)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1795328"> 检查 <a href="http://graphicsqc.ieee.org/">图片<label class="task-list-item-label" for="task-item-1795328"> 检查 [图片](http://graphicsqc.ieee.org/)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1895397"> 创建 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/">补充材料</a><label class="task-list-item-label" for="task-item-1895397"> 创建 [补充材料](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/)（大部分时候我们都没有补充材料）</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8114317"> 创建 <a href="http://www.orcid.org/">ORCID<label class="task-list-item-label" for="task-item-8114317"> 创建 [ORCID](http://www.orcid.org/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2464257"> 使用 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/">模板<label class="task-list-item-label" for="task-item-2464257"> 使用 [模板](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8672937"> 检查 <a href="http://refassist.ieee.org/">引用<label class="task-list-item-label" for="task-item-8672937"> 检查 [引用](http://refassist.ieee.org/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4788557"> 检查 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/">英语语言</a><label class="task-list-item-label" for="task-item-4788557"> 检查 [英语语言](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/) (很多杂志都有要求，但是封总不同意，所以尽量给老师检查吧)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1175038"> 检查 <a href="http://graphicsqc.ieee.org/">图片<label class="task-list-item-label" for="task-item-1175038"> 检查 [图片](http://graphicsqc.ieee.org/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7600751"> 创建 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/">补充材料</a><label class="task-list-item-label" for="task-item-7600751"> 创建 [补充材料](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/)（大部分时候我们都没有补充材料）</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4067811"> 创建 <a href="http://www.orcid.org/">ORCID<label class="task-list-item-label" for="task-item-4067811"> 创建 [ORCID](http://www.orcid.org/)</label></li>
 </ul>
 <p><a name="BRluH"></a></p>
 <h2 id="图片">图片</h2>
@@ -283,19 +367,19 @@ xxxx and not Fig. 3: xxxx
 <a name="0frh5"></a></p>
 <h2 id="首先是-ae-的问题">首先是 AE 的问题</h2>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4444786"><label class="task-list-item-label" for="task-item-4444786"> 在最终版去掉所有的 comments</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8032833"><label class="task-list-item-label" for="task-item-8032833"> Revision date 后面要换行</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-945680"><label class="task-list-item-label" for="task-item-945680"> 在最终版去掉所有的 comments</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5097265"><label class="task-list-item-label" for="task-item-5097265"> Revision date 后面要换行</label></li>
 </ul>
 <p><a name="MaQOi"></a></p>
 <h2 id="se-的问题">SE 的问题</h2>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5324054"><label class="task-list-item-label" for="task-item-5324054"> 脚注只需要提交日期和最后一次修改的日期</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4359506"><label class="task-list-item-label" for="task-item-4359506"> 这里要注意时区问题， TNS 用的美国时间，和我们差了 15 个小时，估计是美国西部时间，而且 4-10 月会进入夏令时，所以投稿最好在晚上或者早上，这样日期不会对不上。</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7261051"><label class="task-list-item-label" for="task-item-7261051"> 图片的题注是 8 号字体，左对齐</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4920151"><label class="task-list-item-label" for="task-item-4920151"> 脚注只需要提交日期和最后一次修改的日期</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7979065"><label class="task-list-item-label" for="task-item-7979065"> 这里要注意时区问题， TNS 用的美国时间，和我们差了 15 个小时，估计是美国西部时间，而且 4-10 月会进入夏令时，所以投稿最好在晚上或者早上，这样日期不会对不上。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4439329"><label class="task-list-item-label" for="task-item-4439329"> 图片的题注是 8 号字体，左对齐</label></li>
 </ul>
 <p>之所以有这个问题是因为用了 Subfig 这个包，需要设置 subfig 的 caption 为 false，即<br />**\usepackage[caption=false]{subfig}    **<br />其实这个问题会报 warning 的，但是 sublime 把它吃掉了，需要打开 log 文件才可以看到。<br />上次审稿的 Fig. x: 问题也是由这个引起的。</p>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1740019"><label class="task-list-item-label" for="task-item-1740019"> 看投稿网站</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8416406"><label class="task-list-item-label" for="task-item-8416406"> 看投稿网站</label></li>
 </ul>
 <p><a name="ZR238"></a></p>
 <h1 id="终稿">终稿</h1>
@@ -303,12 +387,12 @@ xxxx and not Fig. 3: xxxx
 <h2 id="提交-final-versionpdf">提交 FINAL VERSION.pdf</h2>
 <p>终于到了终稿阶段，需要提交两个文件：FINAL VERSIN.pdf 和源文件 (Word 或者 LaTeX)。<br />有以下的问题需要考虑</p>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6056692"><label class="task-list-item-label" for="task-item-6056692"> 是否要彩色打印，电子版彩色是免费的，但是纸质版的话彩色需要收费。收费标准是每 4 页 1045 刀，此外每幅彩图 62.5 刀。</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6582329"><label class="task-list-item-label" for="task-item-6582329"> 如果纸质版用黑白的话，一定要保证打印成黑白的图片可以区分。</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4871884"><label class="task-list-item-label" for="task-item-4871884"> 终稿不允许有任何的修改。这条不绝对</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2551994"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 <s>“去个头”</s><label class="task-list-item-label" for="task-item-2551994"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 ~~“去个头”~~ Go ahead</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1326416"><label class="task-list-item-label" for="task-item-1326416"> 在网页上提交需要的文件，然后确认信息，最后转移权力给 TNS</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4773873"><label class="task-list-item-label" for="task-item-4773873"> 有个师兄终稿的时候还加了作者，最后要求其他作者都签名同意增加一名作者，所以终稿也不是不可以做小修改的。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2645961"><label class="task-list-item-label" for="task-item-2645961"> 是否要彩色打印，电子版彩色是免费的，但是纸质版的话彩色需要收费。收费标准是每 4 页 1045 刀，此外每幅彩图 62.5 刀。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4988829"><label class="task-list-item-label" for="task-item-4988829"> 如果纸质版用黑白的话，一定要保证打印成黑白的图片可以区分。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2301493"><label class="task-list-item-label" for="task-item-2301493"> 终稿不允许有任何的修改。这条不绝对</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9003072"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 <s>“去个头”</s><label class="task-list-item-label" for="task-item-9003072"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 ~~“去个头”~~ Go ahead</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5615100"><label class="task-list-item-label" for="task-item-5615100"> 在网页上提交需要的文件，然后确认信息，最后转移权力给 TNS</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9468005"><label class="task-list-item-label" for="task-item-9468005"> 有个师兄终稿的时候还加了作者，最后要求其他作者都签名同意增加一名作者，所以终稿也不是不可以做小修改的。</label></li>
 </ul>
 <p><a name="KEYcA"></a></p>
 <h2 id="创建-ieee-账号">创建 IEEE 账号</h2>
@@ -335,6 +419,14 @@ xxxx and not Fig. 3: xxxx
 <li>及时催稿，过了承诺的审稿时间就要即使催，估计我更早一点催的话，文章会更早接收。</li>
 </ol>
 <p>文章初稿和一审稿见 <a href="https://arxiv.org/abs/1806.10675">ArXiv</a><br />论文链接 <a href="https://ieeexplore.ieee.org/abstract/document/8716677">Readout Electronics for CEPC Semi-Digital Hadron Calorimeter Pre-prototype</a></p>
+<hr>
+<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR"></p>
+<blockquote>
+<p>本文采用 BY-NC 协议
+<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt="">
+署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
+</blockquote>
 ]]></content>
     </entry>
     <entry>
@@ -418,6 +510,14 @@ Files\Sublime Text 3\sublime_text.exe&quot; &quot;%f:%l&quot;&quot;<br /></p>
 <p>选择一个喜欢的字体就好<br />按如下方式设置即可<br />在Preferences -&gt; Settings中可以修改字体等信息<br />&quot;color_scheme&quot;:
 &quot;Packages/Color Scheme - Default/Monokai.tmTheme&quot;,<br />&quot;font_face&quot;:
 &quot;InputSerif&quot;,<br />&quot;font_size&quot;:9,</p>
+<hr>
+<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR"></p>
+<blockquote>
+<p>本文采用 BY-NC 协议
+<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt="">
+署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
+</blockquote>
 ]]></content>
     </entry>
     <entry>
