@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://wyu0725.github.io//favicon.ico?v=1562491369802">
+<link rel="shortcut icon" href="https://wyu0725.github.io//favicon.ico?v=1564377058843">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://wyu0725.github.io//styles/main.css">
 
@@ -30,7 +30,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://wyu0725.github.io/">
-        <img src="https://wyu0725.github.io//images/avatar.png?v=1562491369802" class="site-logo">
+        <img src="https://wyu0725.github.io//images/avatar.png?v=1564377058843" class="site-logo">
         <h1 class="site-title">王德福 Wonderful</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -117,9 +117,9 @@
 <ol>
 <li>然后按照下面的权限修改</li>
 <li>chmod 700 ~/.ssh</li>
-<li>chmod
+<li>chmod<br>
 600 ~/.ssh/authorized_keys</li>
-<li>chown
+<li>chown<br>
 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>U</mi><mi>S</mi><mi>E</mi><mi>R</mi><mo>:</mo></mrow><annotation encoding="application/x-tex">USER:</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.68333em;vertical-align:0em;"></span><span class="mord mathdefault" style="margin-right:0.10903em;">U</span><span class="mord mathdefault" style="margin-right:0.05764em;">S</span><span class="mord mathdefault" style="margin-right:0.05764em;">E</span><span class="mord mathdefault" style="margin-right:0.00773em;">R</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">:</span></span></span></span>USER ~/.ssh -R</li>
 <li>修改 /etc/ssh/sshd_config，把里面的 AuthorizedKeysFile %h/.ssh/authorized_keys 这行改成这样</li>
 <li>找到 PermitRootLogIn 设置成 no，这样才安全，包括自己在内没有人可以 root 登陆，平时干啥价格 sudo 就好了，实在不行 su 切换到 root</li>
@@ -137,7 +137,7 @@
 <li>防火墙是个好东西，设置一下没有错，按道理来说 ubuntu 都是带了 ubuntu firewall 的，不确定的话 就安装一下 sudo apt install ufw，如果啥都没装那就是本省就装了的</li>
 <li>然后就可以添加端口了，按照这样添加 sudo ufw allow port</li>
 <li>禁止端口 sudo ufw deny port</li>
-<li>还可以按照协议来 enable 端口 sudo ufw
+<li>还可以按照协议来 enable 端口 sudo ufw<br>
 allow 80/tcp sudo ufw allow http/tcp</li>
 <li>还可以允许或者禁止 ip: sudo ufw allow from xx.xx.xx.xx</li>
 <li>最后 enable 一下 sudo ufw enable</li>
@@ -147,11 +147,11 @@ allow 80/tcp sudo ufw allow http/tcp</li>
 <li>最后最重要的事情，<strong>ssh 的端口一定要 enable</strong>，不然就没有办法登陆了</li>
 </ol>
 <hr>
-<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号
+<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号<br>
 <img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR"></p>
 <blockquote>
-<p>本文采用 BY-NC 协议
-<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt="">
+<p>本文采用 BY-NC 协议<br>
+<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt=""><br>
 署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
 </blockquote>
 
