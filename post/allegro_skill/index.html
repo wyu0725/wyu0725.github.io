@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>通过 VIO 实现 Si5345 的配置 | 王德福 Wonderful</title>
+<title> Allegro Skill介绍及用法 | 王德福 Wonderful</title>
 <meta name="description" content="吾生也有涯，而知也无涯。 以有涯随无涯，殆已！">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -92,33 +92,46 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">通过 VIO 实现 Si5345 的配置</h2>
-            <div class="post-date">2019-06-17</div>
+            <h2 class="post-title"> Allegro Skill介绍及用法</h2>
+            <div class="post-date">2019-08-08</div>
             
             <div class="post-content">
-              <blockquote>
-<p>用了这么多的开源代码，今天总算是页做出了自己的贡献，可以发一个自己的开源工程</p>
-<p>这个工程主要是通过 VIO 配置一款 PLL 芯片</p>
-</blockquote>
- <!-- more -->
-<h1 id="si5345">Si5345</h1>
-<p>因为工程需要，在板上设计了一个 PLL—— <a href="https://www.silabs.com/products/timing/clocks/high-performance-jitter-attenuators/device.si5345a">Si5345</a>，详细参数就不讨论了，这个芯片可以通过 I2C 或者 SPI 进行配置，在板子设计的时候就想着通过 Xilinx 的 VIO 来进行配置，所以没有放置其他的调试接口，事实证明这样是可行的，但是还是太年轻，因为 Si5345 官方提供了烧写器套件，只要按照官方的设计，就可以花 800 多块钱买一套烧写器，直接通过 USB 配置，推荐以后的新设计都使用官方的开发套件，可以节约不少时间。</p>
-<h1 id="xilinx-vio">Xilinx VIO</h1>
-<p>VIO 的全称是 Virtual IO，是通过在 FPGA 中生成一个虚拟的 接口 Core，这个 Core 可以设置输入输出，然后通过 JTAG 就可以和电脑进行通讯，从而实现对 FPGA 的控制。这样的优点就是节约了一个调试接口，省了空间和时间，同时接口的宽度和数量都比较灵活，易于调试，再结合 Debug Core 可以轻松的调试逻辑；当然缺点就是接口速度很慢很慢，基本上只能够实现电平控制，如果要脉冲控制的话就自己写上升沿或者下降沿检测电路。</p>
-<p>VIO 结合 tcl 语言可以实现自动化的数据发送和读取的工作</p>
-<h1 id="tcl">tcl</h1>
-<p>用了这么多年的 FPGA 真不该忽略 Xilinx 提供的 tcl 工具，可以实现很多测试的自动化，在 配置 tcl 的时候主要用到了四条 Vivado 定制的 tcl</p>
-<p>前两条是想 VIO 写数的脚本，注意数据的位宽一定要对，tcl 是比较简单的语法，不会对数据进行智能转换。</p>
-<pre><code class="language-tcl">set_property OUTPUT_VALUE $RegData_real [get_hw_probes si5345_reg_wr_value_from_vio_w]
-commit_hw_vio [get_hw_probes {si5345_reg_wr_value_from_vio_w}]
+              <p>不用 Skill，白学 Allegro</p>
+<!--more-->
+<p><a name="b3Rds"></a></p>
+<h1 id="allegro-skill介绍br">Allegro skill介绍<br /></h1>
+<ul>
+<li>Skill 是Cadence 提供的可第二次开发的语言。语法同C语言类似。在设计中使用skill可以大大简化PCB绘制流程，还可以定制各种各样的功能。<br /></li>
+<li>本文只对skill使用做一个简单的介绍，进阶的方面以后学会再做笔记。<br /></li>
+<li>推荐一个网站：<a href="http://www.allegro-skill.com/?fromuid=7754">Allegro Skill</a>，使用的skill和介绍均来自此网站</li>
+</ul>
+<p><a name="xkrS8"></a></p>
+<h1 id="allegro-skill设置方法">Allegro skill设置方法</h1>
+<p>以一个skill为例(ch_via_net)，这个skill的功能是将电路板中的过孔的网络修改为任意一个网络。</p>
+<ol>
+<li>先从任何一个地方获取到这个skill文件ch_via_net.il。<br /></li>
+<li>将文件放置在一个文件夹中，不含中文和空格。如我放置在D:\Cadence\skill中，方便日后管理<br /></li>
+<li>在环境变量文件夹中找到allegro.ilinit文件，这个文件一般在C:\Users***\AppData\Roaming\SPB_Data\pcbenv中，***表示计算机用户名。</li>
+<li>如果在上一步找不到这个文件的话说明从来都没有程序创建过这样一个文件，自己创建一个文件名为 allegro.ilinit 的文件；如果在安装的时候修改了用户变量的位置，就直接搜索 SPB_DATA 所在的文件夹</li>
+<li>编辑这个文件，在文件中加入如下的代码<br>
+setSkillPath(buildString(append1(getSkillPath() &quot;D:/Cadence/skill&quot;)))<br>
+;设置skill所在路径<br>
+load(&quot;ch_via_net.il&quot; &quot;<a href="www.allegro-skill.com">www.allegro-skill.com</a>&quot;)<br>
+;载入skill 前一个参数是skill文件，后一个是密码。<br /></li>
+<li>Skill设计结束，可以在工程中使用了。<br /></li>
+<li>最好为skill的操作设置一个快捷键，不然使用中不会很方便。<br /></li>
+<li>可以自定义allegro菜单，将自己添加的skill加入菜单中方便使用<br>
+在安装路径D:\Cadence\SPB_16.6\share\pcb\text\cuimenus中找到allegro.men文件，该文件为加载目录文件。在目录的最后一个end前加入如下代码：</li>
+</ol>
+<pre><code>POPUP &quot;My_Skill&quot;
+BEGIN
+     MENUITEM &quot;&amp;Chang Via's Net&quot;,  &quot;ch_via_net&quot;
+END
 </code></pre>
-<p>后两条是读取 VIO 的语法，一定要先刷新再读。</p>
-<pre><code class="language-tcl">refresh_hw_vio [get_hw_vios {hw_vio_1}]
-set is_busy [get_property INPUT_VALUE [get_hw_probes si5345_spi_busy_to_vio_w]]
+<p><br />一定要注意是最后一个 END 前插入<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1565241777595-f88577c0-77a2-48db-ade4-c6663d3bebc2.png#align=left&amp;display=inline&amp;height=165&amp;originHeight=165&amp;originWidth=701&amp;size=0&amp;status=done&amp;width=701" alt=""></p>
+<p><strong>效果如下</strong><br /><img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1565241708360-d0ea4803-bf1f-4b23-a8b4-b2a452193f5d.png#align=left&amp;display=inline&amp;height=92&amp;originHeight=92&amp;originWidth=255&amp;size=0&amp;status=done&amp;width=255" alt=""><br /></p>
+<pre><code>------
 </code></pre>
-<h1 id="工程介绍">工程介绍</h1>
-<p>在 <a href="https://github.com/wyu0725/Si5345_VIO_Config">GitHub Si5345 VIO Config</a> 中已经介绍得明明白白，直接下载看使用说明即可。</p>
-<hr>
 <p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号<br>
 <img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR"></p>
 <blockquote>
@@ -129,20 +142,12 @@ set is_busy [get_property INPUT_VALUE [get_hw_probes si5345_spi_busy_to_vio_w]]
 
             </div>
             
-              <div class="tag-container">
-                
-                  <a href="https://wyu0725.github.io//tag/felab_skill" class="tag">
-                    实验室经验
-                  </a>
-                
-              </div>
-            
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://wyu0725.github.io//post/vivado_call-vim">
+                <a href="https://wyu0725.github.io//post/producer_consumer_pattern_in_cyusb">
                   <h3 class="post-title">
-                    Vivado 调用 Vim 作为编辑器
+                    使用生产者消费者模式获取 CyPress 数据
                   </h3>
                 </a>
               </div>
