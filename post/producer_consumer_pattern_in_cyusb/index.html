@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://wyu0725.github.io//favicon.ico?v=1569044347941">
+<link rel="shortcut icon" href="https://wyu0725.github.io//favicon.ico?v=1586877739717">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://wyu0725.github.io//styles/main.css">
 
@@ -30,7 +30,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://wyu0725.github.io/">
-        <img src="https://wyu0725.github.io//images/avatar.png?v=1569044347941" class="site-logo">
+        <img src="https://wyu0725.github.io//images/avatar.png?v=1586877739717" class="site-logo">
         <h1 class="site-title">王德福 Wonderful</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -134,7 +134,7 @@
 <h2 id="生产者消费者模式">生产者消费者模式</h2>
 <h3 id="基本思想">基本思想</h3>
 <p>生产者消费者模式的思想非常简单，首先是有一个生产者的线程，在这里就是从 USB 接口获取数据的线程将获取到的数据写入缓冲区 (Buffer) 中，然后消费者线程，也就是写文件的线程从缓冲区中取数，将得到的数据写文件，两个线程相互独立，大部分时候不需要互相等待。</p>
-<p><img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/ProducerConsumerPatternForUsb.png" alt="ProducerConsumerPatternForUsb"></p>
+<figure data-type="image" tabindex="1"><img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/ProducerConsumerPatternForUsb.png" alt="ProducerConsumerPatternForUsb" loading="lazy"></figure>
 <p>当然，这里有个最大的疑问——写文件的线程太慢了，Buffer 写满了怎么办？在生产者消费者模式中，Buffer 写满了生产者就要停下来，等 buffer 有位置了再继续产生数据，这就是在生产者消费者模式中需要等待数据的地方。这个回答可能不够满意，因为存在一种情况，生产者不能停，一停就会丢数，这种情况下要做的就是换接口，因为整个数据链路上的瓶颈在于写文件，说明是接口不合适，应该换用其他接口比如以太网协议之类的，将数据分发到多处进行存储。</p>
 <h3 id="c-中使用生产者消费者模式">C# 中使用生产者消费者模式</h3>
 <p>在 .NET 4.0 中新增了一个用于线程安全的类 <a href="https://docs.microsoft.com/en-us/dotnet/standard/collections/thread-safe/blockingcollection-overview">BlockCollection<T></a>，这个类的一个作用就是实现生产者消费者模式。</p>
@@ -512,10 +512,10 @@
 </li>
 </ul>
 <p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号<br>
-<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR"></p>
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR" loading="lazy"></p>
 <blockquote>
 <p>本文采用 BY-NC 协议<br>
-<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt=""><br>
+<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt="" loading="lazy"><br>
 署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
 </blockquote>
 
@@ -523,7 +523,7 @@
             
               <div class="tag-container">
                 
-                  <a href="https://wyu0725.github.io//tag/felab_skill" class="tag">
+                  <a href="https://wyu0725.github.io/tag/felab_skill/" class="tag">
                     实验室经验
                   </a>
                 
@@ -532,7 +532,7 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://wyu0725.github.io//post/ubuntu_basic_settings">
+                <a href="https://wyu0725.github.io/post/ubuntu_basic_settings/">
                   <h3 class="post-title">
                     新开服务器基本设置指南
                   </h3>
