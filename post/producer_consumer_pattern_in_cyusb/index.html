@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-<link rel="shortcut icon" href="https://wyu0725.github.io//favicon.ico?v=1586877739717">
+<link rel="shortcut icon" href="https://wyu0725.github.io//favicon.ico?v=1588065423809">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
 <link rel="stylesheet" href="https://wyu0725.github.io//styles/main.css">
 
@@ -30,7 +30,7 @@
   <div class="top-container" data-aos="fade-right">
     <div class="top-header-container">
       <a class="site-title-container" href="https://wyu0725.github.io/">
-        <img src="https://wyu0725.github.io//images/avatar.png?v=1586877739717" class="site-logo">
+        <img src="https://wyu0725.github.io//images/avatar.png?v=1588065423809" class="site-logo">
         <h1 class="site-title">王德福 Wonderful</h1>
       </a>
       <div class="menu-btn" @click="menuVisible = !menuVisible">
@@ -490,32 +490,23 @@
 <h2 id="可回收垃圾">可回收垃圾</h2>
 <h1 id="总结">总结</h1>
 <ul>
-<li>
-<p>生产者消费者线程是必须的，否则的话速度不管怎么都跑不上去</p>
-</li>
-<li>
-<p>异步方法其实没有太大的必要，因为平时也不会跑这么快，如果跑这么快，首先是硬盘受不了，其次是采用以太网才是正确的做法</p>
-</li>
-<li>
-<p>如果要开多个线程，用异步方法同时发起多个 USB 传输，速度会快一些</p>
-</li>
-<li>
-<p>每次传输的 BufSz 开大一点会比开多个线程速度来的快得多</p>
-</li>
-<li>
-<p>实测用固态和机械硬盘速度并没有太大的差异，当然这和 FPGA 的控制逻辑有关，极限速度并没有用到</p>
+<li>生产者消费者线程是必须的，否则的话速度不管怎么都跑不上去</li>
+<li>异步方法其实没有太大的必要，因为平时也不会跑这么快，如果跑这么快，首先是硬盘受不了，其次是采用以太网才是正确的做法</li>
+<li>如果要开多个线程，用异步方法同时发起多个 USB 传输，速度会快一些</li>
+<li>每次传输的 BufSz 开大一点会比开多个线程速度来的快得多</li>
+<li>实测用固态和机械硬盘速度并没有太大的差异，当然这和 FPGA 的控制逻辑有关，极限速度并没有用到
 <ul>
 <li>不知道跑到 400MB 的极限速度 SSD 和 HDD 有没有差异，如果有人能够测一下是最吼的</li>
 <li>还是一样的考虑，没有必要用到极限速度，以太网才是高速数据传输的更好解决方案</li>
 </ul>
-<hr>
 </li>
 </ul>
+<hr>
 <p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号<br>
 <img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR" loading="lazy"></p>
 <blockquote>
 <p>本文采用 BY-NC 协议<br>
-<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt="" loading="lazy"><br>
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/by-nc.png" alt="" loading="lazy"><br>
 署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
 </blockquote>
 
