@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>通过 VIO 实现 Si5345 的配置 | 王德福 Wonderful</title>
+<title>C++ 获取文件列表 | 王德福 Wonderful</title>
 <meta name="description" content="吾生也有涯，而知也无涯。 以有涯随无涯，殆已！">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -92,40 +92,109 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">通过 VIO 实现 Si5345 的配置</h2>
-            <div class="post-date">2019-06-17</div>
+            <h2 class="post-title">C++ 获取文件列表</h2>
+            <div class="post-date">2020-05-26</div>
             
             <div class="post-content">
               <blockquote>
-<p>用了这么多的开源代码，今天总算是页做出了自己的贡献，可以发一个自己的开源工程</p>
-<p>这个工程主要是通过 VIO 配置一款 PLL 芯片</p>
+<p>在数据处理中通常会需要将整个列表里的文件进行处理，这样的话首先就先需要获取文件列表，下面介绍这个过程。</p>
+<p>使用的是 CentOS 系统，windows 系统的库函数会有些不一样，可以自行网上查一查。</p>
+<p>参考了这两个网站：<a href="http://www.cplusplus.com/forum/beginner/136992/">program to list all files of .txtextension</a> 和 <a href="https://blog.csdn.net/u012005313/article/details/50687297">C/C++ 获取文件夹下所有文件名 windows和linux通用</a></p>
 </blockquote>
- <!-- more -->
-<h1 id="si5345">Si5345</h1>
-<p>因为工程需要，在板上设计了一个 PLL—— <a href="https://www.silabs.com/products/timing/clocks/high-performance-jitter-attenuators/device.si5345a">Si5345</a>，详细参数就不讨论了，这个芯片可以通过 I2C 或者 SPI 进行配置，在板子设计的时候就想着通过 Xilinx 的 VIO 来进行配置，所以没有放置其他的调试接口，事实证明这样是可行的，但是还是太年轻，因为 Si5345 官方提供了烧写器套件，只要按照官方的设计，就可以花 800 多块钱买一套烧写器，直接通过 USB 配置，推荐以后的新设计都使用官方的开发套件，可以节约不少时间。</p>
-<h1 id="xilinx-vio">Xilinx VIO</h1>
-<p>VIO 的全称是 Virtual IO，是通过在 FPGA 中生成一个虚拟的 接口 Core，这个 Core 可以设置输入输出，然后通过 JTAG 就可以和电脑进行通讯，从而实现对 FPGA 的控制。这样的优点就是节约了一个调试接口，省了空间和时间，同时接口的宽度和数量都比较灵活，易于调试，再结合 Debug Core 可以轻松的调试逻辑；当然缺点就是接口速度很慢很慢，基本上只能够实现电平控制，如果要脉冲控制的话就自己写上升沿或者下降沿检测电路。</p>
-<p>VIO 结合 tcl 语言可以实现自动化的数据发送和读取的工作</p>
-<h1 id="tcl">tcl</h1>
-<p>用了这么多年的 FPGA 真不该忽略 Xilinx 提供的 tcl 工具，可以实现很多测试的自动化，在 配置 tcl 的时候主要用到了四条 Vivado 定制的 tcl</p>
-<p>前两条是想 VIO 写数的脚本，注意数据的位宽一定要对，tcl 是比较简单的语法，不会对数据进行智能转换。</p>
-<pre><code class="language-tcl">set_property OUTPUT_VALUE $RegData_real [get_hw_probes si5345_reg_wr_value_from_vio_w]
-commit_hw_vio [get_hw_probes {si5345_reg_wr_value_from_vio_w}]
+<!-- more -->
+<h1 id="方法">方法</h1>
+<h2 id="头文件">头文件</h2>
+<p>主要的就是 “unistd.h” 和 “dirent.h” 这两个头文件有我们要的方法。</p>
+<p>为了方便使用，设置了两个构造函数，他们的第一个参数都是 string 用于传入路径，如果要限制某一个后缀的文件，那么就把后缀放到第二个 char* 的位置。</p>
+<p>处理完之后的文件名存在一个数组 file_lists 中，注意存的是文件名，不带路径的文件名</p>
+<pre><code class="language-c++">#ifndef LIST_FILE_HH
+#define LIST_FILE_HH
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;algorithm&gt;
+#include &lt;unistd.h&gt;
+#include &lt;dirent.h&gt;
+
+using namespace std;
+class list_file
+{
+public:
+	list_file(string);
+	list_file(string, char* );
+	~list_file() {};
+	//void get_file_lists(string cate_dir);
+	vector&lt;string&gt; file_lists;
+private:
+	vector&lt;string&gt; get_file(string cate_dir, const char*);
+};
+#endif // !LIST_FILE_HH
 </code></pre>
-<p>后两条是读取 VIO 的语法，一定要先刷新再读。</p>
-<pre><code class="language-tcl">refresh_hw_vio [get_hw_vios {hw_vio_1}]
-set is_busy [get_property INPUT_VALUE [get_hw_probes si5345_spi_busy_to_vio_w]]
+<h2 id="实现">实现</h2>
+<p>实现的主要的函数就是 get_file(string cate_dir, const char* suffix)，这个函数首先打开这个路径，然后获取路径下的文件对象</p>
+<pre><code class="language-c++">#include &quot;list_file.hh&quot;
+
+using namespace std;
+list_file::list_file(string dir_name)
+{
+	string null_str = &quot;&quot;;
+	file_lists = get_file(dir_name, null_str.c_str());
+}
+
+list_file::list_file(string dir_name, char* filter)
+{
+	file_lists = get_file(dir_name, filter);
+}
+
+
+vector&lt;string&gt; list_file::get_file(string cate_dir, const char* suffix)
+{
+	vector&lt;string&gt; files;
+	DIR* dir;
+	struct dirent* ptr;
+	char* name_filter;
+	string filename;
+
+	if ((dir = opendir(cate_dir.c_str())) == NULL)
+	{
+		perror(&quot;Open dir error...&quot;);
+		exit(1);
+	}
+
+	while ((ptr = readdir(dir)) != NULL)
+	{
+		if (strcmp(ptr-&gt;d_name, &quot;.&quot;) == 0 || strcmp(ptr-&gt;d_name, &quot;..&quot;) == 0)    ///current dir OR parrent dir
+			continue;
+		else if (ptr-&gt;d_type == 8)    ///file
+		{
+			name_filter = strtok(ptr-&gt;d_name, &quot;.&quot;);
+			name_filter = strtok(NULL, &quot;.&quot;);
+			if (name_filter != NULL &amp;&amp; strcmp(name_filter, suffix) == 0)
+			{
+				filename = ptr-&gt;d_name + string(&quot;.&quot;) + string(suffix);
+				files.push_back(filename);
+			}
+			
+		}
+		else if (ptr-&gt;d_type == 10)    ///link file
+			continue;
+		else if (ptr-&gt;d_type == 4)    ///dir
+		{
+			//files.push_back(ptr-&gt;d_name);
+			continue;
+
+		}
+	}
+	closedir(dir);
+
+	sort(files.begin(), files.end());
+	return files;
+
+}
 </code></pre>
-<h1 id="工程介绍">工程介绍</h1>
-<p>在 <a href="https://github.com/wyu0725/Si5345_VIO_Config">GitHub Si5345 VIO Config</a> 中已经介绍得明明白白，直接下载看使用说明即可。</p>
-<hr>
-<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号<br>
-<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR" loading="lazy"></p>
-<blockquote>
-<p>本文采用 BY-NC 协议<br>
-<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt="" loading="lazy"><br>
-署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
-</blockquote>
 
             </div>
             
@@ -140,9 +209,9 @@ set is_busy [get_property INPUT_VALUE [get_hw_probes si5345_spi_busy_to_vio_w]]
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://wyu0725.github.io/post/vivado_call-vim/">
+                <a href="https://wyu0725.github.io/post/famous_distribution_and_statistic_theory/">
                   <h3 class="post-title">
-                    Vivado 调用 Vim 作为编辑器
+                    大数定理、中心极限定理和三大分布
                   </h3>
                 </a>
               </div>
