@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title>Vivado 调用 Vim 作为编辑器 | 王德福 Wonderful</title>
+<title>C++ 获取文件列表 | 王德福 Wonderful</title>
 <meta name="description" content="吾生也有涯，而知也无涯。 以有涯随无涯，殆已！">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -92,41 +92,109 @@
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
           <div class="post-detail">
-            <h2 class="post-title">Vivado 调用 Vim 作为编辑器</h2>
-            <div class="post-date">2019-06-14</div>
+            <h2 class="post-title">C++ 获取文件列表</h2>
+            <div class="post-date">2020-05-26</div>
             
             <div class="post-content">
               <blockquote>
-<p>Vim 作为老牌编辑器，用来编辑 Verilog 和 VHDL 再合适不过了，至少比 Vivado 自带的编辑器好用，而且如果已经习惯了 Vim，所有代码都可以用 Vim 来编辑，岂不快哉。<br>
-下面就开始介绍怎么设置在 Vivado 中设置 Vim 作为默认编辑器，这样双击代码就可以直接用 Vim 打开。</p>
+<p>在数据处理中通常会需要将整个列表里的文件进行处理，这样的话首先就先需要获取文件列表，下面介绍这个过程。</p>
+<p>使用的是 CentOS 系统，windows 系统的库函数会有些不一样，可以自行网上查一查。</p>
+<p>参考了这两个网站：<a href="http://www.cplusplus.com/forum/beginner/136992/">program to list all files of .txtextension</a> 和 <a href="https://blog.csdn.net/u012005313/article/details/50687297">C/C++ 获取文件夹下所有文件名 windows和linux通用</a></p>
 </blockquote>
- <!-- more --> 
-<p><a name="rG1Ef"></a></p>
-<h1 id="安装-vim">安装 Vim</h1>
-<p>Vim 最好用的版本还是自己的版本，随时添加各种快捷键和插件，找一个开发好的版本然后不断的添加想要的插件和快捷键就好，注意如果插件太多的话，最好有个固态硬盘支持，不然每次开机第一次打开 Vim 都会很慢。</p>
-<p>记住 Vim 安装的路径，也就是 &quot;gvim.exe&quot; 这个文件的所在位置。<br>
-<a name="DHJye"></a></p>
-<h1 id="在-vivado-中设置-vim-作为编辑器">在 Vivado 中设置 Vim 作为编辑器</h1>
-<p><a name="zN0py"></a></p>
-<h2 id="方法一-成功">方法一 （成功）</h2>
-<ul>
-<li>在 Vivado 中点击 Tools --&gt; Settings</li>
-<li>弹出对话框中点击 Text Editor</li>
-<li>然后在 Current Editor 下拉框中选择 Custom Editor</li>
-<li>点击后面的三个小点，在弹出的对话框中填入 gvim 路径 [file name] +[line number]</li>
-</ul>
-<p>比如我的路径是 D:/Program Files/vim/vim81/gvim.exe [file name] +[line number]<br /><strong>注意 + 后面不能有空格</strong><br />**<br /><img src="https://cdn.nlark.com/yuque/0/2019/gif/209359/1559055742102-ddbbc157-c57e-4c24-9e61-13e113c577a6.gif#align=left&amp;display=inline&amp;height=670&amp;name=Vivado_set_text_editor.gif&amp;originHeight=670&amp;originWidth=954&amp;size=789343&amp;status=done&amp;width=954" alt="Vivado_set_text_editor.gif" loading="lazy"></p>
-<p><a name="56l18"></a></p>
-<h2 id="方法二-未成功">方法二 未成功</h2>
-<p>在 Vavado 中内置了 Vim 的这个选项，但是前提是把 Vim 的路径添加到环境变量中，但是我添加了一直没有效果，不知道为什么，后面有时间了再找问题。</p>
-<hr>
-<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号<br>
-<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR" loading="lazy"></p>
-<blockquote>
-<p>本文采用 BY-NC 协议<br>
-<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt="" loading="lazy"><br>
-署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
-</blockquote>
+<!-- more -->
+<h1 id="方法">方法</h1>
+<h2 id="头文件">头文件</h2>
+<p>主要的就是 “unistd.h” 和 “dirent.h” 这两个头文件有我们要的方法。</p>
+<p>为了方便使用，设置了两个构造函数，他们的第一个参数都是 string 用于传入路径，如果要限制某一个后缀的文件，那么就把后缀放到第二个 char* 的位置。</p>
+<p>处理完之后的文件名存在一个数组 file_lists 中，注意存的是文件名，不带路径的文件名</p>
+<pre><code class="language-c++">#ifndef LIST_FILE_HH
+#define LIST_FILE_HH
+#include &lt;string&gt;
+#include &lt;vector&gt;
+#include &lt;iostream&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+#include &lt;algorithm&gt;
+#include &lt;unistd.h&gt;
+#include &lt;dirent.h&gt;
+
+using namespace std;
+class list_file
+{
+public:
+	list_file(string);
+	list_file(string, char* );
+	~list_file() {};
+	//void get_file_lists(string cate_dir);
+	vector&lt;string&gt; file_lists;
+private:
+	vector&lt;string&gt; get_file(string cate_dir, const char*);
+};
+#endif // !LIST_FILE_HH
+</code></pre>
+<h2 id="实现">实现</h2>
+<p>实现的主要的函数就是 get_file(string cate_dir, const char* suffix)，这个函数首先打开这个路径，然后获取路径下的文件对象</p>
+<pre><code class="language-c++">#include &quot;list_file.hh&quot;
+
+using namespace std;
+list_file::list_file(string dir_name)
+{
+	string null_str = &quot;&quot;;
+	file_lists = get_file(dir_name, null_str.c_str());
+}
+
+list_file::list_file(string dir_name, char* filter)
+{
+	file_lists = get_file(dir_name, filter);
+}
+
+
+vector&lt;string&gt; list_file::get_file(string cate_dir, const char* suffix)
+{
+	vector&lt;string&gt; files;
+	DIR* dir;
+	struct dirent* ptr;
+	char* name_filter;
+	string filename;
+
+	if ((dir = opendir(cate_dir.c_str())) == NULL)
+	{
+		perror(&quot;Open dir error...&quot;);
+		exit(1);
+	}
+
+	while ((ptr = readdir(dir)) != NULL)
+	{
+		if (strcmp(ptr-&gt;d_name, &quot;.&quot;) == 0 || strcmp(ptr-&gt;d_name, &quot;..&quot;) == 0)    ///current dir OR parrent dir
+			continue;
+		else if (ptr-&gt;d_type == 8)    ///file
+		{
+			name_filter = strtok(ptr-&gt;d_name, &quot;.&quot;);
+			name_filter = strtok(NULL, &quot;.&quot;);
+			if (name_filter != NULL &amp;&amp; strcmp(name_filter, suffix) == 0)
+			{
+				filename = ptr-&gt;d_name + string(&quot;.&quot;) + string(suffix);
+				files.push_back(filename);
+			}
+			
+		}
+		else if (ptr-&gt;d_type == 10)    ///link file
+			continue;
+		else if (ptr-&gt;d_type == 4)    ///dir
+		{
+			//files.push_back(ptr-&gt;d_name);
+			continue;
+
+		}
+	}
+	closedir(dir);
+
+	sort(files.begin(), files.end());
+	return files;
+
+}
+</code></pre>
 
             </div>
             
@@ -141,9 +209,9 @@
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://wyu0725.github.io/post/how_to_commit_ieee_tns/">
+                <a href="https://wyu0725.github.io/post/famous_distribution_and_statistic_theory/">
                   <h3 class="post-title">
-                    IEEE TNS 投稿记录
+                    大数定理、中心极限定理和三大分布
                   </h3>
                 </a>
               </div>
