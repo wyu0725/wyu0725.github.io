@@ -96,9 +96,7 @@
             <div class="post-date">2019-07-07</div>
             
             <div class="post-content">
-              <p>添加超级用户安装了新服务器第一件事情就是先添加一个管理员用户，而不是直接使用 root 进行登陆，如果 root 的密码泄露了是非常严重的。同时也不要直接使用 root 登陆，基本上的操作用 sudo 就可以完成，还要什么管理员。</p>
-<!-- more --> 
-<h1 id="添加超级用户">添加超级用户</h1>
+              <h1 id="添加超级用户">添加超级用户</h1>
 <p>安装了新服务器第一件事情就是先添加一个管理员用户，而不是直接使用 root 进行登陆，如果 root 的密码泄露了是非常严重的。</p>
 <ol>
 <li>首先是添加一个用户 adduser username，设置好密码，一路回车加确认即可</li>
@@ -106,14 +104,13 @@
 <li>大功告成了</li>
 <li>重新开个窗口测试一下</li>
 </ol>
-<p><a name="xPyWt"></a></p>
 <h1 id="设置-ssh-key-登陆-禁用密码登陆-禁止-root-登陆">设置 ssh key 登陆、禁用密码登陆、禁止 root 登陆</h1>
 <p>下面就该设置 ssh 登陆了，比密码登陆不知道高到哪里去了。</p>
 <ol>
 <li>首先是生成 pub_key 和 private_key，推荐使用 puttykengen 来生成</li>
 <li>产生好之后把 窗口中的公钥复制出来，放到服务器 ~/.ssh/authorized_keys文件中，注意一定要是一行，而不是多行，直接复制窗口中的公钥，而不是 save public key</li>
 </ol>
-<figure data-type="image" tabindex="1"><img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1562489471270-12cd50b2-ec83-4b90-9960-6d8911c820c2.png#align=left&amp;display=inline&amp;height=420&amp;originHeight=420&amp;originWidth=478&amp;size=0&amp;status=done&amp;width=478" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="1"><img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/pyttyKeyGen.png" alt="" loading="lazy"></figure>
 <ol>
 <li>然后按照下面的权限修改</li>
 <li>chmod 700 ~/.ssh</li>
@@ -130,7 +127,6 @@
 <li>好好保管 private key，丢了神仙也救不了，只能够从服务器控制台登陆了</li>
 <li>出问题看<a href="https://askubuntu.com/questions/306798/trying-to-do-ssh-authentication-with-key-files-server-refused-our-key">这个问答</a></li>
 </ol>
-<p><a name="BiK4a"></a></p>
 <h1 id="设置-ufw">设置 ufw</h1>
 <p>下面的内容是参照 linux.cn 上的<a href="https://linux.cn/article-8087-1.html">一篇文章</a>设置的</p>
 <ol>
@@ -147,21 +143,17 @@ allow 80/tcp sudo ufw allow http/tcp</li>
 <li>最后最重要的事情，<strong>ssh 的端口一定要 enable</strong>，不然就没有办法登陆了</li>
 </ol>
 <hr>
-<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号<br>
-<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR" loading="lazy"></p>
+<p>欢迎前往<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号<br>
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="" loading="lazy"></p>
 <blockquote>
 <p>本文采用 BY-NC 协议<br>
-<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt="" loading="lazy"><br>
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/by-nc.png" alt="" loading="lazy"><br>
 署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
 </blockquote>
 
             </div>
             
               <div class="tag-container">
-                
-                  <a href="https://wyu0725.github.io/tag/personal_skill/" class="tag">
-                    人生经验
-                  </a>
                 
                   <a href="https://wyu0725.github.io/tag/felab_skill/" class="tag">
                     实验室经验
@@ -172,9 +164,9 @@ allow 80/tcp sudo ufw allow http/tcp</li>
             
               <div class="next-post">
                 <div class="next">下一篇</div>
-                <a href="https://wyu0725.github.io/post/Si5345_VIO_Config/">
+                <a href="https://wyu0725.github.io/post/ubuntu_basic_settings/">
                   <h3 class="post-title">
-                    通过 VIO 实现 Si5345 的配置
+                    新开服务器基本设置指南
                   </h3>
                 </a>
               </div>
