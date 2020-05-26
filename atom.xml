@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://wyu0725.github.io/</id>
     <title>王德福 Wonderful</title>
-    <updated>2020-04-28T09:17:54.356Z</updated>
+    <updated>2020-05-26T14:23:47.315Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://wyu0725.github.io/"/>
     <link rel="self" href="https://wyu0725.github.io/atom.xml"/>
@@ -182,6 +182,125 @@ s-65,47,-65,47z M834 80H400000v40H845z'/></svg></span></span></span><span class=
 <img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/by-nc.png" alt="" loading="lazy"><br>
 署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
 </blockquote>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[# Sublime Text3 + TeXLive配置]]></title>
+        <id>https://wyu0725.github.io/post/sublime_LaTeX/</id>
+        <link href="https://wyu0725.github.io/post/sublime_LaTeX/">
+        </link>
+        <updated>2019-08-15T14:22:03.000Z</updated>
+        <summary type="html"><![CDATA[<blockquote>
+<p>写论文必备神器 LaTeX，一次性解决 Word 图片跑来跑去的困扰<br>
+写毕业论文还是老老实实的用 Word 吧</p>
+</blockquote>
+]]></summary>
+        <content type="html"><![CDATA[<blockquote>
+<p>写论文必备神器 LaTeX，一次性解决 Word 图片跑来跑去的困扰<br>
+写毕业论文还是老老实实的用 Word 吧</p>
+</blockquote>
+<!-- more -->
+<h1 id="安装和配置-sublime-text-3">安装和配置 Sublime Text 3</h1>
+<ol>
+<li>首先是安装 <a href="https://www.sublimetext.com/">Sublime Text 3</a>，会询问激活码，本来打算买一个的，但是80刀略贵，不过不激活个人用户也可以用，只是软件上显示一个未激活</li>
+<li>安装Package Control</li>
+<li>CTRL+ `调出安装控制台</li>
+<li>在<a href="https://packagecontrol.io/installation">PackageControl网站</a>找到安装命令，输入并回车，如有错误谷歌查之</li>
+<li>这个网站莫名其妙的被墙了，关键是 GFWlists 中还没有，安装命令如下，要科学上网才能安装，离线方法自行谷歌</li>
+</ol>
+<p>import urllib.request,os,hashlib; h =<br>
+'6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf =<br>
+'Package Control.sublime-package'; ipp = sublime.installed_packages_path();<br>
+urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler())<br>
+); by = urllib.request.urlopen( '<a href="http://packagecontrol.io/">http://packagecontrol.io/</a>'</p>
+<ul>
+<li>pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest();<br>
+print('Error validating download (got %s instead of %s), please try manual<br>
+install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb'<br>
+).write(by)</li>
+</ul>
+<ol start="3">
+<li>按住Ctrl+Shift+P调出Package Control</li>
+<li>如果调不出来，多半是因为新版本将Package Control屏蔽了</li>
+<li>在Preferences -&gt; Settings中将如下代码中的Package Control去掉</li>
+</ol>
+<p>&quot;ignored_packages&quot;:<br>
+[<br>
+&quot;Package Control&quot;,<br>
+&quot;Vintage&quot;<br>
+]</p>
+<ol start="4">
+<li>在Package Control中输入install进入Package Control:Install Package</li>
+<li>安装LaTeXTools</li>
+<li>顺便安装如下两个包</li>
+<li>ConvertToUTF8 : 可以将其他的编码格式的文件转换为 UTF8。</li>
+<li>Markdown Preview： 可以使用 Sublime Text 将 Markdown 文件编译成 html 文件实现预览。</li>
+</ol>
+<h1 id="安装-texlive">安装 TexLive</h1>
+<ol>
+<li>下载 TeXLive,上<a href="http://mirrors.ustc.edu.cn/CTAN/">科大镜像</a>者<a href="https://mirrors.tuna.tsinghua.edu.cn/CTAN/">清华镜像</a>下载会快一点，安装过程大约1小时</li>
+<li>配置LaTeXTools</li>
+<li>在 Preferences -&gt; Package Settings -&gt;<br>
+LaTeXTools中点击Reconfigure and migrate settings</li>
+<li>然后 Package Settings-&gt;LaTeXTools-&gt;Settings - User</li>
+<li>找到 Windows 字段</li>
+<li>修改如下设置</li>
+</ol>
+<p>&quot;windows&quot;: {<br>
+// Path used when invoking tex &amp; friends; &quot;&quot; is<br>
+fine for MiKTeX<br>
+// For TeXlive 2011 (or other years) use<br>
+// &quot;texpath&quot; :<br>
+&quot;C:\texlive\2011\bin\win32;$PATH&quot;,<br>
+&quot;texpath&quot;<br>
+: &quot;TeXLive安装路径&quot;,<br>
+// TeX distro: &quot;miktex&quot; or &quot;texlive&quot;<br>
+&quot;distro&quot; : &quot;texlive&quot;,<br>
+// Command to invoke Sumatra. If blank,<br>
+&quot;SumatraPDF.exe&quot; is used (it has to be on your PATH)<br>
+&quot;sumatra&quot;: &quot;&quot;,<br>
+// Command to invoke Sublime Text. Used if the keep_focus<br>
+toggle is true.<br>
+// If blank, &quot;subl.exe&quot; or<br>
+&quot;sublime_text.exe&quot; will be used.<br>
+&quot;sublime_executable&quot;: &quot;&quot;,<br>
+// how long (in seconds) to wait after the jump_to_pdf<br>
+command completes<br>
+// before switching focus back to Sublime Text. This may need<br>
+to be<br>
+// adjusted depending on your machine and configuration.<br>
+&quot;keep_focus_delay&quot;: 0.5<br>
+},</p>
+<ul>
+<li>其中sumatra设置留空是因为可以直接将其填入PATH中</li>
+<li>在<a href="https://www.sumatrapdfreader.org/free-pdf-reader.html">SumatraPDF</a>下载合适版本的SumatraPDF版本</li>
+<li>然后在环境变量PATH中填入安装路径</li>
+<li>在命令行中运行，其中Sublime Text 3的路径改成自己的安装路径，这样可以SumatraPDF反向检索Sublime</li>
+</ul>
+<p>sumatrapdf.exe -inverse-search &quot;&quot;C:\Program<br>
+Files\Sublime Text 3\sublime_text.exe&quot; &quot;%f:%l&quot;&quot;</p>
+<h1 id="大功告成啦">大功告成啦</h1>
+<p>新建一个HelloWorld.tex写入如下内容<br>
+% 使用 ctexart 文类，UTF-8 编码<br>
+\documentclass[UTF8]{ctexart}<br>
+\begin{document}<br>
+Hello World!</p>
+<p>你好！<br>
+\end{document}<br>
+另存为HelloWorld.tex按Ctrl + B即可编译</p>
+<h1 id="字体设置">字体设置</h1>
+<p>选择一个喜欢的字体就好<br>
+按如下方式设置即可<br>
+在Preferences -&gt; Settings中可以修改字体等信息<br>
+&quot;color_scheme&quot;:<br>
+&quot;Packages/Color Scheme - Default/Monokai.tmTheme&quot;,<br>
+&quot;font_face&quot;:<br>
+&quot;InputSerif&quot;,<br>
+&quot;font_size&quot;:<br>
+9,</p>
+<hr>
+<p>欢迎关注<a href="https://wyu0725.github.io/">我的 GitHub 主页</a>和公众号<br>
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
     <entry>
@@ -854,12 +973,12 @@ set is_busy [get_property INPUT_VALUE [get_hw_probes si5345_spi_busy_to_vio_w]]
 <p><a name="bs6ac"></a></p>
 <h2 id="checklists">Checklists</h2>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2256451"> 使用 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/">模板<label class="task-list-item-label" for="task-item-2256451"> 使用 [模板](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5554217"> 检查 <a href="http://refassist.ieee.org/">引用<label class="task-list-item-label" for="task-item-5554217"> 检查 [引用](http://refassist.ieee.org/)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1955932"> 检查 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/">英语语言</a><label class="task-list-item-label" for="task-item-1955932"> 检查 [英语语言](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/) (很多杂志都有要求，但是封总不同意，所以尽量给老师检查吧)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4113979"> 检查 <a href="http://graphicsqc.ieee.org/">图片<label class="task-list-item-label" for="task-item-4113979"> 检查 [图片](http://graphicsqc.ieee.org/)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-265427"> 创建 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/">补充材料</a><label class="task-list-item-label" for="task-item-265427"> 创建 [补充材料](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/)（大部分时候我们都没有补充材料）</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8875183"> 创建 <a href="http://www.orcid.org/">ORCID<label class="task-list-item-label" for="task-item-8875183"> 创建 [ORCID](http://www.orcid.org/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9869898"> 使用 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/">模板<label class="task-list-item-label" for="task-item-9869898"> 使用 [模板](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5629192"> 检查 <a href="http://refassist.ieee.org/">引用<label class="task-list-item-label" for="task-item-5629192"> 检查 [引用](http://refassist.ieee.org/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4955641"> 检查 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/">英语语言</a><label class="task-list-item-label" for="task-item-4955641"> 检查 [英语语言](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/) (很多杂志都有要求，但是封总不同意，所以尽量给老师检查吧)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9020673"> 检查 <a href="http://graphicsqc.ieee.org/">图片<label class="task-list-item-label" for="task-item-9020673"> 检查 [图片](http://graphicsqc.ieee.org/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4585791"> 创建 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/">补充材料</a><label class="task-list-item-label" for="task-item-4585791"> 创建 [补充材料](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/)（大部分时候我们都没有补充材料）</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9594510"> 创建 <a href="http://www.orcid.org/">ORCID<label class="task-list-item-label" for="task-item-9594510"> 创建 [ORCID](http://www.orcid.org/)</label></li>
 </ul>
 <p><a name="BRluH"></a></p>
 <h2 id="图片">图片</h2>
@@ -1019,19 +1138,19 @@ xxxx and not Fig. 3: xxxx<br>
 <a name="0frh5"></a></p>
 <h2 id="首先是-ae-的问题">首先是 AE 的问题</h2>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5489124"><label class="task-list-item-label" for="task-item-5489124"> 在最终版去掉所有的 comments</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1229224"><label class="task-list-item-label" for="task-item-1229224"> Revision date 后面要换行</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2310913"><label class="task-list-item-label" for="task-item-2310913"> 在最终版去掉所有的 comments</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3437907"><label class="task-list-item-label" for="task-item-3437907"> Revision date 后面要换行</label></li>
 </ul>
 <p><a name="MaQOi"></a></p>
 <h2 id="se-的问题">SE 的问题</h2>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2463322"><label class="task-list-item-label" for="task-item-2463322"> 脚注只需要提交日期和最后一次修改的日期</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3795786"><label class="task-list-item-label" for="task-item-3795786"> 这里要注意时区问题， TNS 用的美国时间，和我们差了 15 个小时，估计是美国西部时间，而且 4-10 月会进入夏令时，所以投稿最好在晚上或者早上，这样日期不会对不上。</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1086370"><label class="task-list-item-label" for="task-item-1086370"> 图片的题注是 8 号字体，左对齐</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9374556"><label class="task-list-item-label" for="task-item-9374556"> 脚注只需要提交日期和最后一次修改的日期</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3308354"><label class="task-list-item-label" for="task-item-3308354"> 这里要注意时区问题， TNS 用的美国时间，和我们差了 15 个小时，估计是美国西部时间，而且 4-10 月会进入夏令时，所以投稿最好在晚上或者早上，这样日期不会对不上。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3295422"><label class="task-list-item-label" for="task-item-3295422"> 图片的题注是 8 号字体，左对齐</label></li>
 </ul>
 <p>之所以有这个问题是因为用了 Subfig 这个包，需要设置 subfig 的 caption 为 false，即<br />**\usepackage[caption=false]{subfig}    **<br />其实这个问题会报 warning 的，但是 sublime 把它吃掉了，需要打开 log 文件才可以看到。<br />上次审稿的 Fig. x: 问题也是由这个引起的。</p>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2391445"><label class="task-list-item-label" for="task-item-2391445"> 看投稿网站</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7419641"><label class="task-list-item-label" for="task-item-7419641"> 看投稿网站</label></li>
 </ul>
 <p><a name="ZR238"></a></p>
 <h1 id="终稿">终稿</h1>
@@ -1039,12 +1158,12 @@ xxxx and not Fig. 3: xxxx<br>
 <h2 id="提交-final-versionpdf">提交 FINAL VERSION.pdf</h2>
 <p>终于到了终稿阶段，需要提交两个文件：FINAL VERSIN.pdf 和源文件 (Word 或者 LaTeX)。<br />有以下的问题需要考虑</p>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7180050"><label class="task-list-item-label" for="task-item-7180050"> 是否要彩色打印，电子版彩色是免费的，但是纸质版的话彩色需要收费。收费标准是每 4 页 1045 刀，此外每幅彩图 62.5 刀。</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1213656"><label class="task-list-item-label" for="task-item-1213656"> 如果纸质版用黑白的话，一定要保证打印成黑白的图片可以区分。</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6242099"><label class="task-list-item-label" for="task-item-6242099"> 终稿不允许有任何的修改。这条不绝对</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2575555"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 <s>“去个头”</s><label class="task-list-item-label" for="task-item-2575555"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 ~~“去个头”~~ Go ahead</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2747458"><label class="task-list-item-label" for="task-item-2747458"> 在网页上提交需要的文件，然后确认信息，最后转移权力给 TNS</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3683360"><label class="task-list-item-label" for="task-item-3683360"> 有个师兄终稿的时候还加了作者，最后要求其他作者都签名同意增加一名作者，所以终稿也不是不可以做小修改的。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6670760"><label class="task-list-item-label" for="task-item-6670760"> 是否要彩色打印，电子版彩色是免费的，但是纸质版的话彩色需要收费。收费标准是每 4 页 1045 刀，此外每幅彩图 62.5 刀。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1181199"><label class="task-list-item-label" for="task-item-1181199"> 如果纸质版用黑白的话，一定要保证打印成黑白的图片可以区分。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5410532"><label class="task-list-item-label" for="task-item-5410532"> 终稿不允许有任何的修改。这条不绝对</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9794867"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 <s>“去个头”</s><label class="task-list-item-label" for="task-item-9794867"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 ~~“去个头”~~ Go ahead</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1698987"><label class="task-list-item-label" for="task-item-1698987"> 在网页上提交需要的文件，然后确认信息，最后转移权力给 TNS</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3711399"><label class="task-list-item-label" for="task-item-3711399"> 有个师兄终稿的时候还加了作者，最后要求其他作者都签名同意增加一名作者，所以终稿也不是不可以做小修改的。</label></li>
 </ul>
 <p><a name="KEYcA"></a></p>
 <h2 id="创建-ieee-账号">创建 IEEE 账号</h2>
@@ -1071,97 +1190,6 @@ xxxx and not Fig. 3: xxxx<br>
 <li>及时催稿，过了承诺的审稿时间就要即使催，估计我更早一点催的话，文章会更早接收。</li>
 </ol>
 <p>文章初稿和一审稿见 <a href="https://arxiv.org/abs/1806.10675">ArXiv</a><br />论文链接 <a href="https://ieeexplore.ieee.org/abstract/document/8716677">Readout Electronics for CEPC Semi-Digital Hadron Calorimeter Pre-prototype</a></p>
-<hr>
-<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号<br>
-<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR" loading="lazy"></p>
-<blockquote>
-<p>本文采用 BY-NC 协议<br>
-<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt="" loading="lazy"><br>
-署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
-</blockquote>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[Sublime Text3 + TeXLive配置]]></title>
-        <id>https://wyu0725.github.io/post/sublime_LaTeX/</id>
-        <link href="https://wyu0725.github.io/post/sublime_LaTeX/">
-        </link>
-        <updated>2019-06-12T04:49:32.000Z</updated>
-        <summary type="html"><![CDATA[<blockquote>
-<p>写论文必备神器 LaTeX，一次性解决 Word 图片跑来跑去的困扰<br>
-写毕业论文还是老老实实的用 Word 吧</p>
-</blockquote>
-]]></summary>
-        <content type="html"><![CDATA[<blockquote>
-<p>写论文必备神器 LaTeX，一次性解决 Word 图片跑来跑去的困扰<br>
-写毕业论文还是老老实实的用 Word 吧</p>
-</blockquote>
-<!-- more -->
-<h1 id="安装和配置-sublime-text-3">安装和配置 Sublime Text 3</h1>
-<ol>
-<li>首先是安装 <a href="https://www.sublimetext.com/">Sublime Text 3</a>，会询问激活码，本来打算买一个的，但是80刀略贵，不过不激活个人用户也可以用，只是软件上显示一个未激活</li>
-<li>安装Package Control</li>
-<li>CTRL+ `调出安装控制台</li>
-<li>在<a href="https://packagecontrol.io/installation">PackageControl网站</a>找到安装命令，输入并回车，如有错误谷歌查之</li>
-<li>这个网站莫名其妙的被墙了，关键是 GFWlists 中还没有，安装命令如下，要科学上网才能安装，离线方法自行谷歌</li>
-</ol>
-<p>import urllib.request,os,hashlib; h =<br>
-'6f4c264a24d933ce70df5dedcf1dcaee' + 'ebe013ee18cced0ef93d5f746d80ef60'; pf =<br>
-'Package Control.sublime-package'; ipp = sublime.installed_packages_path();<br>
-urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler())<br>
-); by = urllib.request.urlopen( '<a href="http://packagecontrol.io/">http://packagecontrol.io/</a>'</p>
-<ul>
-<li>pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest();<br>
-print('Error validating download (got %s instead of %s), please try manual<br>
-install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb'<br>
-).write(by)</li>
-</ul>
-<ol start="3">
-<li>按住Ctrl+Shift+P调出Package Control</li>
-<li>如果调不出来，多半是因为新版本将Package Control屏蔽了</li>
-<li>在Preferences -&gt; Settings中将如下代码中的Package Control去掉</li>
-</ol>
-<p>&quot;ignored_packages&quot;:<br />[<br />&quot;Package Control&quot;,<br />&quot;Vintage&quot;<br />]</p>
-<ol start="4">
-<li>在Package Control中输入install进入Package Control:Install Package</li>
-<li>安装LaTeXTools</li>
-<li>顺便安装如下两个包</li>
-<li>ConvertToUTF8 : 可以将其他的编码格式的文件转换为 UTF8。</li>
-<li>Markdown Preview： 可以使用 Sublime Text 将 Markdown 文件编译成 html 文件实现预览。</li>
-</ol>
-<h1 id="安装-texlive">安装 TexLive</h1>
-<ol>
-<li>下载 TeXLive,上<a href="http://mirrors.ustc.edu.cn/CTAN/">科大镜像</a>者<a href="https://mirrors.tuna.tsinghua.edu.cn/CTAN/">清华镜像</a>下载会快一点，安装过程大约1小时</li>
-<li>配置LaTeXTools</li>
-<li>在 Preferences -&gt; Package Settings -&gt;<br>
-LaTeXTools中点击Reconfigure and migrate settings</li>
-<li>然后 Package Settings-&gt;LaTeXTools-&gt;Settings - User</li>
-<li>找到 Windows 字段</li>
-<li>修改如下设置</li>
-</ol>
-<p>&quot;windows&quot;: {<br />// Path used when invoking tex &amp; friends; &quot;&quot; is<br>
-fine for MiKTeX<br />// For TeXlive 2011 (or other years) use<br />// &quot;texpath&quot; :<br>
-&quot;C:\texlive\2011\bin\win32;$PATH&quot;,<br />&quot;texpath&quot;<br>
-: &quot;TeXLive安装路径&quot;,<br />// TeX distro: &quot;miktex&quot; or &quot;texlive&quot;<br />&quot;distro&quot; : &quot;texlive&quot;,<br />// Command to invoke Sumatra. If blank,<br>
-&quot;SumatraPDF.exe&quot; is used (it has to be on your PATH)<br />&quot;sumatra&quot;: &quot;&quot;,<br />// Command to invoke Sublime Text. Used if the keep_focus<br>
-toggle is true.<br />// If blank, &quot;subl.exe&quot; or<br>
-&quot;sublime_text.exe&quot; will be used.<br />&quot;sublime_executable&quot;: &quot;&quot;,<br />// how long (in seconds) to wait after the jump_to_pdf<br>
-command completes<br />// before switching focus back to Sublime Text. This may need<br>
-to be<br />// adjusted depending on your machine and configuration.<br />&quot;keep_focus_delay&quot;: 0.5<br />},</p>
-<ul>
-<li>其中sumatra设置留空是因为可以直接将其填入PATH中</li>
-<li>在<a href="https://www.sumatrapdfreader.org/free-pdf-reader.html">SumatraPDF</a>下载合适版本的SumatraPDF版本</li>
-<li>然后在环境变量PATH中填入安装路径</li>
-<li>在命令行中运行，其中Sublime Text 3的路径改成自己的安装路径，这样可以SumatraPDF反向检索Sublime</li>
-</ul>
-<p>sumatrapdf.exe -inverse-search &quot;&quot;C:\Program<br>
-Files\Sublime Text 3\sublime_text.exe&quot; &quot;%f:%l&quot;&quot;<br /></p>
-<h1 id="大功告成啦">大功告成啦</h1>
-<p>新建一个HelloWorld.tex写入如下内容<br />% 使用 ctexart 文类，UTF-8 编码 <br />\documentclass[UTF8]{ctexart}<br />\begin{document}<br />Hello World!<br /> <br />你好！<br />\end{document}<br />另存为HelloWorld.tex按Ctrl + B即可编译</p>
-<h1 id="字体设置">字体设置</h1>
-<p>选择一个喜欢的字体就好<br />按如下方式设置即可<br />在Preferences -&gt; Settings中可以修改字体等信息<br />&quot;color_scheme&quot;:<br>
-&quot;Packages/Color Scheme - Default/Monokai.tmTheme&quot;,<br />&quot;font_face&quot;:<br>
-&quot;InputSerif&quot;,<br />&quot;font_size&quot;:9,</p>
 <hr>
 <p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号<br>
 <img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR" loading="lazy"></p>
