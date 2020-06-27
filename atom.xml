@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://wyu0725.github.io/</id>
     <title>王德福 Wonderful</title>
-    <updated>2020-05-26T14:38:29.906Z</updated>
+    <updated>2020-06-27T11:24:06.733Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://wyu0725.github.io/"/>
     <link rel="self" href="https://wyu0725.github.io/atom.xml"/>
@@ -10,6 +10,139 @@
     <logo>https://wyu0725.github.io/images/avatar.png</logo>
     <icon>https://wyu0725.github.io/favicon.ico</icon>
     <rights>All rights reserved 2020, 王德福 Wonderful</rights>
+    <entry>
+        <title type="html"><![CDATA[简单 Python 爬虫]]></title>
+        <id>https://wyu0725.github.io/post/python_scapy_simple/</id>
+        <link href="https://wyu0725.github.io/post/python_scapy_simple/">
+        </link>
+        <updated>2020-06-27T11:19:48.000Z</updated>
+        <content type="html"><![CDATA[<blockquote>
+<p>想学爬虫很久了，还好一下午搞定了</p>
+<p>主要是参考了这个老哥的博客：<a href="https://morvanzhou.github.io">莫烦 Python</a>，其他的用法都是上网去查查查就可以了</p>
+</blockquote>
+<h1 id="爬虫">爬虫</h1>
+<p>爬虫不仅仅局限于用 Python，其实用 perl 也行，目的就是能够自动的从网上把需要的东西下载下来，Python 的好处是可以直接使用一些集成好的库非常的方便，比如说需要从 Excel 中读取信息，这些直接用 Python 的库非常的方便。</p>
+<h1 id="获取链接">获取链接</h1>
+<p>第一个步骤是找到要下载的链接，一般来说需要自己从一个网站上爬取，这次想开始做的一个原因是 Springer 在疫情期间开放了自己的电子书下载，不下载白不下载。</p>
+<p>薅羊毛的事情国内外都是一样的，<a href="https://hnarayanan.github.io/springer-books/#Engineering">有个老哥</a>整理了电子书链接，里面有个 Excel，但是并不是下载链接，点进去会跳转到 Springer 的说明页面，也就是下面这样，正常点击下载按钮就行了。</p>
+<figure data-type="image" tabindex="1"><img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/Springer_download.png" alt="" loading="lazy"></figure>
+<p>获取链接就很简单了，直接从 Excel 中读取就行了，首先先把 Excel 删减成自己想要的内容，我的 Excel 变成下面的模样了，里面的前三列是需要用来命名文件的，总不希望下载下来的文件是编号吧；第四列是用来分类存文件夹的；第五列就是上面说的 Springer 的链接。</p>
+<figure data-type="image" tabindex="2"><img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/Springer_excel.png" alt="" loading="lazy"></figure>
+<p>下面就开始读 Excel</p>
+<p>首先先安装 xlrd，CentOS 的麻烦就在于权限问题，直接 sudo 了</p>
+<pre><code class="language-bash">pip3 install xlrd
+</code></pre>
+<p>然后就可以开始读 Excel 操作了</p>
+<pre><code class="language-python">wb = xlrd.open_workbook(filename=filelist) # Read excel
+sheet1 = wb.sheet_by_index(0) # Get the first sheet
+row = sheet1.nrows # Get the total row numbers
+row_value = sheet1.row_values(1) # Get the second row content
+</code></pre>
+<p>最好获取行数，免得读出的时候超过了;下面就开始获取需要的信息，比如说第二行就是第一个需要下载的内容</p>
+<h1 id="获取下载链接">获取下载链接</h1>
+<p>上面的 row_value[4] 可以访问到 Springer 的页面，有了这个页面就可以开始干活了。</p>
+<p>首先先把 BeautifulSoup 安装好</p>
+<pre><code class="language-bash">pip3 install beautifulsoup4
+</code></pre>
+<p>然后就开始干活，先是找到链接，然后按照分类创建文件夹，创建文件夹的函数后面会写。</p>
+<p>接下来就是用 urlopen 获得网页的内容，这里一定要用 try... catch 结构，因为链接不一定都是可以访问的，遇到不行的链接就跳过它。</p>
+<pre><code class="language-python">link = row_value[4]
+folder = row_value[3]
+mkfolder(folder)
+save_filename = folder + '/' + row_value[0]+'_'+row_value[1]+'_'+row_value[2]+'.pdf'
+try:
+	html = urlopen(link).read().decode('utf-8')
+except urllib.error.URLError as e:
+	print(e.reason)
+	print('Next file')
+	e_info = 'No.' + str(i) + ' Download ' + save_filename + ' from ' + link + 'failure'
+	print(e_info)
+</code></pre>
+<p>下面就到了 BeautifulSoup 的部分，先是把网页转换成 lxml，然后再用正则表达式找到要的内容，这部分就要看网页代码，找到下载链接的公共部分，比如说这个 pdf 的下载链接都是这样的，都有个 title，一找就找到。</p>
+<pre><code class="language-html">&lt;a href=&quot;/content/pdf/10.1007%2Fb100747.pdf&quot; target=&quot;_blank&quot; class=&quot;c-button c-button--blue c-button__icon-right test-download-book-options test-bookpdf-link&quot; title=&quot;Download this book in PDF format&quot; rel=&quot;noopener&quot; data-track=&quot;click&quot; data-track-action=&quot;Book download - pdf&quot; data-track-label=&quot;&quot;&gt;
+	...
+ &lt;/a&gt;
+</code></pre>
+<pre><code class="language-python">soup = BeautifulSoup(html, features='lxml')
+pdf_link = soup(&quot;a&quot;,{&quot;title&quot;:re.compile('Download this book in PDF format')})
+if(len(pdf_link) == 0):
+	print('Error in get link')
+	print('Line ')
+	print(i)
+	print(link)
+link_name = pdf_link[0]
+</code></pre>
+<h1 id="下载">下载</h1>
+<p>网上提供了三种下载方法，考虑到文件不大，直接用 urlretrieve</p>
+<pre><code class="language-python">link_name = pdf_link[0]
+download_link = 'https://link.springer.com'+link_name['href']
+</code></pre>
+<h1 id="大功告成">大功告成！</h1>
+<p>其实这个可以用来下载会议报告，很多会议都有自己的 indico，用爬虫一跑，可以全部下下来，非常舒爽。</p>
+<h1 id="代码">代码</h1>
+<p>缺啥自己装啥</p>
+<pre><code class="language-python">import os
+import xlrd
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+import urllib
+import re
+
+def download_file(filelist='springer_list.xlsx',start=1,end=30):
+    link_prefix = 'http://link.springer.com'
+    wb = xlrd.open_workbook(filename=filelist)
+    sheet1 = wb.sheet_by_index(0)
+    row = sheet1.nrows
+    pattern = re.compile(r'.*\.pdf')
+    if(end &gt; row):
+        end = row
+        c_info = 'Max file number: '+ str(row)+'. Change to '+str(row)
+        print(c_info)
+    for i in range(start-1,end):
+        row_value = sheet1.row_values(i)
+        link = row_value[4]
+        folder = row_value[3]
+        mkfolder(folder)
+        save_filename = folder + '/' + row_value[0]+'_'+row_value[1]+'_'+row_value[2]+'.pdf'
+        try:
+            html = urlopen(link).read().decode('utf-8')
+        except urllib.error.URLError as e:
+            print(e.reason)
+            print('Next file')
+            e_info = 'No.' + str(i) + ' Download ' + save_filename + ' from ' + link + 'failure'
+            print(e_info)
+            continue
+
+        soup = BeautifulSoup(html, features='lxml')
+        pdf_link = soup(&quot;a&quot;,{&quot;title&quot;:re.compile('Download this book in PDF format')})
+        if(len(pdf_link) == 0):
+            print('Error in get link')
+            print('Line ')
+            print(i)
+            print(link)
+            continue
+        link_name = pdf_link[0]
+        ## result = pattern.findall(link_name)
+        download_link = link_prefix + link_name['href']
+        ss_info = 'No.' + str(i) + ' Download ' + save_filename + ' from ' + download_link
+        print(ss_info)
+        urllib.request.urlretrieve(download_link,save_filename)
+        s_info = 'Download ' + save_filename + ' successfully'
+        print(s_info)
+
+
+def mkfolder(folder_name):
+    folder = os.path.exists(folder_name)
+    if not folder:
+        os.makedirs(folder_name)
+        info = 'Make folder '+folder_name
+        print(info)
+</code></pre>
+<hr>
+<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀主页</a>和公众号<br>
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="" loading="lazy"></p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[C++ 获取文件列表]]></title>
         <id>https://wyu0725.github.io/post/_cpp_get_file_lists/</id>
@@ -412,7 +545,7 @@ Hello World!</p>
 &quot;font_size&quot;:<br>
 9,</p>
 <hr>
-<p>欢迎关注<a href="https://wyu0725.github.io/">我的 GitHub 主页</a>和公众号<br>
+<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀主页</a>和公众号<br>
 <img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="" loading="lazy"></p>
 ]]></content>
     </entry>
@@ -1086,12 +1219,12 @@ set is_busy [get_property INPUT_VALUE [get_hw_probes si5345_spi_busy_to_vio_w]]
 <p><a name="bs6ac"></a></p>
 <h2 id="checklists">Checklists</h2>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7621167"> 使用 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/">模板<label class="task-list-item-label" for="task-item-7621167"> 使用 [模板](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7721221"> 检查 <a href="http://refassist.ieee.org/">引用<label class="task-list-item-label" for="task-item-7721221"> 检查 [引用](http://refassist.ieee.org/)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3563685"> 检查 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/">英语语言</a><label class="task-list-item-label" for="task-item-3563685"> 检查 [英语语言](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/) (很多杂志都有要求，但是封总不同意，所以尽量给老师检查吧)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7491779"> 检查 <a href="http://graphicsqc.ieee.org/">图片<label class="task-list-item-label" for="task-item-7491779"> 检查 [图片](http://graphicsqc.ieee.org/)</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4350298"> 创建 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/">补充材料</a><label class="task-list-item-label" for="task-item-4350298"> 创建 [补充材料](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/)（大部分时候我们都没有补充材料）</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4583353"> 创建 <a href="http://www.orcid.org/">ORCID<label class="task-list-item-label" for="task-item-4583353"> 创建 [ORCID](http://www.orcid.org/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-333813"> 使用 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/">模板<label class="task-list-item-label" for="task-item-333813"> 使用 [模板](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/authoring-tools-and-templates/ieee-article-templates/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4669887"> 检查 <a href="http://refassist.ieee.org/">引用<label class="task-list-item-label" for="task-item-4669887"> 检查 [引用](http://refassist.ieee.org/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-6249495"> 检查 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/">英语语言</a><label class="task-list-item-label" for="task-item-6249495"> 检查 [英语语言](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/create-the-text-of-your-article/refining-the-use-of-english-in-your-article/) (很多杂志都有要求，但是封总不同意，所以尽量给老师检查吧)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2211121"> 检查 <a href="http://graphicsqc.ieee.org/">图片<label class="task-list-item-label" for="task-item-2211121"> 检查 [图片](http://graphicsqc.ieee.org/)</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5692737"> 创建 <a href="http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/">补充材料</a><label class="task-list-item-label" for="task-item-5692737"> 创建 [补充材料](http://journals.ieeeauthorcenter.ieee.org/create-your-ieee-article/prepare-supplementary-materials/)（大部分时候我们都没有补充材料）</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3061467"> 创建 <a href="http://www.orcid.org/">ORCID<label class="task-list-item-label" for="task-item-3061467"> 创建 [ORCID](http://www.orcid.org/)</label></li>
 </ul>
 <p><a name="BRluH"></a></p>
 <h2 id="图片">图片</h2>
@@ -1251,19 +1384,19 @@ xxxx and not Fig. 3: xxxx<br>
 <a name="0frh5"></a></p>
 <h2 id="首先是-ae-的问题">首先是 AE 的问题</h2>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9087703"><label class="task-list-item-label" for="task-item-9087703"> 在最终版去掉所有的 comments</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-925599"><label class="task-list-item-label" for="task-item-925599"> Revision date 后面要换行</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9737341"><label class="task-list-item-label" for="task-item-9737341"> 在最终版去掉所有的 comments</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7538517"><label class="task-list-item-label" for="task-item-7538517"> Revision date 后面要换行</label></li>
 </ul>
 <p><a name="MaQOi"></a></p>
 <h2 id="se-的问题">SE 的问题</h2>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4959078"><label class="task-list-item-label" for="task-item-4959078"> 脚注只需要提交日期和最后一次修改的日期</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-527284"><label class="task-list-item-label" for="task-item-527284"> 这里要注意时区问题， TNS 用的美国时间，和我们差了 15 个小时，估计是美国西部时间，而且 4-10 月会进入夏令时，所以投稿最好在晚上或者早上，这样日期不会对不上。</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5313684"><label class="task-list-item-label" for="task-item-5313684"> 图片的题注是 8 号字体，左对齐</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-3851093"><label class="task-list-item-label" for="task-item-3851093"> 脚注只需要提交日期和最后一次修改的日期</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9919542"><label class="task-list-item-label" for="task-item-9919542"> 这里要注意时区问题， TNS 用的美国时间，和我们差了 15 个小时，估计是美国西部时间，而且 4-10 月会进入夏令时，所以投稿最好在晚上或者早上，这样日期不会对不上。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5506837"><label class="task-list-item-label" for="task-item-5506837"> 图片的题注是 8 号字体，左对齐</label></li>
 </ul>
 <p>之所以有这个问题是因为用了 Subfig 这个包，需要设置 subfig 的 caption 为 false，即<br />**\usepackage[caption=false]{subfig}    **<br />其实这个问题会报 warning 的，但是 sublime 把它吃掉了，需要打开 log 文件才可以看到。<br />上次审稿的 Fig. x: 问题也是由这个引起的。</p>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2859847"><label class="task-list-item-label" for="task-item-2859847"> 看投稿网站</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7717111"><label class="task-list-item-label" for="task-item-7717111"> 看投稿网站</label></li>
 </ul>
 <p><a name="ZR238"></a></p>
 <h1 id="终稿">终稿</h1>
@@ -1271,12 +1404,12 @@ xxxx and not Fig. 3: xxxx<br>
 <h2 id="提交-final-versionpdf">提交 FINAL VERSION.pdf</h2>
 <p>终于到了终稿阶段，需要提交两个文件：FINAL VERSIN.pdf 和源文件 (Word 或者 LaTeX)。<br />有以下的问题需要考虑</p>
 <ul class="contains-task-list">
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7414950"><label class="task-list-item-label" for="task-item-7414950"> 是否要彩色打印，电子版彩色是免费的，但是纸质版的话彩色需要收费。收费标准是每 4 页 1045 刀，此外每幅彩图 62.5 刀。</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2897187"><label class="task-list-item-label" for="task-item-2897187"> 如果纸质版用黑白的话，一定要保证打印成黑白的图片可以区分。</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-4223499"><label class="task-list-item-label" for="task-item-4223499"> 终稿不允许有任何的修改。这条不绝对</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-7124385"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 <s>“去个头”</s><label class="task-list-item-label" for="task-item-7124385"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 ~~“去个头”~~ Go ahead</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9863250"><label class="task-list-item-label" for="task-item-9863250"> 在网页上提交需要的文件，然后确认信息，最后转移权力给 TNS</label></li>
-<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9105407"><label class="task-list-item-label" for="task-item-9105407"> 有个师兄终稿的时候还加了作者，最后要求其他作者都签名同意增加一名作者，所以终稿也不是不可以做小修改的。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-9798277"><label class="task-list-item-label" for="task-item-9798277"> 是否要彩色打印，电子版彩色是免费的，但是纸质版的话彩色需要收费。收费标准是每 4 页 1045 刀，此外每幅彩图 62.5 刀。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-1145525"><label class="task-list-item-label" for="task-item-1145525"> 如果纸质版用黑白的话，一定要保证打印成黑白的图片可以区分。</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2464008"><label class="task-list-item-label" for="task-item-2464008"> 终稿不允许有任何的修改。这条不绝对</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-8575344"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 <s>“去个头”</s><label class="task-list-item-label" for="task-item-8575344"> 发现有一幅直方图黑白打印之后看不清了，就改了个颜色，发邮件问编辑可以可以替换一下，编辑说 ~~“去个头”~~ Go ahead</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-5040696"><label class="task-list-item-label" for="task-item-5040696"> 在网页上提交需要的文件，然后确认信息，最后转移权力给 TNS</label></li>
+<li class="task-list-item"><input class="task-list-item-checkbox" disabled="" type="checkbox" id="task-item-2563395"><label class="task-list-item-label" for="task-item-2563395"> 有个师兄终稿的时候还加了作者，最后要求其他作者都签名同意增加一名作者，所以终稿也不是不可以做小修改的。</label></li>
 </ul>
 <p><a name="KEYcA"></a></p>
 <h2 id="创建-ieee-账号">创建 IEEE 账号</h2>
@@ -1311,55 +1444,6 @@ xxxx and not Fig. 3: xxxx<br>
 <img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1556247333155-30df428e-9590-499e-a58c-505037c4caad.png#align=left&amp;display=inline&amp;height=31&amp;originHeight=31&amp;originWidth=88&amp;status=done&amp;width=88" alt="" loading="lazy"><br>
 署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
 </blockquote>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[国际会议记录]]></title>
-        <id>https://wyu0725.github.io/post/how_to_attend_internal_conference/</id>
-        <link href="https://wyu0725.github.io/post/how_to_attend_internal_conference/">
-        </link>
-        <updated>2019-05-02T14:35:16.000Z</updated>
-        <summary type="html"><![CDATA[<blockquote>
-<p>这篇是记录开国际会议需要做的一些准备，以及一些建议</p>
-</blockquote>
-]]></summary>
-        <content type="html"><![CDATA[<blockquote>
-<p>这篇是记录开国际会议需要做的一些准备，以及一些建议</p>
-</blockquote>
-<!-- more -->
-<h1 id="申请准备">申请准备</h1>
-<p>最开始是找好一个会议，至于怎么找就听老师的就好了，这个省去，有能力的话自己找一些合适的会议去参加也是很好的，要记住，参加国际会议的<strong>根本目的是发一篇 EI 的文章</strong>，如果发不了，就不要去水会议，既浪费时间又浪费纳税人的钱。</p>
-<h2 id="投摘要和简述">投摘要和简述</h2>
-<p>一般的会议要求在开会前提交摘要和一份简单的论文介绍，会议主办方会根据投稿者的情况进行筛选，这一步还是要认真做的。论文介绍还是按照论文的格式来，介绍、方法、结果和讨论一个不能少。</p>
-<h2 id="等待摘要通过">等待摘要通过</h2>
-<h1 id="准备签证">准备签证</h1>
-<h2 id="邀请信">邀请信</h2>
-<p>第一步是要邀请信，最好纸质版和电子版都要到，一般来说纸质版最保险，这个就看大使馆收不收自己打印的电子版，根据不同的国家进行选择，电子版最快，不影响签证时间，特别是美签，动辄一个月的 check 时间。</p>
-<h2 id="学校和学院派遣信">学校和学院派遣信</h2>
-<p>这两个东西的目的是为了让签证官相信你是去开会的，后面两个书下载地址，USTC Letter 即学院派遣信 <a href="https://gradschool.ustc.edu.cn/ylb/material/xj/wdxz/4.doc">派遣书</a><a href="https://www.yuque.com/attachments/yuque/0/2019/doc/209359/1568958928965-a379884e-570d-4dd4-995f-431bd5715d18.doc?_lake_card=%7B%22uid%22%3A%221568958930137-0%22%2C%22src%22%3A%22https%3A%2F%2Fwww.yuque.com%2Fattachments%2Fyuque%2F0%2F2019%2Fdoc%2F209359%2F1568958928965-a379884e-570d-4dd4-995f-431bd5715d18.doc%22%2C%22name%22%3A%22USTC_Letter.doc%22%2C%22size%22%3A155648%2C%22type%22%3A%22application%2Fmsword%22%2C%22ext%22%3A%22doc%22%2C%22progress%22%3A%7B%22percent%22%3A0%7D%2C%22status%22%3A%22done%22%2C%22percent%22%3A0%2C%22id%22%3A%226mk5D%22%2C%22card%22%3A%22file%22%7D">USTC_Letter.doc</a></p>
-<h2 id="出境审批表">出境审批表</h2>
-<p>既然是代表学校出去，学校肯定要审批才行，而且上面两个表是要有学校的章才行，而学校要盖章就要先填写出境审批表。</p>
-<p>出境日期可以在邀请函前一天，回来的日期可以在邀请函后一天，补贴参加<a href="http://finance.ustc.edu.cn/detail.php?ID=532">财务处网站</a>，最好提前规划好行程，如果实际行程和审批表上的不一致，报销的时候会比较麻烦，要各种签字还要从新审核。</p>
-<p>审批表先找老板签字，然后在老图书馆 314 盖章，同时给<strong>派遣书</strong>盖章，<strong>学院证明叶邦角签字</strong>。</p>
-<p>老板签字、314 盖章、徐宁签字之后的审批表交到国合部审批，国合部在老图书馆 222，审批表审批大概需要一两天，不着急，先去办后面的项目。</p>
-<h2 id="办签证">办签证</h2>
-<p>总的来说有了邀请函、派遣信就可以开始办签证了，不同国家有不同的要求，根据要求准备吧。</p>
-<h1 id="准备出行">准备出行</h1>
-<h2 id="借款">借款</h2>
-<p>既然是代表学校出行，学校肯定要给钱才行，先找财务老师开通一个财务帐号，然后用财务账号在财务处网站上申请会议费借款，把网页打印、邀请信和注册费界面打印下来一起交到财务，财务审批后就会发钱了。一般来说借三万吧，多退少补。</p>
-<h2 id="买机票">买机票</h2>
-<p>签证过了之后就马上买机票，找代理买就好了，贵是贵点，但是报销方便</p>
-<h2 id="交注册费">交注册费</h2>
-<p>签证拿到就交，越早交越好</p>
-<h2 id="准备出行的东西">准备出行的东西</h2>
-<p>海报、论文、信用卡必备，其他自便。</p>
-<h1 id="出行">出行</h1>
-<p><strong>美国一定要带驾照</strong>！！！</p>
-<h1 id="报销">报销</h1>
-<p>能刷卡的地方都刷卡，一切凭证都留好</p>
-<h2 id="研究生院资助">研究生院资助</h2>
-<p>学校是鼓励大家出去开会的，但是不能水会议。研究生院给每个去开会的博士生资助 15000 元，要拿到这个资助必须要在会议上作报告，哪怕是口头报告也算，总之就是不能去水会议，带着审批表、邀请函、会议报告邮件和下面这份资助申请<a href="https://www.yuque.com/attachments/yuque/0/2019/doc/209359/1568959267718-80d39a73-e5e6-49d1-813a-7ffb732d50d7.doc?_lake_card=%7B%22uid%22%3A%221568959268907-0%22%2C%22src%22%3A%22https%3A%2F%2Fwww.yuque.com%2Fattachments%2Fyuque%2F0%2F2019%2Fdoc%2F209359%2F1568959267718-80d39a73-e5e6-49d1-813a-7ffb732d50d7.doc%22%2C%22name%22%3A%22%E8%B5%84%E5%8A%A9%E7%94%B3%E8%AF%B7.doc%22%2C%22size%22%3A39936%2C%22type%22%3A%22application%2Fmsword%22%2C%22ext%22%3A%22doc%22%2C%22progress%22%3A%7B%22percent%22%3A0%7D%2C%22status%22%3A%22done%22%2C%22percent%22%3A0%2C%22id%22%3A%22zf1gH%22%2C%22card%22%3A%22file%22%7D">资助申请.doc</a>，一切填好之后去老图书馆，某个房间办理，至于是那个房间记不清楚了，到了老图书馆有明显的指示牌。</p>
-<p>报销的时候首先会从学院的钱里面报销，不够的话再从老板的经费里面报销。</p>
 ]]></content>
     </entry>
 </feed>

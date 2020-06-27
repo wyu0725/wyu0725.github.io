@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>简单 Python 爬虫 | 王德福 Wonderful</title>
+<meta name="description" content="吾生也有涯，而知也无涯。 以有涯随无涯，殆已！">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://wyu0725.github.io//favicon.ico?v=1593256999106">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+<link rel="stylesheet" href="https://wyu0725.github.io//styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://wyu0725.github.io/">
+        <img src="https://wyu0725.github.io//images/avatar.png?v=1593256999106" class="site-logo">
+        <h1 class="site-title">王德福 Wonderful</h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/archives" class="site-nav">
+            归档
+          </a>
+        
+      
+        
+          <a href="/tags" class="site-nav">
+            标签
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      吾生也有涯，而知也无涯。 以有涯随无涯，殆已！
+    </div>
+    <div class="site-footer">
+      Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a> | <a class="rss" href="https://wyu0725.github.io//atom.xml" target="_blank">RSS</a>
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">简单 Python 爬虫</h2>
+            <div class="post-date">2020-06-27</div>
+            
+            <div class="post-content">
+              <blockquote>
+<p>想学爬虫很久了，还好一下午搞定了</p>
+<p>主要是参考了这个老哥的博客：<a href="https://morvanzhou.github.io">莫烦 Python</a>，其他的用法都是上网去查查查就可以了</p>
+</blockquote>
+<h1 id="爬虫">爬虫</h1>
+<p>爬虫不仅仅局限于用 Python，其实用 perl 也行，目的就是能够自动的从网上把需要的东西下载下来，Python 的好处是可以直接使用一些集成好的库非常的方便，比如说需要从 Excel 中读取信息，这些直接用 Python 的库非常的方便。</p>
+<h1 id="获取链接">获取链接</h1>
+<p>第一个步骤是找到要下载的链接，一般来说需要自己从一个网站上爬取，这次想开始做的一个原因是 Springer 在疫情期间开放了自己的电子书下载，不下载白不下载。</p>
+<p>薅羊毛的事情国内外都是一样的，<a href="https://hnarayanan.github.io/springer-books/#Engineering">有个老哥</a>整理了电子书链接，里面有个 Excel，但是并不是下载链接，点进去会跳转到 Springer 的说明页面，也就是下面这样，正常点击下载按钮就行了。</p>
+<figure data-type="image" tabindex="1"><img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/Springer_download.png" alt="" loading="lazy"></figure>
+<p>获取链接就很简单了，直接从 Excel 中读取就行了，首先先把 Excel 删减成自己想要的内容，我的 Excel 变成下面的模样了，里面的前三列是需要用来命名文件的，总不希望下载下来的文件是编号吧；第四列是用来分类存文件夹的；第五列就是上面说的 Springer 的链接。</p>
+<figure data-type="image" tabindex="2"><img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/Springer_excel.png" alt="" loading="lazy"></figure>
+<p>下面就开始读 Excel</p>
+<p>首先先安装 xlrd，CentOS 的麻烦就在于权限问题，直接 sudo 了</p>
+<pre><code class="language-bash">pip3 install xlrd
+</code></pre>
+<p>然后就可以开始读 Excel 操作了</p>
+<pre><code class="language-python">wb = xlrd.open_workbook(filename=filelist) # Read excel
+sheet1 = wb.sheet_by_index(0) # Get the first sheet
+row = sheet1.nrows # Get the total row numbers
+row_value = sheet1.row_values(1) # Get the second row content
+</code></pre>
+<p>最好获取行数，免得读出的时候超过了;下面就开始获取需要的信息，比如说第二行就是第一个需要下载的内容</p>
+<h1 id="获取下载链接">获取下载链接</h1>
+<p>上面的 row_value[4] 可以访问到 Springer 的页面，有了这个页面就可以开始干活了。</p>
+<p>首先先把 BeautifulSoup 安装好</p>
+<pre><code class="language-bash">pip3 install beautifulsoup4
+</code></pre>
+<p>然后就开始干活，先是找到链接，然后按照分类创建文件夹，创建文件夹的函数后面会写。</p>
+<p>接下来就是用 urlopen 获得网页的内容，这里一定要用 try... catch 结构，因为链接不一定都是可以访问的，遇到不行的链接就跳过它。</p>
+<pre><code class="language-python">link = row_value[4]
+folder = row_value[3]
+mkfolder(folder)
+save_filename = folder + '/' + row_value[0]+'_'+row_value[1]+'_'+row_value[2]+'.pdf'
+try:
+	html = urlopen(link).read().decode('utf-8')
+except urllib.error.URLError as e:
+	print(e.reason)
+	print('Next file')
+	e_info = 'No.' + str(i) + ' Download ' + save_filename + ' from ' + link + 'failure'
+	print(e_info)
+</code></pre>
+<p>下面就到了 BeautifulSoup 的部分，先是把网页转换成 lxml，然后再用正则表达式找到要的内容，这部分就要看网页代码，找到下载链接的公共部分，比如说这个 pdf 的下载链接都是这样的，都有个 title，一找就找到。</p>
+<pre><code class="language-html">&lt;a href=&quot;/content/pdf/10.1007%2Fb100747.pdf&quot; target=&quot;_blank&quot; class=&quot;c-button c-button--blue c-button__icon-right test-download-book-options test-bookpdf-link&quot; title=&quot;Download this book in PDF format&quot; rel=&quot;noopener&quot; data-track=&quot;click&quot; data-track-action=&quot;Book download - pdf&quot; data-track-label=&quot;&quot;&gt;
+	...
+ &lt;/a&gt;
+</code></pre>
+<pre><code class="language-python">soup = BeautifulSoup(html, features='lxml')
+pdf_link = soup(&quot;a&quot;,{&quot;title&quot;:re.compile('Download this book in PDF format')})
+if(len(pdf_link) == 0):
+	print('Error in get link')
+	print('Line ')
+	print(i)
+	print(link)
+link_name = pdf_link[0]
+</code></pre>
+<h1 id="下载">下载</h1>
+<p>网上提供了三种下载方法，考虑到文件不大，直接用 urlretrieve</p>
+<pre><code class="language-python">link_name = pdf_link[0]
+download_link = 'https://link.springer.com'+link_name['href']
+</code></pre>
+<h1 id="大功告成">大功告成！</h1>
+<p>其实这个可以用来下载会议报告，很多会议都有自己的 indico，用爬虫一跑，可以全部下下来，非常舒爽。</p>
+<h1 id="代码">代码</h1>
+<p>缺啥自己装啥</p>
+<pre><code class="language-python">import os
+import xlrd
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+import urllib
+import re
+
+def download_file(filelist='springer_list.xlsx',start=1,end=30):
+    link_prefix = 'http://link.springer.com'
+    wb = xlrd.open_workbook(filename=filelist)
+    sheet1 = wb.sheet_by_index(0)
+    row = sheet1.nrows
+    pattern = re.compile(r'.*\.pdf')
+    if(end &gt; row):
+        end = row
+        c_info = 'Max file number: '+ str(row)+'. Change to '+str(row)
+        print(c_info)
+    for i in range(start-1,end):
+        row_value = sheet1.row_values(i)
+        link = row_value[4]
+        folder = row_value[3]
+        mkfolder(folder)
+        save_filename = folder + '/' + row_value[0]+'_'+row_value[1]+'_'+row_value[2]+'.pdf'
+        try:
+            html = urlopen(link).read().decode('utf-8')
+        except urllib.error.URLError as e:
+            print(e.reason)
+            print('Next file')
+            e_info = 'No.' + str(i) + ' Download ' + save_filename + ' from ' + link + 'failure'
+            print(e_info)
+            continue
+
+        soup = BeautifulSoup(html, features='lxml')
+        pdf_link = soup(&quot;a&quot;,{&quot;title&quot;:re.compile('Download this book in PDF format')})
+        if(len(pdf_link) == 0):
+            print('Error in get link')
+            print('Line ')
+            print(i)
+            print(link)
+            continue
+        link_name = pdf_link[0]
+        ## result = pattern.findall(link_name)
+        download_link = link_prefix + link_name['href']
+        ss_info = 'No.' + str(i) + ' Download ' + save_filename + ' from ' + download_link
+        print(ss_info)
+        urllib.request.urlretrieve(download_link,save_filename)
+        s_info = 'Download ' + save_filename + ' successfully'
+        print(s_info)
+
+
+def mkfolder(folder_name):
+    folder = os.path.exists(folder_name)
+    if not folder:
+        os.makedirs(folder_name)
+        info = 'Make folder '+folder_name
+        print(info)
+</code></pre>
+<hr>
+<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀主页</a>和公众号<br>
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="" loading="lazy"></p>
+
+            </div>
+            
+              <div class="tag-container">
+                
+                  <a href="https://wyu0725.github.io/tag/felab_skill/" class="tag">
+                    实验室经验
+                  </a>
+                
+              </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://wyu0725.github.io/post/_cpp_get_file_lists/">
+                  <h3 class="post-title">
+                    C++ 获取文件列表
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>
