@@ -1,0 +1,415 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>简单 Python 爬虫 - 王德福 Wonderful</title>
+<link rel="shortcut icon" href="https://wyu0725.github.io//favicon.ico">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css">
+<link rel="stylesheet" href="https://wyu0725.github.io//media/css/tailwind.css">
+<link rel="stylesheet" href="https://wyu0725.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="简单 Python 爬虫 - 王德福 Wonderful - Atom Feed" href="https://wyu0725.github.io//atom.xml">
+
+    
+
+  <meta name="description" content="
+想学爬虫很久了，还好一下午搞定了
+主要是参考了这个老哥的博客：莫烦 Python，其他的用法都是上网去查查查就可以了
+
+爬虫
+爬虫不仅仅局限于用 Python，其实用 perl 也行，目的就是能够自动的从网上把需要的东西下载下来，Pyth..." />
+  <meta property="og:title" content="简单 Python 爬虫 - 王德福 Wonderful">
+  <meta property="og:description" content="
+想学爬虫很久了，还好一下午搞定了
+主要是参考了这个老哥的博客：莫烦 Python，其他的用法都是上网去查查查就可以了
+
+爬虫
+爬虫不仅仅局限于用 Python，其实用 perl 也行，目的就是能够自动的从网上把需要的东西下载下来，Pyth..." />
+  <meta property="og:type" content="articles">
+  <meta property="og:url" content="https://wyu0725.github.io/post/python_scapy_simple/" />
+  <meta property="og:image" content="https://wyu0725.github.io//images/avatar.png">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:width" content="1200">
+  <meta name="twitter:title" content="简单 Python 爬虫 - 王德福 Wonderful">
+  <meta name="twitter:description" content="
+想学爬虫很久了，还好一下午搞定了
+主要是参考了这个老哥的博客：莫烦 Python，其他的用法都是上网去查查查就可以了
+
+爬虫
+爬虫不仅仅局限于用 Python，其实用 perl 也行，目的就是能够自动的从网上把需要的东西下载下来，Pyth...">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://wyu0725.github.io/post/python_scapy_simple/">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+ 
+  
+    <link rel="stylesheet" href="https://wyu0725.github.io//media/css/prism-atom-dark.css">
+  
+
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+  
+</head>
+
+<body>
+  <div class="antialiased flex flex-col min-h-screen" id="app">
+    <a href="https://wyu0725.github.io/" class="fixed top-0 left-0 mt-4 bg-black text-white dark:text-gray-700 dark:bg-yellow-50 dark:hover:bg-black dark:hover:text-white inline-flex p-2 pl-8 hover:text-gray-700 hover:bg-yellow-50 font-bold z-10 transition-fast animated fadeInLeft">
+      王德福 Wonderful
+    </a>
+    <div class="max-w-4xl w-full mx-auto">
+      <div class="shadow-box bg-white dark:bg-gray-600 rounded-lg pt-32 md:pt-64 px-4 md:px-8 pb-8 animated fadeIn mb-8">
+        <h1 class="text-5xl font-semibold leading-normal pb-8 mb-8 border-b-8 border-gray-700">
+          简单 Python 爬虫
+        </h1>
+        
+        <div class="mb-8 flex flex-wrap">
+          <div class="text-gray-400 text-sm mr-4">2020-06-27 · 6 min read</div>
+          
+            <a href="https://wyu0725.github.io/tag/felab_skill/" class="text-gray-700 text-sm border-b-2 border-dotted border-gray-200 hover:border-gray-600 transition-all duration-100 inline-flex mr-2">
+              <i class="ri-hashtag"></i>
+              实验室经验
+            </a>
+          
+        </div>
+        <div class="markdown mb-8" v-pre>
+          <blockquote>
+<p>想学爬虫很久了，还好一下午搞定了</p>
+<p>主要是参考了这个老哥的博客：<a href="https://morvanzhou.github.io">莫烦 Python</a>，其他的用法都是上网去查查查就可以了</p>
+</blockquote>
+<h1 id="爬虫">爬虫</h1>
+<p>爬虫不仅仅局限于用 Python，其实用 perl 也行，目的就是能够自动的从网上把需要的东西下载下来，Python 的好处是可以直接使用一些集成好的库非常的方便，比如说需要从 Excel 中读取信息，这些直接用 Python 的库非常的方便。</p>
+<h1 id="获取链接">获取链接</h1>
+<p>第一个步骤是找到要下载的链接，一般来说需要自己从一个网站上爬取，这次想开始做的一个原因是 Springer 在疫情期间开放了自己的电子书下载，不下载白不下载。</p>
+<p>薅羊毛的事情国内外都是一样的，<a href="https://hnarayanan.github.io/springer-books/#Engineering">有个老哥</a>整理了电子书链接，里面有个 Excel，但是并不是下载链接，点进去会跳转到 Springer 的说明页面，也就是下面这样，正常点击下载按钮就行了。</p>
+<figure data-type="image" tabindex="1"><img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/Springer_download.png" alt="" loading="lazy"></figure>
+<p>获取链接就很简单了，直接从 Excel 中读取就行了，首先先把 Excel 删减成自己想要的内容，我的 Excel 变成下面的模样了，里面的前三列是需要用来命名文件的，总不希望下载下来的文件是编号吧；第四列是用来分类存文件夹的；第五列就是上面说的 Springer 的链接。</p>
+<figure data-type="image" tabindex="2"><img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/Springer_excel.png" alt="" loading="lazy"></figure>
+<p>下面就开始读 Excel</p>
+<p>首先先安装 xlrd，CentOS 的麻烦就在于权限问题，直接 sudo 了</p>
+<pre><code class="language-bash">pip3 install xlrd
+</code></pre>
+<p>然后就可以开始读 Excel 操作了</p>
+<pre><code class="language-python">wb = xlrd.open_workbook(filename=filelist) # Read excel
+sheet1 = wb.sheet_by_index(0) # Get the first sheet
+row = sheet1.nrows # Get the total row numbers
+row_value = sheet1.row_values(1) # Get the second row content
+</code></pre>
+<p>最好获取行数，免得读出的时候超过了;下面就开始获取需要的信息，比如说第二行就是第一个需要下载的内容</p>
+<h1 id="获取下载链接">获取下载链接</h1>
+<p>上面的 row_value[4] 可以访问到 Springer 的页面，有了这个页面就可以开始干活了。</p>
+<p>首先先把 BeautifulSoup 安装好</p>
+<pre><code class="language-bash">pip3 install beautifulsoup4
+</code></pre>
+<p>然后就开始干活，先是找到链接，然后按照分类创建文件夹，创建文件夹的函数后面会写。</p>
+<p>接下来就是用 urlopen 获得网页的内容，这里一定要用 try... catch 结构，因为链接不一定都是可以访问的，遇到不行的链接就跳过它。</p>
+<pre><code class="language-python">link = row_value[4]
+folder = row_value[3]
+mkfolder(folder)
+save_filename = folder + '/' + row_value[0]+'_'+row_value[1]+'_'+row_value[2]+'.pdf'
+try:
+	html = urlopen(link).read().decode('utf-8')
+except urllib.error.URLError as e:
+	print(e.reason)
+	print('Next file')
+	e_info = 'No.' + str(i) + ' Download ' + save_filename + ' from ' + link + 'failure'
+	print(e_info)
+</code></pre>
+<p>下面就到了 BeautifulSoup 的部分，先是把网页转换成 lxml，然后再用正则表达式找到要的内容，这部分就要看网页代码，找到下载链接的公共部分，比如说这个 pdf 的下载链接都是这样的，都有个 title，一找就找到。</p>
+<pre><code class="language-html">&lt;a href=&quot;/content/pdf/10.1007%2Fb100747.pdf&quot; target=&quot;_blank&quot; class=&quot;c-button c-button--blue c-button__icon-right test-download-book-options test-bookpdf-link&quot; title=&quot;Download this book in PDF format&quot; rel=&quot;noopener&quot; data-track=&quot;click&quot; data-track-action=&quot;Book download - pdf&quot; data-track-label=&quot;&quot;&gt;
+	...
+ &lt;/a&gt;
+</code></pre>
+<pre><code class="language-python">soup = BeautifulSoup(html, features='lxml')
+pdf_link = soup(&quot;a&quot;,{&quot;title&quot;:re.compile('Download this book in PDF format')})
+if(len(pdf_link) == 0):
+	print('Error in get link')
+	print('Line ')
+	print(i)
+	print(link)
+link_name = pdf_link[0]
+</code></pre>
+<h1 id="下载">下载</h1>
+<p>网上提供了三种下载方法，考虑到文件不大，直接用 urlretrieve</p>
+<pre><code class="language-python">link_name = pdf_link[0]
+download_link = 'https://link.springer.com'+link_name['href']
+</code></pre>
+<h1 id="大功告成">大功告成！</h1>
+<p>其实这个可以用来下载会议报告，很多会议都有自己的 indico，用爬虫一跑，可以全部下下来，非常舒爽。</p>
+<h1 id="代码">代码</h1>
+<p>缺啥自己装啥</p>
+<pre><code class="language-python">import os
+import xlrd
+from bs4 import BeautifulSoup
+from urllib.request import urlopen
+import urllib
+import re
+
+def download_file(filelist='springer_list.xlsx',start=1,end=30):
+    link_prefix = 'http://link.springer.com'
+    wb = xlrd.open_workbook(filename=filelist)
+    sheet1 = wb.sheet_by_index(0)
+    row = sheet1.nrows
+    pattern = re.compile(r'.*\.pdf')
+    if(end &gt; row):
+        end = row
+        c_info = 'Max file number: '+ str(row)+'. Change to '+str(row)
+        print(c_info)
+    for i in range(start-1,end):
+        row_value = sheet1.row_values(i)
+        link = row_value[4]
+        folder = row_value[3]
+        mkfolder(folder)
+        save_filename = folder + '/' + row_value[0]+'_'+row_value[1]+'_'+row_value[2]+'.pdf'
+        try:
+            html = urlopen(link).read().decode('utf-8')
+        except urllib.error.URLError as e:
+            print(e.reason)
+            print('Next file')
+            e_info = 'No.' + str(i) + ' Download ' + save_filename + ' from ' + link + 'failure'
+            print(e_info)
+            continue
+
+        soup = BeautifulSoup(html, features='lxml')
+        pdf_link = soup(&quot;a&quot;,{&quot;title&quot;:re.compile('Download this book in PDF format')})
+        if(len(pdf_link) == 0):
+            print('Error in get link')
+            print('Line ')
+            print(i)
+            print(link)
+            continue
+        link_name = pdf_link[0]
+        ## result = pattern.findall(link_name)
+        download_link = link_prefix + link_name['href']
+        ss_info = 'No.' + str(i) + ' Download ' + save_filename + ' from ' + download_link
+        print(ss_info)
+        urllib.request.urlretrieve(download_link,save_filename)
+        s_info = 'Download ' + save_filename + ' successfully'
+        print(s_info)
+
+
+def mkfolder(folder_name):
+    folder = os.path.exists(folder_name)
+    if not folder:
+        os.makedirs(folder_name)
+        info = 'Make folder '+folder_name
+        print(info)
+</code></pre>
+<hr>
+<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀主页</a>和公众号<br>
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="" loading="lazy"></p>
+
+        </div>
+        <!-- Share to Twitter, Weibo, Telegram -->
+        <div class="flex items-center">
+          <div class="mr-4 flex items-center">
+            <i class="ri-share-forward-line text-gray-500"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-blue-500 hover:bg-blue-100 dark:hover:bg-gray-600 inline-flex" @click="shareToTwitter">
+            <i class="ri-twitter-line"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-red-500 hover:bg-red-100 dark:hover:bg-gray-600 inline-flex" @click="shareToWeibo">
+            <i class="ri-weibo-line"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-indigo-500 hover:bg-indigo-100 dark:hover:bg-gray-600 inline-flex" @click="shareToTelegram">
+            <i class="ri-telegram-line"></i>
+          </div>
+        </div>
+      </div>
+
+      
+
+      
+
+      <footer class="py-12 text-center px-4 md:px-0" v-pre>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+</footer>
+    </div>
+
+    <!-- TOC Container -->
+    <div class="fixed right-0 bottom-0 mb-16 mr-4 shadow w-8 h-8 rounded-full flex justify-center items-center z-10 cursor-pointer bg-white dark:bg-gray-500 dark:text-gray-200 hover:shadow-lg transition-all animated fadeInRight" @click="showToc = true">
+      <i class="ri-file-list-line"></i>
+    </div>
+
+    <div class="fixed right-0 top-0 bottom-0 overflow-y-auto w-64 bg-white dark:bg-gray-800 p-4 border-l border-gray-100 dark:border-gray-600 z-10 transition-fast" :class="{ '-mr-64': !showToc }">
+      <div class="flex mb-4 justify-end">
+        <div class="w-8 h-8 inline-flex justify-center items-center rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast" @click="showToc = false">
+          <i class="ri-close-line text-lg"></i>
+        </div>
+      </div>
+      <div class="post-toc-container">
+        <ul class="markdownIt-TOC">
+<li><a href="#%E7%88%AC%E8%99%AB">爬虫</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E9%93%BE%E6%8E%A5">获取链接</a></li>
+<li><a href="#%E8%8E%B7%E5%8F%96%E4%B8%8B%E8%BD%BD%E9%93%BE%E6%8E%A5">获取下载链接</a></li>
+<li><a href="#%E4%B8%8B%E8%BD%BD">下载</a></li>
+<li><a href="#%E5%A4%A7%E5%8A%9F%E5%91%8A%E6%88%90">大功告成！</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81">代码</a></li>
+</ul>
+
+      </div>
+    </div>
+
+    <!-- Back to top -->
+    <div class="fixed right-0 bottom-0 mb-4 mr-4 shadow w-8 h-8 rounded-full flex justify-center items-center z-10 cursor-pointer bg-white hover:shadow-lg transition-all dark:bg-gray-500 dark:text-gray-200" @click="backToUp" v-show="scrolled">
+      <i class="ri-arrow-up-line"></i>
+    </div>
+  </div>
+
+  <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+  <!-- Background of PhotoSwipe. 
+        It's a separate element as animating opacity is faster than rgba(). -->
+  <div class="pswp__bg">
+  </div>
+  <!-- Slides wrapper with overflow:hidden. -->
+  <div class="pswp__scroll-wrap">
+    <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+    <div class="pswp__container">
+      <div class="pswp__item">
+      </div>
+      <div class="pswp__item">
+      </div>
+      <div class="pswp__item">
+      </div>
+    </div>
+    <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+    <div class="pswp__ui pswp__ui--hidden">
+      <div class="pswp__top-bar">
+        <!--  Controls are self-explanatory. Order can be changed. -->
+        <div class="pswp__counter">
+        </div>
+        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+        <!-- element will get class pswp__preloader--active when preloader is running -->
+        <div class="pswp__preloader">
+          <div class="pswp__preloader__icn">
+            <div class="pswp__preloader__cut">
+              <div class="pswp__preloader__donut">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div class="pswp__share-tooltip">
+        </div>
+      </div>
+      <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+      </button>
+      <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+      </button>
+      <div class="pswp__caption">
+        <div class="pswp__caption__center">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://wyu0725.github.io//media/scripts/main.js"></script>
+  
+  <!-- Code Highlight -->
+  
+    <script src="https://wyu0725.github.io//media/prism.js"></script>
+    <script>
+      Prism.highlightAll()
+    </script>
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+  <script>
+    //拿到预览框架，也就是上面的html代码
+    var pswpElement = document.querySelectorAll('.pswp')[0];
+    //定义图片数组变量
+    var imgitems;
+    /**
+    * 用于显示预览界面
+    * @param index 图片数组下标
+    */
+    function viewImg(index) {
+      //其它选项这里不做过多阐述，详情见官网
+      var pswpoptions = {
+        index: parseInt(index, 10), // 开始幻灯片索引。0是第一张幻灯片。必须是整数，而不是字符串。
+        bgOpacity: 0.7, // 背景透明度，0-1
+        maxSpreadZoom: 3, // 缩放级别，不要太大
+      };
+      //初始化并打开PhotoSwipe，pswpElement对应上面预览框架，PhotoSwipeUI_Default为皮肤，imgitems为图片数组，pswpoptions为选项
+      var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, imgitems, pswpoptions);
+      gallery.init()
+    }
+    /**
+    * 用于添加图片点击事件
+    * @param img 图片元素
+    * @param index 所属下标（在imgitems中的位置）
+    */
+    function addImgClick(img, index) {
+      img.onclick = function() {
+        viewImg(index)
+      }
+    }
+    /**
+    * 轮询所有图片，获取src、width、height等数据，加入imgitems，并给图片元素添加事件
+    * 最好在onload中执行该方法，本站因放在最底部，所以直接初始化
+    * 异步加载图片可在图片元素创建完成后调用此方法
+    */
+    function initImg() {
+      //重置图片数组
+      imgitems = [];
+      //查找class:markdown 下的所有img元素并遍历
+      var imgs = document.querySelectorAll('.markdown img');
+      for (var i = 0; i < imgs.length; i++) {
+        var img = imgs[i];
+        //本站相册初始为loading图片，真实图片放在data-src
+        var ds = img.getAttribute("data-src");
+        //创建image对象，用于获取图片宽高
+        var imgtemp = new Image();
+        //判断是否存在data-src
+        if (ds != null && ds.length > 0) {
+          imgtemp.src = ds
+        } else {
+          imgtemp.src = img.src
+        }
+        //判断是否存在缓存
+        if (imgtemp.complete) {
+          var imgobj = {
+            "src": imgtemp.src,
+            "w": imgtemp.width,
+            "h": imgtemp.height,
+          };
+          imgitems[i] = imgobj;
+          addImgClick(img, i);
+        } else {
+          console.log('进来了2')
+          imgtemp.index = i;
+          imgtemp.img = img;
+          imgtemp.onload = function() {
+            var imgobj = {
+              "src": this.src,
+              "w": this.width,
+              "h": this.height,
+            };
+            //不要使用push，因为onload前后顺序会不同
+            imgitems[this.index] = imgobj
+            //添加点击事件
+            addImgClick(this.img, this.index);
+          }
+        }
+      }
+    }
+    //初始化
+    initImg();
+  </script>
+  
+  
+</body>
+
+</html>

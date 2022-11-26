@@ -1,0 +1,504 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title># Git 简单使用手册 - 王德福 Wonderful</title>
+<link rel="shortcut icon" href="https://wyu0725.github.io//favicon.ico">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css">
+<link rel="stylesheet" href="https://wyu0725.github.io//media/css/tailwind.css">
+<link rel="stylesheet" href="https://wyu0725.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="# Git 简单使用手册 - 王德福 Wonderful - Atom Feed" href="https://wyu0725.github.io//atom.xml">
+
+    
+
+  <meta name="description" content="简单使用手册，简单介绍多人使用 GitHub 的步骤，详细教程见这个博客
+GitHub 教程
+注册账号
+首先要有个账号，注册一个即可。[可以用学校邮箱注册，这样可以去 GitHub Education
+package 申请学生账号，有许多好..." />
+  <meta property="og:title" content="# Git 简单使用手册 - 王德福 Wonderful">
+  <meta property="og:description" content="简单使用手册，简单介绍多人使用 GitHub 的步骤，详细教程见这个博客
+GitHub 教程
+注册账号
+首先要有个账号，注册一个即可。[可以用学校邮箱注册，这样可以去 GitHub Education
+package 申请学生账号，有许多好..." />
+  <meta property="og:type" content="articles">
+  <meta property="og:url" content="https://wyu0725.github.io/post/git_simple_guide/" />
+  <meta property="og:image" content="https://wyu0725.github.io//images/avatar.png">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:width" content="1200">
+  <meta name="twitter:title" content="# Git 简单使用手册 - 王德福 Wonderful">
+  <meta name="twitter:description" content="简单使用手册，简单介绍多人使用 GitHub 的步骤，详细教程见这个博客
+GitHub 教程
+注册账号
+首先要有个账号，注册一个即可。[可以用学校邮箱注册，这样可以去 GitHub Education
+package 申请学生账号，有许多好...">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://wyu0725.github.io/post/git_simple_guide/">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+ 
+  
+    <link rel="stylesheet" href="https://wyu0725.github.io//media/css/prism-atom-dark.css">
+  
+
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+  
+</head>
+
+<body>
+  <div class="antialiased flex flex-col min-h-screen" id="app">
+    <a href="https://wyu0725.github.io/" class="fixed top-0 left-0 mt-4 bg-black text-white dark:text-gray-700 dark:bg-yellow-50 dark:hover:bg-black dark:hover:text-white inline-flex p-2 pl-8 hover:text-gray-700 hover:bg-yellow-50 font-bold z-10 transition-fast animated fadeInLeft">
+      王德福 Wonderful
+    </a>
+    <div class="max-w-4xl w-full mx-auto">
+      <div class="shadow-box bg-white dark:bg-gray-600 rounded-lg pt-32 md:pt-64 px-4 md:px-8 pb-8 animated fadeIn mb-8">
+        <h1 class="text-5xl font-semibold leading-normal pb-8 mb-8 border-b-8 border-gray-700">
+          # Git 简单使用手册
+        </h1>
+        
+        <div class="mb-8 flex flex-wrap">
+          <div class="text-gray-400 text-sm mr-4">2019-04-18 · 10 min read</div>
+          
+            <a href="https://wyu0725.github.io/tag/felab_skill/" class="text-gray-700 text-sm border-b-2 border-dotted border-gray-200 hover:border-gray-600 transition-all duration-100 inline-flex mr-2">
+              <i class="ri-hashtag"></i>
+              实验室经验
+            </a>
+          
+        </div>
+        <div class="markdown mb-8" v-pre>
+          <p>简单使用手册，简单介绍多人使用 GitHub 的步骤，详细教程见<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">这个博客</a></p>
+<h1 id="github-教程">GitHub 教程</h1>
+<h2 id="注册账号">注册账号</h2>
+<p>首先要有个账号，注册一个即可。[可以用学校邮箱注册，这样可以去 <a href="https://education.github.com/pack">GitHub Education<br>
+package </a>申请学生账号，有许多好处，比如免费的 pro GitHub, Digital<br>
+Ocean 50刀优惠券。不想折腾的话，这段话略去]</p>
+<h2 id="校内无网络通工作">校内无网络通工作</h2>
+<p>考虑到某些原因，推到GitHub上会很慢，从GitHub上clone也会很慢，最好的办法是从校内转接一次。先去<a href="https://git.lug.ustc.edu.cn">USTC Linux User Group - GitLab</a> 注册个帐号，然后从Create project中点击Import project，就可以从GitHub先把工程导到科大服务器上，最后再clone下来，平时没事儿可以用科大服务器作为主要同步源，隔长一点时间再推到GitHub上，毕竟多一个备份多一份保险！</p>
+<h2 id="下载客户端">下载客户端</h2>
+<p>然后去下载<a href="https://desktop.github.com/">客户端</a>，下载之后安装好，同时也把 <a href="https://git-scm.com/">Git </a>下载下来，GitHub Desktop 是在 Git 的基础上开发的一个可视化的客户端，大部分时候还是比较好用的，但是出现问题和冲突的时候还是要 Git Bash 来处理。</p>
+<h2 id="登陆和-clone">登陆和 Clone</h2>
+<p>安装好之后先登陆，然后把工程给 Clone 下来，当然私有的工程需要让创建者加入协作列表，注意如果是合作项目不要 fork，因为 fork 之后就变成自己的项目了，就不好协作了，客户端 clone 的办法如下图所示。<br>
+Clone 会比较久，倒杯茶，如果网络状态不好的话会失败，失败了再来</p>
+<figure data-type="image" tabindex="1"><img src="https://cdn.nlark.com/yuque/0/2019/gif/209359/1555595151447-11c14880-9030-4b6a-8224-99bd2d801720.gif#align=left&amp;display=inline&amp;height=511&amp;name=GitHubClone.gif&amp;originHeight=658&amp;originWidth=960&amp;size=855090&amp;status=done&amp;style=none&amp;width=746" alt="GitHubClone.gif" loading="lazy"></figure>
+<h2 id="创建自己的-branch">创建自己的 branch</h2>
+<p>Clone 好了之后先创建一个自己的 branch，branch 的意思是自己的一个分支，分支示意图见下图 (图片来自<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/0013758410364457b9e3d821f4244beb0fd69c61a185ae0000">廖雪峰博客分支管理这一章</a>)，就是说整个 master 相当于项目的总分支，最终的版本都体现在 master 上，然后创建一个公共的 dev 分支，这个分支是用来交流用的，等到一定程度了再把 dev 分支的内容合并到 master 上，按照软件设计的流程来说一般是发布一个版本的时候才会合并一次到 master 上，也就是 master 上要是一个可用的版本。<br>
+<img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1555595269159-2949c2b5-c6d1-44f5-8b8c-1a1e4baa6a0f.png#align=left&amp;display=inline&amp;height=125&amp;originHeight=125&amp;originWidth=498&amp;size=0&amp;status=done&amp;style=none&amp;width=498" alt="" loading="lazy"></p>
+<p>每个人创建一个自己的分支，创建方法如下图所示 Branch -&gt; New branch 输入名字完成，创建好之后就可以在这个分支上工作了，<strong>每次工作的时候都要检查 GitHub 的这个branch 是不是在自己的分支上</strong>，当然文档的修改除外，文档的修改直接在 master 上做，这样大家才能看到。选在这个分支上之后，所有的提交是提交在这个分支上的。</p>
+<figure data-type="image" tabindex="2"><img src="https://cdn.nlark.com/yuque/0/2019/gif/209359/1555638634994-6efadd19-a175-435b-bc59-9d981d35e6c7.gif#align=left&amp;display=inline&amp;height=376&amp;name=NewBranch.gif&amp;originHeight=651&amp;originWidth=1290&amp;size=367217&amp;status=done&amp;style=none&amp;width=746" alt="NewBranch.gif" loading="lazy"></figure>
+<h2 id="提交修改">提交修改</h2>
+<p>每次做了修改之后就可以在 GitHub Desktop 上看到自己修改的内容，增加和删去的内容都会显示出来，然后再左边填上要提交的 commit，注意不要写没有意义的 commit， 这样子以后查看才会方便。</p>
+<figure data-type="image" tabindex="3"><img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1555638780959-f59f952f-a517-4436-84b0-2ce6fe8a7a12.png#align=left&amp;display=inline&amp;height=380&amp;name=GitStatus.png&amp;originHeight=660&amp;originWidth=1297&amp;size=87623&amp;status=done&amp;style=none&amp;width=746" alt="GitStatus.png" loading="lazy"></figure>
+<p>删去的内容用红色标记，添加的内容用绿色标记<br>
+<img src="https://cdn.nlark.com/yuque/0/2019/gif/209359/1555639022914-fdc7dbd4-7a76-49c2-8fe8-895c538dfe6a.gif#align=left&amp;display=inline&amp;height=376&amp;name=Commit.gif&amp;originHeight=651&amp;originWidth=1290&amp;size=290763&amp;status=done&amp;style=none&amp;width=746" alt="Commit.gif" loading="lazy"></p>
+<h2 id="自己的分支没必要推送">自己的分支没必要推送</h2>
+<p>提交了修改之后，就算是完成了，客户端右上角会一直提示推送到云端，其实个人的分支没有必要推送到云端，因为推送到云端之后别人就可以看到，也可以做修改，只是说没有必要推送，推送也没有关系，只是推送了一次之后每次都要推送。</p>
+<h2 id="merge-到-dev">Merge 到 dev</h2>
+<p>上面的过程完成了个人开发的流程，下一步就是要进行协作开发的流程了，我们创建了一个叫 dev 的分支，这个分支的作用就是把大家的代码都合并到一起，然后推送到云端，合并的办法如下图所示，现在 branch 中切换到 dev 分支，然后再 branch 中选择 merge，然后选择自己的分支，merge 之后再推送到云端即可，这样别人同步之后就可以在看到 dev 上的修改了。</p>
+<figure data-type="image" tabindex="4"><img src="https://cdn.nlark.com/yuque/0/2019/gif/209359/1555639153230-8174ef0d-7226-4b09-bd18-b8ec53245a0d.gif#align=left&amp;display=inline&amp;height=376&amp;name=Merge2dev.gif&amp;originHeight=651&amp;originWidth=1290&amp;size=904897&amp;status=done&amp;style=none&amp;width=746" alt="Merge2dev.gif" loading="lazy"></figure>
+<p>有重大发布的时候，切换到 master 分支，然后再 master 分支 merge dev 分支，然后推送到云端即可。<br>
+一般来说推送到云端之后再从 dev merge 一次 master 这样保证 master 和 dev 处在同一个状态。</p>
+<figure data-type="image" tabindex="5"><img src="https://cdn.nlark.com/yuque/0/2019/gif/209359/1555639305414-a5715922-2f9c-46ef-be01-90ee34d92bab.gif#align=left&amp;display=inline&amp;height=376&amp;name=UpdateFromMaster.gif&amp;originHeight=651&amp;originWidth=1290&amp;size=295151&amp;status=done&amp;style=none&amp;width=746" alt="UpdateFromMaster.gif" loading="lazy"></figure>
+<p>这里基本操作就算是完了，如果要把别人推送到 dev 分支上的内容同步到自己的分支，那就反过来，先切换到自己的分支，然后 merge from dev， 就可以完成同步。</p>
+<hr>
+<h1 id="git-使用总则">Git 使用总则</h1>
+<ol>
+<li>master 为发布分支，不要在 master 上进行修改</li>
+<li>创建 dev 分支，为开发者共享的分支</li>
+<li>每个开发者以自己的名字创建一个分支，做独立的修改</li>
+<li>所有的更新 merge 到 dev 上，merge 的时候禁用 Fast-forward，即 git merge --no-ff -m &quot;summary &quot; &lt;branch_name&gt;</li>
+<li>每当完成一个成熟的功能之后再 merge 到 master上</li>
+<li>不要使用没有意义的 Summary 和 Commit</li>
+</ol>
+<hr>
+<h1 id=""></h1>
+<h1 id="推送到多个远程仓库">推送到多个远程仓库</h1>
+<p>git remote add oschina https://git.oschina.net/zxbetter/test.git<br>
+<a href="https://segmentfault.com/a/1190000011294144">https://segmentfault.com/a/1190000011294144</a><br>
+配置多个 SSH Key<a href="https://www.awaimai.com/2200.html">https://www.awaimai.com/2200.html</a></p>
+<h1 id="一些问题">一些问题</h1>
+<h2 id="git-status-中文不显示">git status 中文不显示</h2>
+<p>参见<a href="http://xstarcd.github.io/wiki/shell/git_chinese.html">这个网址</a>，执行下面的配置</p>
+<pre><code class="language-bash">#不对0x80以上的字符进行quote，解决git status/commit时中文文件名乱码
+git config --global core.quotepath false
+</code></pre>
+<h1 id="-2"></h1>
+<h1 id="git-bash-笔记">Git Bash 笔记</h1>
+<p>下边是 Git Bash 的一些笔记，不详细说了，详见博客</p>
+<h2 id="集中式-vs-分布式">集中式 vs 分布式</h2>
+<p>集中式版本控制系统是将版本库放在中央服务器，然后干活的时候从中央服务器获取最新版本，干完活之后再把自己的内容推送给中央服务器，缺点就是必须联网才能工作，而且要求网速够快，不然要等很久。<br>
+分布式是每个人的电脑里都有一个版本库，然后可以把自己的版本推送给对方，相互之间可以看到对方的版本，通常也会设置一个中央服务器，方便交换大家的修改</p>
+<h2 id="安装">安装</h2>
+<p>sudo<br>
+apt-get install git<br>
+<a href="https://git-scm.com/downloads">其他平台</a></p>
+<h2 id="设置用户">设置用户</h2>
+<p>每个教程都要求设置一个 global 的用户名和路径，先设上<br>
+git config --global user.name &quot;Your Name&quot;<br>
+git config --global user.email &quot;email@example.com&quot;</p>
+<h2 id="创建版本库-repository">创建版本库 repository</h2>
+<p>创建文件夹<br>
+mkdir learngit<br>
+cd learngit</p>
+<p>创建仓库<br>
+git init</p>
+<h2 id="添加文件">添加文件</h2>
+<p>git add &lt;filename.filetype&gt;<br>
+git commit -m <summary></p>
+<h2 id="查看状态">查看状态</h2>
+<p>git status<br>
+git diff <filename></p>
+<h2 id="版本回退">版本回退</h2>
+<p>通过 git log 查看提交记录<br>
+然后通过 git reset --hard HEAD^ 来进行回退到上个版本，HEAD^^ 就是上上个， HEAD~100 就是往前 100 个版本<br>
+也可以 git reset --hard &lt;versin_id&gt;</p>
+<p>git reflog 记录了每次操作的命令</p>
+<h2 id="工作区和暂存区">工作区和暂存区</h2>
+<p>一幅图说明问题，图片还是来自<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/0013745374151782eb658c5a5ca454eaa451661275886c6000">廖雪峰博客</a><br>
+<img src="https://cdn.nlark.com/yuque/0/2019/jpeg/209359/1555595449695-05a3b090-5081-4b2f-9309-52d2d6011e9a.jpeg#align=left&amp;display=inline&amp;height=234&amp;originHeight=234&amp;originWidth=458&amp;size=0&amp;status=done&amp;style=none&amp;width=458" alt="" loading="lazy"></p>
+<p>git 管理的是 add，每次修改之后 add 将文件添加到 stage 里面，然后 commit 会将修改添加到 master 里面</p>
+<h2 id="丢弃内容">丢弃内容</h2>
+<p>工作区丢弃 git checkout --<fielname><br>
+已经提交到了暂存区 git reset HEAD <fielname> 回到工作区，然后再 git checkout --<filename><br>
+提交到版本库，就只能用版本回退</p>
+<h2 id="删除文件">删除文件</h2>
+<p>git rm <filemame><br>
+git commit -m <summary><br>
+即使手动删除了也要 rm 一次</p>
+<h2 id="远程仓库">远程仓库</h2>
+<h3 id="创建密钥">创建密钥</h3>
+<p>ssh-keygen<br>
+-t rsa -C &quot;youremail@example.com&quot;</p>
+<h3 id="关联远程仓库">关联远程仓库</h3>
+<p>git<br>
+remote add origin git@server-name:path/repo-name.git</p>
+<h3 id="第一次推送">第一次推送</h3>
+<p>git<br>
+push -u origin master</p>
+<h3 id="之后每次推送">之后每次推送</h3>
+<p>git<br>
+push origin master</p>
+<h3 id="clone-仓库">clone 仓库</h3>
+<p>git clone git@server-name:path/repo-name.git</p>
+<h2 id="分支管理">分支管理</h2>
+<h3 id="常规操作">常规操作</h3>
+<p>分支的作用在于可以创建个人的独立版本，自己完全修改好之后再推送给别人，然后合并到原来的分支上，自己创建的分支别人是看不见的，还是在原来的分支上干活。</p>
+<p>这一章的内容特别多，一定要看<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000/001375840038939c291467cc7c747b1810aab2fb8863508000">教程</a></p>
+<h3 id="创建新分支">创建新分支</h3>
+<p>git checkout -b &lt;branch_name&gt;<br>
+或者<br>
+git branch &lt;branch_name&gt;<br>
+git checkout &lt;branch_name&gt;</p>
+<h3 id="查看分支">查看分支</h3>
+<p>git branch<br>
+当前分支上会打*<br>
+在新的分支上创建修改的内容不会影响到原有的分支</p>
+<h3 id="合并分支">合并分支</h3>
+<p>git merge &lt;branch_name&gt;<br>
+会提示合并模式，用的是 Fast-forward 也就是快进模式，直接把 master 指向当前的分支</p>
+<h3 id="删除分支">删除分支</h3>
+<p>git branch -d &lt;branch_name&gt;</p>
+<h3 id="冲突解决">冲突解决</h3>
+<p>当两个分支同时修改了文件之后，再 merge 就会提示冲突，这个时候就要手动解决冲突，merge 之后会在冲突文件里面填上冲突的部分，然后对其进行合并和修改即可<br>
+合并冲突之后再 add 然后 commit<br>
+可以用 git log --graph 来查看分支合并图<br>
+git<br>
+log --graph --pretty=oneline --abbrev-commit<br>
+注意，合并了冲突之后是在当前的 branch 里面，其他的 branch 还是照旧没有修改</p>
+<h3 id="bug-分支">bug 分支</h3>
+<p>在写工作区的时候常常会去修复 bug，这个时候可以先把现有的工作区给存起来<br>
+这里为什么要存起来是因为如果写了一些东西，但是还不想提交，那么如果不存就切换到其他的分支去了，会出现一个问题：当前写的东西跑到其他分支去了。<br>
+使用的时候发现一个问题，就是只有一个文件添加的时候没有办法 stash，要先 add 到 stage，所以我理解的是存的是 stage 的东西<br>
+git stash<br>
+然后这些改动就都看不见了，就可以愉快的去修 bug 了<br>
+修完了再弹出<br>
+git stash pop<br>
+或者<br>
+git stash apply<br>
+然后删除<br>
+git stash drop</p>
+<p>查看存储状态<br>
+git stash list</p>
+<h3 id="分支管理策略">分支管理策略</h3>
+<p>上面的都是一些技术上的问题，现在进入了方法的层次，一个合理的分支应当是如下图所示<br>
+master 应当是相当稳定的，仅仅用来发布新的版本，所有的改动都应该在 dev 上进行<br>
+ 图片再上面，就是有 master 的那个分支管理</p>
+<p>注意一定要从下往上合并，合并的时候使用这样的语法<br>
+git<br>
+merge --no-ff -m &quot;summary &quot; &lt;branch_name&gt;</p>
+<hr>
+<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号<br>
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR" loading="lazy"></p>
+<blockquote>
+<p>本文采用 BY-NC 协议<br>
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/by-nc.png" alt="" loading="lazy"><br>
+署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
+</blockquote>
+
+        </div>
+        <!-- Share to Twitter, Weibo, Telegram -->
+        <div class="flex items-center">
+          <div class="mr-4 flex items-center">
+            <i class="ri-share-forward-line text-gray-500"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-blue-500 hover:bg-blue-100 dark:hover:bg-gray-600 inline-flex" @click="shareToTwitter">
+            <i class="ri-twitter-line"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-red-500 hover:bg-red-100 dark:hover:bg-gray-600 inline-flex" @click="shareToWeibo">
+            <i class="ri-weibo-line"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-indigo-500 hover:bg-indigo-100 dark:hover:bg-gray-600 inline-flex" @click="shareToTelegram">
+            <i class="ri-telegram-line"></i>
+          </div>
+        </div>
+      </div>
+
+      
+
+      
+
+      <footer class="py-12 text-center px-4 md:px-0" v-pre>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+</footer>
+    </div>
+
+    <!-- TOC Container -->
+    <div class="fixed right-0 bottom-0 mb-16 mr-4 shadow w-8 h-8 rounded-full flex justify-center items-center z-10 cursor-pointer bg-white dark:bg-gray-500 dark:text-gray-200 hover:shadow-lg transition-all animated fadeInRight" @click="showToc = true">
+      <i class="ri-file-list-line"></i>
+    </div>
+
+    <div class="fixed right-0 top-0 bottom-0 overflow-y-auto w-64 bg-white dark:bg-gray-800 p-4 border-l border-gray-100 dark:border-gray-600 z-10 transition-fast" :class="{ '-mr-64': !showToc }">
+      <div class="flex mb-4 justify-end">
+        <div class="w-8 h-8 inline-flex justify-center items-center rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast" @click="showToc = false">
+          <i class="ri-close-line text-lg"></i>
+        </div>
+      </div>
+      <div class="post-toc-container">
+        <ul class="markdownIt-TOC">
+<li><a href="#github-%E6%95%99%E7%A8%8B">GitHub 教程</a>
+<ul>
+<li><a href="#%E6%B3%A8%E5%86%8C%E8%B4%A6%E5%8F%B7">注册账号</a></li>
+<li><a href="#%E6%A0%A1%E5%86%85%E6%97%A0%E7%BD%91%E7%BB%9C%E9%80%9A%E5%B7%A5%E4%BD%9C">校内无网络通工作</a></li>
+<li><a href="#%E4%B8%8B%E8%BD%BD%E5%AE%A2%E6%88%B7%E7%AB%AF">下载客户端</a></li>
+<li><a href="#%E7%99%BB%E9%99%86%E5%92%8C-clone">登陆和 Clone</a></li>
+<li><a href="#%E5%88%9B%E5%BB%BA%E8%87%AA%E5%B7%B1%E7%9A%84-branch">创建自己的 branch</a></li>
+<li><a href="#%E6%8F%90%E4%BA%A4%E4%BF%AE%E6%94%B9">提交修改</a></li>
+<li><a href="#%E8%87%AA%E5%B7%B1%E7%9A%84%E5%88%86%E6%94%AF%E6%B2%A1%E5%BF%85%E8%A6%81%E6%8E%A8%E9%80%81">自己的分支没必要推送</a></li>
+<li><a href="#merge-%E5%88%B0-dev">Merge 到 dev</a></li>
+</ul>
+</li>
+<li><a href="#git-%E4%BD%BF%E7%94%A8%E6%80%BB%E5%88%99">Git 使用总则</a></li>
+<li></li>
+<li><a href="#%E6%8E%A8%E9%80%81%E5%88%B0%E5%A4%9A%E4%B8%AA%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93">推送到多个远程仓库</a></li>
+<li><a href="#%E4%B8%80%E4%BA%9B%E9%97%AE%E9%A2%98">一些问题</a>
+<ul>
+<li><a href="#git-status-%E4%B8%AD%E6%96%87%E4%B8%8D%E6%98%BE%E7%A4%BA">git status 中文不显示</a></li>
+</ul>
+</li>
+<li></li>
+<li><a href="#git-bash-%E7%AC%94%E8%AE%B0">Git Bash 笔记</a>
+<ul>
+<li><a href="#%E9%9B%86%E4%B8%AD%E5%BC%8F-vs-%E5%88%86%E5%B8%83%E5%BC%8F">集中式 vs 分布式</a></li>
+<li><a href="#%E5%AE%89%E8%A3%85">安装</a></li>
+<li><a href="#%E8%AE%BE%E7%BD%AE%E7%94%A8%E6%88%B7">设置用户</a></li>
+<li><a href="#%E5%88%9B%E5%BB%BA%E7%89%88%E6%9C%AC%E5%BA%93-repository">创建版本库 repository</a></li>
+<li><a href="#%E6%B7%BB%E5%8A%A0%E6%96%87%E4%BB%B6">添加文件</a></li>
+<li><a href="#%E6%9F%A5%E7%9C%8B%E7%8A%B6%E6%80%81">查看状态</a></li>
+<li><a href="#%E7%89%88%E6%9C%AC%E5%9B%9E%E9%80%80">版本回退</a></li>
+<li><a href="#%E5%B7%A5%E4%BD%9C%E5%8C%BA%E5%92%8C%E6%9A%82%E5%AD%98%E5%8C%BA">工作区和暂存区</a></li>
+<li><a href="#%E4%B8%A2%E5%BC%83%E5%86%85%E5%AE%B9">丢弃内容</a></li>
+<li><a href="#%E5%88%A0%E9%99%A4%E6%96%87%E4%BB%B6">删除文件</a></li>
+<li><a href="#%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93">远程仓库</a>
+<ul>
+<li><a href="#%E5%88%9B%E5%BB%BA%E5%AF%86%E9%92%A5">创建密钥</a></li>
+<li><a href="#%E5%85%B3%E8%81%94%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93">关联远程仓库</a></li>
+<li><a href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E6%8E%A8%E9%80%81">第一次推送</a></li>
+<li><a href="#%E4%B9%8B%E5%90%8E%E6%AF%8F%E6%AC%A1%E6%8E%A8%E9%80%81">之后每次推送</a></li>
+<li><a href="#clone-%E4%BB%93%E5%BA%93">clone 仓库</a></li>
+</ul>
+</li>
+<li><a href="#%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86">分支管理</a>
+<ul>
+<li><a href="#%E5%B8%B8%E8%A7%84%E6%93%8D%E4%BD%9C">常规操作</a></li>
+<li><a href="#%E5%88%9B%E5%BB%BA%E6%96%B0%E5%88%86%E6%94%AF">创建新分支</a></li>
+<li><a href="#%E6%9F%A5%E7%9C%8B%E5%88%86%E6%94%AF">查看分支</a></li>
+<li><a href="#%E5%90%88%E5%B9%B6%E5%88%86%E6%94%AF">合并分支</a></li>
+<li><a href="#%E5%88%A0%E9%99%A4%E5%88%86%E6%94%AF">删除分支</a></li>
+<li><a href="#%E5%86%B2%E7%AA%81%E8%A7%A3%E5%86%B3">冲突解决</a></li>
+<li><a href="#bug-%E5%88%86%E6%94%AF">bug 分支</a></li>
+<li><a href="#%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86%E7%AD%96%E7%95%A5">分支管理策略</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+      </div>
+    </div>
+
+    <!-- Back to top -->
+    <div class="fixed right-0 bottom-0 mb-4 mr-4 shadow w-8 h-8 rounded-full flex justify-center items-center z-10 cursor-pointer bg-white hover:shadow-lg transition-all dark:bg-gray-500 dark:text-gray-200" @click="backToUp" v-show="scrolled">
+      <i class="ri-arrow-up-line"></i>
+    </div>
+  </div>
+
+  <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+  <!-- Background of PhotoSwipe. 
+        It's a separate element as animating opacity is faster than rgba(). -->
+  <div class="pswp__bg">
+  </div>
+  <!-- Slides wrapper with overflow:hidden. -->
+  <div class="pswp__scroll-wrap">
+    <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+    <div class="pswp__container">
+      <div class="pswp__item">
+      </div>
+      <div class="pswp__item">
+      </div>
+      <div class="pswp__item">
+      </div>
+    </div>
+    <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+    <div class="pswp__ui pswp__ui--hidden">
+      <div class="pswp__top-bar">
+        <!--  Controls are self-explanatory. Order can be changed. -->
+        <div class="pswp__counter">
+        </div>
+        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+        <!-- element will get class pswp__preloader--active when preloader is running -->
+        <div class="pswp__preloader">
+          <div class="pswp__preloader__icn">
+            <div class="pswp__preloader__cut">
+              <div class="pswp__preloader__donut">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div class="pswp__share-tooltip">
+        </div>
+      </div>
+      <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+      </button>
+      <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+      </button>
+      <div class="pswp__caption">
+        <div class="pswp__caption__center">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://wyu0725.github.io//media/scripts/main.js"></script>
+  
+  <!-- Code Highlight -->
+  
+    <script src="https://wyu0725.github.io//media/prism.js"></script>
+    <script>
+      Prism.highlightAll()
+    </script>
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+  <script>
+    //拿到预览框架，也就是上面的html代码
+    var pswpElement = document.querySelectorAll('.pswp')[0];
+    //定义图片数组变量
+    var imgitems;
+    /**
+    * 用于显示预览界面
+    * @param index 图片数组下标
+    */
+    function viewImg(index) {
+      //其它选项这里不做过多阐述，详情见官网
+      var pswpoptions = {
+        index: parseInt(index, 10), // 开始幻灯片索引。0是第一张幻灯片。必须是整数，而不是字符串。
+        bgOpacity: 0.7, // 背景透明度，0-1
+        maxSpreadZoom: 3, // 缩放级别，不要太大
+      };
+      //初始化并打开PhotoSwipe，pswpElement对应上面预览框架，PhotoSwipeUI_Default为皮肤，imgitems为图片数组，pswpoptions为选项
+      var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, imgitems, pswpoptions);
+      gallery.init()
+    }
+    /**
+    * 用于添加图片点击事件
+    * @param img 图片元素
+    * @param index 所属下标（在imgitems中的位置）
+    */
+    function addImgClick(img, index) {
+      img.onclick = function() {
+        viewImg(index)
+      }
+    }
+    /**
+    * 轮询所有图片，获取src、width、height等数据，加入imgitems，并给图片元素添加事件
+    * 最好在onload中执行该方法，本站因放在最底部，所以直接初始化
+    * 异步加载图片可在图片元素创建完成后调用此方法
+    */
+    function initImg() {
+      //重置图片数组
+      imgitems = [];
+      //查找class:markdown 下的所有img元素并遍历
+      var imgs = document.querySelectorAll('.markdown img');
+      for (var i = 0; i < imgs.length; i++) {
+        var img = imgs[i];
+        //本站相册初始为loading图片，真实图片放在data-src
+        var ds = img.getAttribute("data-src");
+        //创建image对象，用于获取图片宽高
+        var imgtemp = new Image();
+        //判断是否存在data-src
+        if (ds != null && ds.length > 0) {
+          imgtemp.src = ds
+        } else {
+          imgtemp.src = img.src
+        }
+        //判断是否存在缓存
+        if (imgtemp.complete) {
+          var imgobj = {
+            "src": imgtemp.src,
+            "w": imgtemp.width,
+            "h": imgtemp.height,
+          };
+          imgitems[i] = imgobj;
+          addImgClick(img, i);
+        } else {
+          console.log('进来了2')
+          imgtemp.index = i;
+          imgtemp.img = img;
+          imgtemp.onload = function() {
+            var imgobj = {
+              "src": this.src,
+              "w": this.width,
+              "h": this.height,
+            };
+            //不要使用push，因为onload前后顺序会不同
+            imgitems[this.index] = imgobj
+            //添加点击事件
+            addImgClick(this.img, this.index);
+          }
+        }
+      }
+    }
+    //初始化
+    initImg();
+  </script>
+  
+  
+</body>
+
+</html>

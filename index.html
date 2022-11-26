@@ -1,0 +1,367 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>王德福 Wonderful</title>
+<link rel="shortcut icon" href="https://wyu0725.github.io//favicon.ico">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css">
+<link rel="stylesheet" href="https://wyu0725.github.io//media/css/tailwind.css">
+<link rel="stylesheet" href="https://wyu0725.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="王德福 Wonderful - Atom Feed" href="https://wyu0725.github.io//atom.xml">
+
+    
+
+  <meta name="description" content="吾生也有涯，而知也无涯。 以有涯随无涯，殆已！" />
+</head>
+<body>
+  <div class="antialiased flex flex-col min-h-screen" id="app">
+
+    <div class="nav py-3 md:py-8 fixed w-full z-10 bg-gray-50 dark:bg-gray-700 transition-all duration-300" :class="{ 'scroll': scrolled }">
+  <div class="flex justify-end px-4">
+    <div class="w-8 h-8 flex justify-center items-center rounded-full md:hidden" @click="showMenu = !showMenu">
+      <i class="ri-close-line" v-show="showMenu"></i>
+      <i class="ri-menu-3-line" v-show="!showMenu"></i>
+    </div>
+  </div>
+  <nav class="max-w-4xl w-full mx-auto text-center flex flex-col md:flex-row justify-center md:block" :class="`${ showMenu ? 'block' : 'hidden' }`">
+    
+      <a href="/" target="" class="py-2 md:py-1 px-4 mx-4 inline-flex transition font-semibold rounded dark:hover:bg-gray-600 hover:bg-gray-200">
+        首页
+      </a>
+    
+      <a href="/archives" target="" class="py-2 md:py-1 px-4 mx-4 inline-flex transition font-semibold rounded dark:hover:bg-gray-600 hover:bg-gray-200">
+        归档
+      </a>
+    
+      <a href="/tags" target="" class="py-2 md:py-1 px-4 mx-4 inline-flex transition font-semibold rounded dark:hover:bg-gray-600 hover:bg-gray-200">
+        标签
+      </a>
+    
+      <a href="/post/about" target="" class="py-2 md:py-1 px-4 mx-4 inline-flex transition font-semibold rounded dark:hover:bg-gray-600 hover:bg-gray-200">
+        关于
+      </a>
+    
+    <a href="https://wyu0725.github.io//atom.xml" target="_blank" class="py-2 md:py-1 px-4 mx-4 inline-flex transition font-semibold rounded dark:hover:bg-gray-600 hover:bg-gray-200">
+      RSS
+    </a>
+  </nav>
+</div>
+
+    <div class="max-w-4xl w-full mx-auto ">
+      
+        <header class="flex py-16 md:py-32 mt-12 flex-col md:flex-row px-4 md:px-0 animated fadeIn">
+  <div class="flex-1 order-2 md:order-1 md:pr-16">
+    <div class="text-4xl font-bold text-center md:text-left">
+      王德福 Wonderful
+    </div>
+    <div class="text-xl text-gray-500 mt-4 text-center md:text-left">
+      吾生也有涯，而知也无涯。 以有涯随无涯，殆已！
+    </div>
+    
+      <div class="mt-8 text-center md:text-left">
+        <a
+          href="/post/about" 
+          arget="_blank"
+          class="text-sm bg-yellow-50 dark:bg-indigo-500 dark:text-gray-700 font-semibold px-4 py-2 inline-block yellow-btn transition-fast rounded"
+        >LET&#39;S TALK!</a>
+      </div>
+    
+    
+      <div class="mt-8 flex items-center">
+        
+          <div class="text-gray-500 mr-2">
+            Follow me 👉
+          </div>
+        
+        
+          
+        
+          
+            
+              <a href="wyu0831 AT hotmail.com" target="_blank" class="mr-2 w-8 h-8 inline-flex items-center justify-center text-xl hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast">
+                <i class="ri-mail-line"></i>
+              </a>
+            
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      </div>
+    
+  </div>
+  <div class="md:mx-8 flex-shrink-0 self-start rounded-full border-4 border-dotted border-transparent hover:border-yellow-50 p-2 w-32 h-32 order-1 md:order-2 mx-auto s3-dotted">
+    <img class="rounded-full object-cover" src="https://wyu0725.github.io//images/avatar.png?v=1669452208842" alt="王德福 Wonderful" width="100%" height="100%">
+  </div>
+</header>
+      
+
+      <div class="shadow-box bg-white dark:bg-gray-600 border-gray-300 rounded-none md:rounded-lg -mx-1 md:mx-0 md:px-0">
+        
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+      <i class="ri-star-line text-orange-200 absolute text-2xl left-0 ml-1 rotate-90"></i>
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://wyu0725.github.io/post/vivado_hdl_source_code_manager/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          Vivado HDL 源代码管理
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2022-11-26</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        Vivado HDL源代码管理
+
+Vivado 的工程编译之后会有几百兆，每次拷给别人的时候都要备注好版本，还可能会有 IP 版本不兼容的问题（这个也不是完全解决版本不兼容的问题，但是在 IP Core没有大变化的情况下时没有问题的）
+要做...
+      </div>
+      <a href="https://wyu0725.github.io/post/vivado_hdl_source_code_manager/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://wyu0725.github.io/post/python_scapy_simple/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          简单 Python 爬虫
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2020-06-27</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        
+想学爬虫很久了，还好一下午搞定了
+主要是参考了这个老哥的博客：莫烦 Python，其他的用法都是上网去查查查就可以了
+
+爬虫
+爬虫不仅仅局限于用 Python，其实用 perl 也行，目的就是能够自动的从网上把需要的东西下载下来，Pyth...
+      </div>
+      <a href="https://wyu0725.github.io/post/python_scapy_simple/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://wyu0725.github.io/post/_cpp_get_file_lists/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          C++ 获取文件列表
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2020-05-26</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <blockquote>
+<p>在数据处理中通常会需要将整个列表里的文件进行处理，这样的话首先就先需要获取文件列表，下面介绍这个过程。</p>
+<p>使用的是 CentOS 系统，windows 系统的库函数会有些不一样，可以自行网上查一查。</p>
+<p>参考了这两个网站：<a href="http://www.cplusplus.com/forum/beginner/136992/">program to list all files of .txtextension</a> 和 <a href="https://blog.csdn.net/u012005313/article/details/50687297">C/C++ 获取文件夹下所有文件名 windows和linux通用</a></p>
+</blockquote>
+
+      </div>
+      <a href="https://wyu0725.github.io/post/_cpp_get_file_lists/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://wyu0725.github.io/post/famous_distribution_and_statistic_theory/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          大数定理、中心极限定理和三大分布
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2020-04-14</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        
+以前不觉得三大分布有啥作用，最近又复习了一遍概率论发现三大分布真是无处不在，不管是做曲线拟合还是做实验数据检验，都很有作用，下面是三大分布的学习笔记，尽量把能证明的内容证明出来。
+学习的内容就是陈希孺老先生的这本《概率论与数理统计》，这本...
+      </div>
+      <a href="https://wyu0725.github.io/post/famous_distribution_and_statistic_theory/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://wyu0725.github.io/post/sublime_LaTeX/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          Sublime Text3 + TeXLive配置
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-08-15</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <blockquote>
+<p>写论文必备神器 LaTeX，一次性解决 Word 图片跑来跑去的困扰<br>
+写毕业论文还是老老实实的用 Word 吧</p>
+</blockquote>
+
+      </div>
+      <a href="https://wyu0725.github.io/post/sublime_LaTeX/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://wyu0725.github.io/post/allegro_skill/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+           Allegro Skill介绍及用法
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-08-08</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <p>不用 Skill，白学 Allegro</p>
+
+      </div>
+      <a href="https://wyu0725.github.io/post/allegro_skill/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://wyu0725.github.io/post/producer_consumer_pattern_in_cyusb/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          使用生产者消费者模式获取 CyPress 数据
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-07-29</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <blockquote>
+<p>一直都直到有“生产者-消费”者这个模型，但是从来都没有尝试编写过，最近正好在调试 <a href="https://www.cypress.com/products/ez-usb-fx3-superspeed-usb-30-peripheral-controller">CyPress FX3</a> 系列的一款芯片，下面是编写上位机过程中的一些记录。</p>
+</blockquote>
+
+      </div>
+      <a href="https://wyu0725.github.io/post/producer_consumer_pattern_in_cyusb/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://wyu0725.github.io/post/ubuntu_basic_settings/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          新开服务器基本设置指南
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-07-07</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <p>添加超级用户安装了新服务器第一件事情就是先添加一个管理员用户，而不是直接使用 root 进行登陆，如果 root 的密码泄露了是非常严重的。同时也不要直接使用 root 登陆，基本上的操作用 sudo 就可以完成，还要什么管理员。</p>
+
+      </div>
+      <a href="https://wyu0725.github.io/post/ubuntu_basic_settings/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://wyu0725.github.io/post/Si5345_VIO_Config/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          通过 VIO 实现 Si5345 的配置
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-06-17</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <blockquote>
+<p>用了这么多的开源代码，今天总算是页做出了自己的贡献，可以发一个自己的开源工程</p>
+<p>这个工程主要是通过 VIO 配置一款 PLL 芯片</p>
+</blockquote>
+
+      </div>
+      <a href="https://wyu0725.github.io/post/Si5345_VIO_Config/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="p-8 border-b border-gray-200 dark:border-gray-700 flex relative overflow-hidden flex-col md:flex-row animated fadeIn">
+    
+    <div class="flex-1 order-2 md:order-1">
+      <h2 class="text-2xl font-semibold mb-4">
+        <a href="https://wyu0725.github.io/post/vivado_call-vim/" class="text-gray-700 dark:text-gray-200 border-b-2 border-dotted border-gray-200 dark:border-gray-400 dark:hover:border-gray-200 hover:border-gray-600 transition-all duration-100">
+          Vivado 调用 Vim 作为编辑器
+        </a>
+      </h2>
+      <div class="mb-4 text-xs text-gray-500">2019-06-14</div>
+      <div class="mb-4 text-gray-500 dark:text-gray-300">
+        <blockquote>
+<p>Vim 作为老牌编辑器，用来编辑 Verilog 和 VHDL 再合适不过了，至少比 Vivado 自带的编辑器好用，而且如果已经习惯了 Vim，所有代码都可以用 Vim 来编辑，岂不快哉。<br>
+下面就开始介绍怎么设置在 Vivado 中设置 Vim 作为默认编辑器，这样双击代码就可以直接用 Vim 打开。</p>
+</blockquote>
+
+      </div>
+      <a href="https://wyu0725.github.io/post/vivado_call-vim/" class="btn">
+        Read more
+      </a>
+    </div>
+    
+  </div>
+  
+      </div>
+
+      
+  <div class="my-4 flex justify-between px-4 md:px-0">
+    
+    
+      <a href="https://wyu0725.github.io/page/2" class="btn btn-white">
+        下一页
+        <i class="ri-arrow-right-line ml-4"></i>
+      </a>
+    
+  </div>
+
+      <footer class="py-12 text-center px-4 md:px-0" v-pre>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+</footer>
+
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://wyu0725.github.io//media/scripts/main.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,407 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title>Vivado HDL 源代码管理 - 王德福 Wonderful</title>
+<link rel="shortcut icon" href="https://wyu0725.github.io//favicon.ico">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css">
+<link rel="stylesheet" href="https://wyu0725.github.io//media/css/tailwind.css">
+<link rel="stylesheet" href="https://wyu0725.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Vivado HDL 源代码管理 - 王德福 Wonderful - Atom Feed" href="https://wyu0725.github.io//atom.xml">
+
+    
+
+  <meta name="description" content="Vivado HDL源代码管理
+
+Vivado 的工程编译之后会有几百兆，每次拷给别人的时候都要备注好版本，还可能会有 IP 版本不兼容的问题（这个也不是完全解决版本不兼容的问题，但是在 IP Core没有大变化的情况下时没有问题的）
+要做..." />
+  <meta property="og:title" content="Vivado HDL 源代码管理 - 王德福 Wonderful">
+  <meta property="og:description" content="Vivado HDL源代码管理
+
+Vivado 的工程编译之后会有几百兆，每次拷给别人的时候都要备注好版本，还可能会有 IP 版本不兼容的问题（这个也不是完全解决版本不兼容的问题，但是在 IP Core没有大变化的情况下时没有问题的）
+要做..." />
+  <meta property="og:type" content="articles">
+  <meta property="og:url" content="https://wyu0725.github.io/post/vivado_hdl_source_code_manager/" />
+  <meta property="og:image" content="https://wyu0725.github.io//images/avatar.png">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:width" content="1200">
+  <meta name="twitter:title" content="Vivado HDL 源代码管理 - 王德福 Wonderful">
+  <meta name="twitter:description" content="Vivado HDL源代码管理
+
+Vivado 的工程编译之后会有几百兆，每次拷给别人的时候都要备注好版本，还可能会有 IP 版本不兼容的问题（这个也不是完全解决版本不兼容的问题，但是在 IP Core没有大变化的情况下时没有问题的）
+要做...">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://wyu0725.github.io/post/vivado_hdl_source_code_manager/">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+ 
+  
+    <link rel="stylesheet" href="https://wyu0725.github.io//media/css/prism-atom-dark.css">
+  
+
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+  
+</head>
+
+<body>
+  <div class="antialiased flex flex-col min-h-screen" id="app">
+    <a href="https://wyu0725.github.io/" class="fixed top-0 left-0 mt-4 bg-black text-white dark:text-gray-700 dark:bg-yellow-50 dark:hover:bg-black dark:hover:text-white inline-flex p-2 pl-8 hover:text-gray-700 hover:bg-yellow-50 font-bold z-10 transition-fast animated fadeInLeft">
+      王德福 Wonderful
+    </a>
+    <div class="max-w-4xl w-full mx-auto">
+      <div class="shadow-box bg-white dark:bg-gray-600 rounded-lg pt-32 md:pt-64 px-4 md:px-8 pb-8 animated fadeIn mb-8">
+        <h1 class="text-5xl font-semibold leading-normal pb-8 mb-8 border-b-8 border-gray-700">
+          Vivado HDL 源代码管理
+        </h1>
+        
+        <div class="mb-8 flex flex-wrap">
+          <div class="text-gray-400 text-sm mr-4">2022-11-26 · 7 min read</div>
+          
+        </div>
+        <div class="markdown mb-8" v-pre>
+          <h1 id="vivado-hdl源代码管理">Vivado HDL源代码管理</h1>
+<blockquote>
+<p>Vivado 的工程编译之后会有几百兆，每次拷给别人的时候都要备注好版本，还可能会有 IP 版本不兼容的问题（这个也不是完全解决版本不兼容的问题，但是在 IP Core没有大变化的情况下时没有问题的）</p>
+<p>要做好版本管理直接用现在很成熟的 git 即可，加上少数的步骤就可以把代码管理好。</p>
+</blockquote>
+<h2 id="总的原则">总的原则</h2>
+<ul>
+<li>IP core 文件和代码文件不要放在工程里面，放在单独的文件夹里面进行处理</li>
+<li>新生成的代码、仿真文件、约束、IP core 都放到对应的文件夹而不是放在默认的工程文件夹里面</li>
+<li>使用 write_project_tcl 命令来管理代码</li>
+</ul>
+<h2 id="导出工程">导出工程</h2>
+<p>首先要有一个创建好的工程，在这里随便找了一个已有的代码管理的工程来演示。</p>
+<p>首先是一定要注意代码和自己的工程不要放在一起，不然在别的机器上运行的时候会缺东西。</p>
+<h3 id="基本命令">基本命令</h3>
+<p>使用 Vivado 提供的 write_project_tcl 命令导出工程，这个 tcl 的用法见<a href="https://docs.xilinx.com/r/en-US/ug835-vivado-tcl-commands/write_project_tcl">官方说明</a>，下面截取一部分重要的参数来解释</p>
+<pre><code class="language-tcl">write_project_tcl [‑paths_relative_to &lt;arg&gt;] [‑origin_dir_override &lt;arg&gt;]
+    [‑target_proj_dir &lt;arg&gt;] [‑force] [‑all_properties] [‑no_copy_sources]
+    [‑absolute_remote_path] [‑no_ip_version] [‑absolute_path]
+    [‑dump_project_info] [‑use_bd_files] [‑internal] [‑validate] [‑quiet]
+    [‑verbose] &lt;file&gt;
+</code></pre>
+<p>其中比较重要的有下面几个：</p>
+<ul>
+<li>‑paths_relative_to，将文件中所有的绝对路径都改成相对路径，都是相对于这个tcl文件的路径。因此在管理代码的时候连着这个 tcl 一起管理了就好了</li>
+<li>-force，强制覆盖之前的 tcl 文件，多次生成的时候很有用</li>
+</ul>
+<p>如下图所示，在对应的 tcl 的窗口中输入下面的命令，将相对路径设置为要存放tcl的位置，后面会有用；注意最后一个参数就是输出文件的名字。</p>
+<figure data-type="image" tabindex="1"><img src="https://wyu0725.github.io//post-images/1669448562995.png" alt="" loading="lazy"></figure>
+<pre><code class="language-tcl">write_project_tcl -all_properties -force -no_ip_version -paths_relative_to D:/MyProject/muon_tomography_ustc/source/scripts/   D:/MyProject/muon_tomography_ustc/source/scripts/create_aget_fec_project1.tcl
+</code></pre>
+<h3 id="对-tcl-文件进行修改">对 tcl 文件进行修改</h3>
+<p>生成的 tcl 文件还有一些不科学的地方，因此在这里做一些修改</p>
+<h4 id="将-tcl-文件的绝对路径改成相对路径">将 tcl 文件的绝对路径改成相对路径</h4>
+<p>在文件中会找到这样的代码，这里的 origin_dir 就是刚刚指定的相对路径，接下来要把它换掉，因为每次tcl文件不一定都是放在了同一个位置。</p>
+<pre><code class="language-tcl">set origin_dir &quot;D:/MyProject/muon_tomography_ustc/source/scripts&quot;
+</code></pre>
+<p>改成下面这个样子，第一行是获取文件的位置，第二行是把文件所在的文件夹传递给 origin_dir，后面所有的代码都是用的相对位置，因此完全没有问题。</p>
+<pre><code class="language-tcl">variable scriptfile [file normalize [info script]]
+variable origin_dir [file dirname $scriptfile]
+</code></pre>
+<h4 id="修改创建工程的位置">修改创建工程的位置</h4>
+<p>tcl 生成的工程位置不能都自动指定相对位置，因此在这里直接就改成想要的相对位置，我一般习惯是在我所有代码的上一级文件夹中建一个 project 的文件夹，找到下面这个代码</p>
+<pre><code class="language-tcl"># Create project
+create_project ${_xil_proj_name_} ./${_xil_proj_name_} -part xc7a200tfbg484-2L
+</code></pre>
+<p>改成下面的内容，-force 的意思是强行覆盖已有的工程，然后把工程的路径改成 ${orig_proj_dir}，也就是原始工程相对于 tcl 文件的位置，当然这里也可以改成自己想要的位置。（这里很奇怪的就是这个 tcl 前面有工程的相对位置，但是这里竟然不使用，而且还没有找到修改的参数）</p>
+<pre><code>create_project -force ${_xil_proj_name_} ${orig_proj_dir} -part xc7a200tfbg484-2L
+</code></pre>
+<h4 id="去掉-ip-文件相关的内容">去掉 IP 文件相关的内容</h4>
+<p>IP 文件也是直接管理的，但是这样可能会造成版本不兼容的问题，因此在这里的 IP 文件先全部都去掉，下面会介绍使用 tcl 来重新生成 IP。</p>
+<p>根据自己的 IP 名字，在文件中找到 IP 相关的那段代码并删掉，比如下面的内容要全部删掉。</p>
+<p>注意：所有IP的文件都要删干净</p>
+<pre><code class="language-tcl"># Set 'sources_1' fileset object
+set obj [get_filesets sources_1]
+# Import local files from the original project
+set files [list \
+ [file normalize &quot;${origin_dir}/../../../projects/AGET_FEC_V3_2_GBT/AGET_FEC_V3_2_GBT.srcs/sources_1/ip/ila_daq_chn_b_data/ila_daq_chn_b_data.xci&quot; ]\
+]
+set imported_files [import_files -fileset sources_1 $files]
+
+# Set 'sources_1' fileset file properties for remote files
+# None
+
+# Set 'sources_1' fileset file properties for local files
+set file &quot;ila_daq_chn_b_data/ila_daq_chn_b_data.xci&quot;
+set file_obj [get_files -of_objects [get_filesets sources_1] [list &quot;*$file&quot;]]
+set_property -name &quot;generate_files_for_reference&quot; -value &quot;0&quot; -objects $file_obj
+if { ![get_property &quot;is_locked&quot; $file_obj] } {
+  set_property -name &quot;generate_synth_checkpoint&quot; -value &quot;1&quot; -objects $file_obj
+}
+set_property -name &quot;is_enabled&quot; -value &quot;1&quot; -objects $file_obj
+set_property -name &quot;is_global_include&quot; -value &quot;0&quot; -objects $file_obj
+set_property -name &quot;library&quot; -value &quot;xil_defaultlib&quot; -objects $file_obj
+set_property -name &quot;path_mode&quot; -value &quot;RelativeFirst&quot; -objects $file_obj
+set_property -name &quot;registered_with_manager&quot; -value &quot;1&quot; -objects $file_obj
+if { ![get_property &quot;is_locked&quot; $file_obj] } {
+  set_property -name &quot;synth_checkpoint_mode&quot; -value &quot;Singular&quot; -objects $file_obj
+}
+set_property -name &quot;used_in&quot; -value &quot;synthesis implementation simulation&quot; -objects $file_obj
+set_property -name &quot;used_in_implementation&quot; -value &quot;1&quot; -objects $file_obj
+set_property -name &quot;used_in_simulation&quot; -value &quot;1&quot; -objects $file_obj
+set_property -name &quot;used_in_synthesis&quot; -value &quot;1&quot; -objects $file_obj
+</code></pre>
+<h3 id="导出-ip-core-相关配置">导出 IP Core 相关配置</h3>
+<p>前面最后一部去掉了 IP 相关的内容，因此在这里要重新导出所有的 IP Core。</p>
+<p>使用 write_ip_tcl 来生成 IP Core 需要的配置文件</p>
+<ul>
+<li>-force 是强制覆盖</li>
+<li>-no_ip_version 是使得 IP 和Vivado 版本无关，但是一直不成功（有隐患，若 IP 版本变化很大，这个就会失效，目前没有很好的解决办法）</li>
+<li>-multiple_files 是每个 IP 一个文件</li>
+<li>最后一个参数是 tcl 存放的路径</li>
+</ul>
+<pre><code>write_ip_tcl -force -no_ip_version -multiple_files  [get_ips] D:/MyProject/muon_tomography_ustc/source/HDL/aget_fec/ip/
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://wyu0725.github.io//post-images/1669451976706.png" alt="" loading="lazy"></figure>
+<h4 id="稍作修改">稍作修改</h4>
+<p>虽说有 -no_ip_version 参数，但是还是生成了版本相关的信息，如下图所示，把最后的return 1注释掉，这样就只检查，但是不报错了</p>
+<p>![image-20220619161022688](Vivado HDL源代码管理.assets/image-20220619161022688.png)</p>
+<h4 id="在原来的-tcl-文件中加入ip相关内容">在原来的 tcl 文件中加入IP相关内容</h4>
+<p>使用 source 命令来运行生成 IP 的 tcl 文件，如下面两行所示，注意依旧是使用相对路径，并且改成自己的tcl所在的位置</p>
+<pre><code class="language-tcl">source $origin_dir/../HDL/aget_fec/ip/clock_generator.tcl
+source $origin_dir/../HDL/aget_fec/ip/ila_daq_chn_b_data.tcl	
+</code></pre>
+<h2 id="重建工程">重建工程</h2>
+<p>用源代码管理器把代码同步到别的机器上，比如说 git（往前翻，有一篇文章讲了怎么用git，直接用起来就好）</p>
+<p>下面用一台 Linux 主机上的 Vivado 来演示，首先是在 Vivado 的截面中点击 Tools-&gt;Run Tcl Script...，在弹出的框中选择之前生成好的 tcl 文件。</p>
+<figure data-type="image" tabindex="3"><img src="https://wyu0725.github.io//post-images/1669452018395.png" alt="" loading="lazy"></figure>
+<p>然后就等着大功告成了，最后检查下 tcl console 有没有报错，有报错多半是却什么文件</p>
+<figure data-type="image" tabindex="4"><img src="https://wyu0725.github.io//post-images/1669452099056.gif" alt="" loading="lazy"></figure>
+
+        </div>
+        <!-- Share to Twitter, Weibo, Telegram -->
+        <div class="flex items-center">
+          <div class="mr-4 flex items-center">
+            <i class="ri-share-forward-line text-gray-500"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-blue-500 hover:bg-blue-100 dark:hover:bg-gray-600 inline-flex" @click="shareToTwitter">
+            <i class="ri-twitter-line"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-red-500 hover:bg-red-100 dark:hover:bg-gray-600 inline-flex" @click="shareToWeibo">
+            <i class="ri-weibo-line"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-indigo-500 hover:bg-indigo-100 dark:hover:bg-gray-600 inline-flex" @click="shareToTelegram">
+            <i class="ri-telegram-line"></i>
+          </div>
+        </div>
+      </div>
+
+      
+
+      
+
+      <footer class="py-12 text-center px-4 md:px-0" v-pre>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+</footer>
+    </div>
+
+    <!-- TOC Container -->
+    <div class="fixed right-0 bottom-0 mb-16 mr-4 shadow w-8 h-8 rounded-full flex justify-center items-center z-10 cursor-pointer bg-white dark:bg-gray-500 dark:text-gray-200 hover:shadow-lg transition-all animated fadeInRight" @click="showToc = true">
+      <i class="ri-file-list-line"></i>
+    </div>
+
+    <div class="fixed right-0 top-0 bottom-0 overflow-y-auto w-64 bg-white dark:bg-gray-800 p-4 border-l border-gray-100 dark:border-gray-600 z-10 transition-fast" :class="{ '-mr-64': !showToc }">
+      <div class="flex mb-4 justify-end">
+        <div class="w-8 h-8 inline-flex justify-center items-center rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast" @click="showToc = false">
+          <i class="ri-close-line text-lg"></i>
+        </div>
+      </div>
+      <div class="post-toc-container">
+        <ul class="markdownIt-TOC">
+<li><a href="#vivado-hdl%E6%BA%90%E4%BB%A3%E7%A0%81%E7%AE%A1%E7%90%86">Vivado HDL源代码管理</a>
+<ul>
+<li><a href="#%E6%80%BB%E7%9A%84%E5%8E%9F%E5%88%99">总的原则</a></li>
+<li><a href="#%E5%AF%BC%E5%87%BA%E5%B7%A5%E7%A8%8B">导出工程</a>
+<ul>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4">基本命令</a></li>
+<li><a href="#%E5%AF%B9-tcl-%E6%96%87%E4%BB%B6%E8%BF%9B%E8%A1%8C%E4%BF%AE%E6%94%B9">对 tcl 文件进行修改</a>
+<ul>
+<li><a href="#%E5%B0%86-tcl-%E6%96%87%E4%BB%B6%E7%9A%84%E7%BB%9D%E5%AF%B9%E8%B7%AF%E5%BE%84%E6%94%B9%E6%88%90%E7%9B%B8%E5%AF%B9%E8%B7%AF%E5%BE%84">将 tcl 文件的绝对路径改成相对路径</a></li>
+<li><a href="#%E4%BF%AE%E6%94%B9%E5%88%9B%E5%BB%BA%E5%B7%A5%E7%A8%8B%E7%9A%84%E4%BD%8D%E7%BD%AE">修改创建工程的位置</a></li>
+<li><a href="#%E5%8E%BB%E6%8E%89-ip-%E6%96%87%E4%BB%B6%E7%9B%B8%E5%85%B3%E7%9A%84%E5%86%85%E5%AE%B9">去掉 IP 文件相关的内容</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AF%BC%E5%87%BA-ip-core-%E7%9B%B8%E5%85%B3%E9%85%8D%E7%BD%AE">导出 IP Core 相关配置</a>
+<ul>
+<li><a href="#%E7%A8%8D%E4%BD%9C%E4%BF%AE%E6%94%B9">稍作修改</a></li>
+<li><a href="#%E5%9C%A8%E5%8E%9F%E6%9D%A5%E7%9A%84-tcl-%E6%96%87%E4%BB%B6%E4%B8%AD%E5%8A%A0%E5%85%A5ip%E7%9B%B8%E5%85%B3%E5%86%85%E5%AE%B9">在原来的 tcl 文件中加入IP相关内容</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E9%87%8D%E5%BB%BA%E5%B7%A5%E7%A8%8B">重建工程</a></li>
+</ul>
+</li>
+</ul>
+
+      </div>
+    </div>
+
+    <!-- Back to top -->
+    <div class="fixed right-0 bottom-0 mb-4 mr-4 shadow w-8 h-8 rounded-full flex justify-center items-center z-10 cursor-pointer bg-white hover:shadow-lg transition-all dark:bg-gray-500 dark:text-gray-200" @click="backToUp" v-show="scrolled">
+      <i class="ri-arrow-up-line"></i>
+    </div>
+  </div>
+
+  <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+  <!-- Background of PhotoSwipe. 
+        It's a separate element as animating opacity is faster than rgba(). -->
+  <div class="pswp__bg">
+  </div>
+  <!-- Slides wrapper with overflow:hidden. -->
+  <div class="pswp__scroll-wrap">
+    <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+    <div class="pswp__container">
+      <div class="pswp__item">
+      </div>
+      <div class="pswp__item">
+      </div>
+      <div class="pswp__item">
+      </div>
+    </div>
+    <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+    <div class="pswp__ui pswp__ui--hidden">
+      <div class="pswp__top-bar">
+        <!--  Controls are self-explanatory. Order can be changed. -->
+        <div class="pswp__counter">
+        </div>
+        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+        <!-- element will get class pswp__preloader--active when preloader is running -->
+        <div class="pswp__preloader">
+          <div class="pswp__preloader__icn">
+            <div class="pswp__preloader__cut">
+              <div class="pswp__preloader__donut">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div class="pswp__share-tooltip">
+        </div>
+      </div>
+      <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+      </button>
+      <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+      </button>
+      <div class="pswp__caption">
+        <div class="pswp__caption__center">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://wyu0725.github.io//media/scripts/main.js"></script>
+  
+  <!-- Code Highlight -->
+  
+    <script src="https://wyu0725.github.io//media/prism.js"></script>
+    <script>
+      Prism.highlightAll()
+    </script>
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+  <script>
+    //拿到预览框架，也就是上面的html代码
+    var pswpElement = document.querySelectorAll('.pswp')[0];
+    //定义图片数组变量
+    var imgitems;
+    /**
+    * 用于显示预览界面
+    * @param index 图片数组下标
+    */
+    function viewImg(index) {
+      //其它选项这里不做过多阐述，详情见官网
+      var pswpoptions = {
+        index: parseInt(index, 10), // 开始幻灯片索引。0是第一张幻灯片。必须是整数，而不是字符串。
+        bgOpacity: 0.7, // 背景透明度，0-1
+        maxSpreadZoom: 3, // 缩放级别，不要太大
+      };
+      //初始化并打开PhotoSwipe，pswpElement对应上面预览框架，PhotoSwipeUI_Default为皮肤，imgitems为图片数组，pswpoptions为选项
+      var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, imgitems, pswpoptions);
+      gallery.init()
+    }
+    /**
+    * 用于添加图片点击事件
+    * @param img 图片元素
+    * @param index 所属下标（在imgitems中的位置）
+    */
+    function addImgClick(img, index) {
+      img.onclick = function() {
+        viewImg(index)
+      }
+    }
+    /**
+    * 轮询所有图片，获取src、width、height等数据，加入imgitems，并给图片元素添加事件
+    * 最好在onload中执行该方法，本站因放在最底部，所以直接初始化
+    * 异步加载图片可在图片元素创建完成后调用此方法
+    */
+    function initImg() {
+      //重置图片数组
+      imgitems = [];
+      //查找class:markdown 下的所有img元素并遍历
+      var imgs = document.querySelectorAll('.markdown img');
+      for (var i = 0; i < imgs.length; i++) {
+        var img = imgs[i];
+        //本站相册初始为loading图片，真实图片放在data-src
+        var ds = img.getAttribute("data-src");
+        //创建image对象，用于获取图片宽高
+        var imgtemp = new Image();
+        //判断是否存在data-src
+        if (ds != null && ds.length > 0) {
+          imgtemp.src = ds
+        } else {
+          imgtemp.src = img.src
+        }
+        //判断是否存在缓存
+        if (imgtemp.complete) {
+          var imgobj = {
+            "src": imgtemp.src,
+            "w": imgtemp.width,
+            "h": imgtemp.height,
+          };
+          imgitems[i] = imgobj;
+          addImgClick(img, i);
+        } else {
+          console.log('进来了2')
+          imgtemp.index = i;
+          imgtemp.img = img;
+          imgtemp.onload = function() {
+            var imgobj = {
+              "src": this.src,
+              "w": this.width,
+              "h": this.height,
+            };
+            //不要使用push，因为onload前后顺序会不同
+            imgitems[this.index] = imgobj
+            //添加点击事件
+            addImgClick(this.img, this.index);
+          }
+        }
+      }
+    }
+    //初始化
+    initImg();
+  </script>
+  
+  
+</body>
+
+</html>

@@ -1,0 +1,327 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<title> Allegro Skill介绍及用法 - 王德福 Wonderful</title>
+<link rel="shortcut icon" href="https://wyu0725.github.io//favicon.ico">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.2.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.7.2/animate.min.css">
+<link rel="stylesheet" href="https://wyu0725.github.io//media/css/tailwind.css">
+<link rel="stylesheet" href="https://wyu0725.github.io//styles/main.css">
+<link rel="alternate" type="application/atom+xml" title=" Allegro Skill介绍及用法 - 王德福 Wonderful - Atom Feed" href="https://wyu0725.github.io//atom.xml">
+
+    
+
+  <meta name="description" content="不用 Skill，白学 Allegro
+
+
+Allegro skill介绍
+
+Skill 是Cadence 提供的可第二次开发的语言。语法同C语言类似。在设计中使用skill可以大大简化PCB绘制流程，还可以定制各种各样的功能。
+本文只对s..." />
+  <meta property="og:title" content=" Allegro Skill介绍及用法 - 王德福 Wonderful">
+  <meta property="og:description" content="不用 Skill，白学 Allegro
+
+
+Allegro skill介绍
+
+Skill 是Cadence 提供的可第二次开发的语言。语法同C语言类似。在设计中使用skill可以大大简化PCB绘制流程，还可以定制各种各样的功能。
+本文只对s..." />
+  <meta property="og:type" content="articles">
+  <meta property="og:url" content="https://wyu0725.github.io/post/allegro_skill/" />
+  <meta property="og:image" content="https://wyu0725.github.io//images/avatar.png">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:width" content="1200">
+  <meta name="twitter:title" content=" Allegro Skill介绍及用法 - 王德福 Wonderful">
+  <meta name="twitter:description" content="不用 Skill，白学 Allegro
+
+
+Allegro skill介绍
+
+Skill 是Cadence 提供的可第二次开发的语言。语法同C语言类似。在设计中使用skill可以大大简化PCB绘制流程，还可以定制各种各样的功能。
+本文只对s...">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://wyu0725.github.io/post/allegro_skill/">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.css">
+ 
+  
+    <link rel="stylesheet" href="https://wyu0725.github.io//media/css/prism-atom-dark.css">
+  
+
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+  
+</head>
+
+<body>
+  <div class="antialiased flex flex-col min-h-screen" id="app">
+    <a href="https://wyu0725.github.io/" class="fixed top-0 left-0 mt-4 bg-black text-white dark:text-gray-700 dark:bg-yellow-50 dark:hover:bg-black dark:hover:text-white inline-flex p-2 pl-8 hover:text-gray-700 hover:bg-yellow-50 font-bold z-10 transition-fast animated fadeInLeft">
+      王德福 Wonderful
+    </a>
+    <div class="max-w-4xl w-full mx-auto">
+      <div class="shadow-box bg-white dark:bg-gray-600 rounded-lg pt-32 md:pt-64 px-4 md:px-8 pb-8 animated fadeIn mb-8">
+        <h1 class="text-5xl font-semibold leading-normal pb-8 mb-8 border-b-8 border-gray-700">
+           Allegro Skill介绍及用法
+        </h1>
+        
+        <div class="mb-8 flex flex-wrap">
+          <div class="text-gray-400 text-sm mr-4">2019-08-08 · 3 min read</div>
+          
+        </div>
+        <div class="markdown mb-8" v-pre>
+          <p>不用 Skill，白学 Allegro</p>
+<!--more-->
+<p><a name="b3Rds"></a></p>
+<h1 id="allegro-skill介绍br">Allegro skill介绍<br /></h1>
+<ul>
+<li>Skill 是Cadence 提供的可第二次开发的语言。语法同C语言类似。在设计中使用skill可以大大简化PCB绘制流程，还可以定制各种各样的功能。<br /></li>
+<li>本文只对skill使用做一个简单的介绍，进阶的方面以后学会再做笔记。<br /></li>
+<li>推荐一个网站：<a href="http://www.allegro-skill.com/?fromuid=7754">Allegro Skill</a>，使用的skill和介绍均来自此网站</li>
+</ul>
+<p><a name="xkrS8"></a></p>
+<h1 id="allegro-skill设置方法">Allegro skill设置方法</h1>
+<p>以一个skill为例(ch_via_net)，这个skill的功能是将电路板中的过孔的网络修改为任意一个网络。</p>
+<ol>
+<li>先从任何一个地方获取到这个skill文件ch_via_net.il。<br /></li>
+<li>将文件放置在一个文件夹中，不含中文和空格。如我放置在D:\Cadence\skill中，方便日后管理<br /></li>
+<li>在环境变量文件夹中找到allegro.ilinit文件，这个文件一般在C:\Users***\AppData\Roaming\SPB_Data\pcbenv中，***表示计算机用户名。</li>
+<li>如果在上一步找不到这个文件的话说明从来都没有程序创建过这样一个文件，自己创建一个文件名为 allegro.ilinit 的文件；如果在安装的时候修改了用户变量的位置，就直接搜索 SPB_DATA 所在的文件夹</li>
+<li>编辑这个文件，在文件中加入如下的代码<br>
+setSkillPath(buildString(append1(getSkillPath() &quot;D:/Cadence/skill&quot;)))<br>
+;设置skill所在路径<br>
+load(&quot;ch_via_net.il&quot; &quot;<a href="www.allegro-skill.com">www.allegro-skill.com</a>&quot;)<br>
+;载入skill 前一个参数是skill文件，后一个是密码。<br /></li>
+<li>Skill设计结束，可以在工程中使用了。<br /></li>
+<li>最好为skill的操作设置一个快捷键，不然使用中不会很方便。<br /></li>
+<li>可以自定义allegro菜单，将自己添加的skill加入菜单中方便使用<br>
+在安装路径D:\Cadence\SPB_16.6\share\pcb\text\cuimenus中找到allegro.men文件，该文件为加载目录文件。在目录的最后一个end前加入如下代码：</li>
+</ol>
+<pre><code>POPUP &quot;My_Skill&quot;
+BEGIN
+     MENUITEM &quot;&amp;Chang Via's Net&quot;,  &quot;ch_via_net&quot;
+END
+</code></pre>
+<p><br />一定要注意是最后一个 END 前插入<br /><img src="https://cdn.nlark.com/yuque/0/2019/png/209359/1565241777595-f88577c0-77a2-48db-ade4-c6663d3bebc2.png#align=left&amp;display=inline&amp;height=165&amp;originHeight=165&amp;originWidth=701&amp;size=0&amp;status=done&amp;width=701" alt="" loading="lazy"></p>
+<p><strong>效果如下</strong><br /><img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/skill_menu.png" alt="" loading="lazy"><br /></p>
+<pre><code>------
+</code></pre>
+<p>欢迎关注<a href="https://www.yuque.com/wyu0725">我的语雀</a>和公众号<br>
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/MyWXQRCode.png" alt="MyQR" loading="lazy"></p>
+<blockquote>
+<p>本文采用 BY-NC 协议<br>
+<img src="https://raw.githubusercontent.com/wyu0725/My_Pic_bed/master/img/by-nc.png" alt="" loading="lazy"><br>
+署名-非商业性使用 （BY-NC）：只要在使用、公开时进行署名，那么使用者可以对本创作进行转载、节选、混编、二次创作，但不得将本创作或由本创作衍生的创作运用于商业目的。</p>
+</blockquote>
+
+        </div>
+        <!-- Share to Twitter, Weibo, Telegram -->
+        <div class="flex items-center">
+          <div class="mr-4 flex items-center">
+            <i class="ri-share-forward-line text-gray-500"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-blue-500 hover:bg-blue-100 dark:hover:bg-gray-600 inline-flex" @click="shareToTwitter">
+            <i class="ri-twitter-line"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-red-500 hover:bg-red-100 dark:hover:bg-gray-600 inline-flex" @click="shareToWeibo">
+            <i class="ri-weibo-line"></i>
+          </div>
+          <div class="px-4 cursor-pointer text-indigo-500 hover:bg-indigo-100 dark:hover:bg-gray-600 inline-flex" @click="shareToTelegram">
+            <i class="ri-telegram-line"></i>
+          </div>
+        </div>
+      </div>
+
+      
+
+      
+
+      <footer class="py-12 text-center px-4 md:px-0" v-pre>
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+</footer>
+    </div>
+
+    <!-- TOC Container -->
+    <div class="fixed right-0 bottom-0 mb-16 mr-4 shadow w-8 h-8 rounded-full flex justify-center items-center z-10 cursor-pointer bg-white dark:bg-gray-500 dark:text-gray-200 hover:shadow-lg transition-all animated fadeInRight" @click="showToc = true">
+      <i class="ri-file-list-line"></i>
+    </div>
+
+    <div class="fixed right-0 top-0 bottom-0 overflow-y-auto w-64 bg-white dark:bg-gray-800 p-4 border-l border-gray-100 dark:border-gray-600 z-10 transition-fast" :class="{ '-mr-64': !showToc }">
+      <div class="flex mb-4 justify-end">
+        <div class="w-8 h-8 inline-flex justify-center items-center rounded-full cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600 transition-fast" @click="showToc = false">
+          <i class="ri-close-line text-lg"></i>
+        </div>
+      </div>
+      <div class="post-toc-container">
+        <ul class="markdownIt-TOC">
+<li><a href="#allegro-skill%E4%BB%8B%E7%BB%8Dbr">Allegro skill介绍<br /></a></li>
+<li><a href="#allegro-skill%E8%AE%BE%E7%BD%AE%E6%96%B9%E6%B3%95">Allegro skill设置方法</a></li>
+</ul>
+
+      </div>
+    </div>
+
+    <!-- Back to top -->
+    <div class="fixed right-0 bottom-0 mb-4 mr-4 shadow w-8 h-8 rounded-full flex justify-center items-center z-10 cursor-pointer bg-white hover:shadow-lg transition-all dark:bg-gray-500 dark:text-gray-200" @click="backToUp" v-show="scrolled">
+      <i class="ri-arrow-up-line"></i>
+    </div>
+  </div>
+
+  <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+  <!-- Background of PhotoSwipe. 
+        It's a separate element as animating opacity is faster than rgba(). -->
+  <div class="pswp__bg">
+  </div>
+  <!-- Slides wrapper with overflow:hidden. -->
+  <div class="pswp__scroll-wrap">
+    <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+    <div class="pswp__container">
+      <div class="pswp__item">
+      </div>
+      <div class="pswp__item">
+      </div>
+      <div class="pswp__item">
+      </div>
+    </div>
+    <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+    <div class="pswp__ui pswp__ui--hidden">
+      <div class="pswp__top-bar">
+        <!--  Controls are self-explanatory. Order can be changed. -->
+        <div class="pswp__counter">
+        </div>
+        <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+        <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+        <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+        <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+        <!-- element will get class pswp__preloader--active when preloader is running -->
+        <div class="pswp__preloader">
+          <div class="pswp__preloader__icn">
+            <div class="pswp__preloader__cut">
+              <div class="pswp__preloader__donut">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+        <div class="pswp__share-tooltip">
+        </div>
+      </div>
+      <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+      </button>
+      <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+      </button>
+      <div class="pswp__caption">
+        <div class="pswp__caption__center">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://wyu0725.github.io//media/scripts/main.js"></script>
+  
+  <!-- Code Highlight -->
+  
+    <script src="https://wyu0725.github.io//media/prism.js"></script>
+    <script>
+      Prism.highlightAll()
+    </script>
+  
+
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js"></script>
+  <script>
+    //拿到预览框架，也就是上面的html代码
+    var pswpElement = document.querySelectorAll('.pswp')[0];
+    //定义图片数组变量
+    var imgitems;
+    /**
+    * 用于显示预览界面
+    * @param index 图片数组下标
+    */
+    function viewImg(index) {
+      //其它选项这里不做过多阐述，详情见官网
+      var pswpoptions = {
+        index: parseInt(index, 10), // 开始幻灯片索引。0是第一张幻灯片。必须是整数，而不是字符串。
+        bgOpacity: 0.7, // 背景透明度，0-1
+        maxSpreadZoom: 3, // 缩放级别，不要太大
+      };
+      //初始化并打开PhotoSwipe，pswpElement对应上面预览框架，PhotoSwipeUI_Default为皮肤，imgitems为图片数组，pswpoptions为选项
+      var gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, imgitems, pswpoptions);
+      gallery.init()
+    }
+    /**
+    * 用于添加图片点击事件
+    * @param img 图片元素
+    * @param index 所属下标（在imgitems中的位置）
+    */
+    function addImgClick(img, index) {
+      img.onclick = function() {
+        viewImg(index)
+      }
+    }
+    /**
+    * 轮询所有图片，获取src、width、height等数据，加入imgitems，并给图片元素添加事件
+    * 最好在onload中执行该方法，本站因放在最底部，所以直接初始化
+    * 异步加载图片可在图片元素创建完成后调用此方法
+    */
+    function initImg() {
+      //重置图片数组
+      imgitems = [];
+      //查找class:markdown 下的所有img元素并遍历
+      var imgs = document.querySelectorAll('.markdown img');
+      for (var i = 0; i < imgs.length; i++) {
+        var img = imgs[i];
+        //本站相册初始为loading图片，真实图片放在data-src
+        var ds = img.getAttribute("data-src");
+        //创建image对象，用于获取图片宽高
+        var imgtemp = new Image();
+        //判断是否存在data-src
+        if (ds != null && ds.length > 0) {
+          imgtemp.src = ds
+        } else {
+          imgtemp.src = img.src
+        }
+        //判断是否存在缓存
+        if (imgtemp.complete) {
+          var imgobj = {
+            "src": imgtemp.src,
+            "w": imgtemp.width,
+            "h": imgtemp.height,
+          };
+          imgitems[i] = imgobj;
+          addImgClick(img, i);
+        } else {
+          console.log('进来了2')
+          imgtemp.index = i;
+          imgtemp.img = img;
+          imgtemp.onload = function() {
+            var imgobj = {
+              "src": this.src,
+              "w": this.width,
+              "h": this.height,
+            };
+            //不要使用push，因为onload前后顺序会不同
+            imgitems[this.index] = imgobj
+            //添加点击事件
+            addImgClick(this.img, this.index);
+          }
+        }
+      }
+    }
+    //初始化
+    initImg();
+  </script>
+  
+  
+</body>
+
+</html>
